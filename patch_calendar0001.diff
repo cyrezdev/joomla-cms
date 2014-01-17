@@ -1,0 +1,230 @@
+From 301f583455823bc26202045c6bdd7b52389b3d46 Mon Sep 17 00:00:00 2001
+From: Cyril <info@joomlic.com>
+Date: Fri, 17 Jan 2014 23:38:15 +0100
+Subject: [PATCH] Enhancement Calendar Translations
+
+---
+ administrator/language/en-GB/en-GB.ini | 21 ++++++++++++++++++++
+ administrator/language/en-GB/en-GB.xml |  1 +
+ language/en-GB/en-GB.ini               | 21 ++++++++++++++++++++
+ language/en-GB/en-GB.xml               |  1 +
+ libraries/cms/html/behavior.php        | 35 ++++++++++++++++++++++++++++++----
+ libraries/cms/html/html.php            |  3 ++-
+ libraries/joomla/language/language.php | 12 ++++++++++++
+ 7 files changed, 89 insertions(+), 5 deletions(-)
+ mode change 100755 => 100644 administrator/language/en-GB/en-GB.ini
+ mode change 100755 => 100644 administrator/language/en-GB/en-GB.xml
+ mode change 100755 => 100644 language/en-GB/en-GB.ini
+ mode change 100755 => 100644 language/en-GB/en-GB.xml
+ mode change 100755 => 100644 libraries/cms/html/behavior.php
+ mode change 100755 => 100644 libraries/cms/html/html.php
+ mode change 100755 => 100644 libraries/joomla/language/language.php
+
+diff --git a/administrator/language/en-GB/en-GB.ini b/administrator/language/en-GB/en-GB.ini
+old mode 100755
+new mode 100644
+index 2c6304f..961ba67
+--- a/administrator/language/en-GB/en-GB.ini
++++ b/administrator/language/en-GB/en-GB.ini
+@@ -898,6 +898,27 @@ NOVEMBER="November"
+ DECEMBER_SHORT="Dec"
+ DECEMBER="December"
+ 
++; Months Calendar
++JANUARY_CAL="January"
++FEBRUARY_CAL="February"
++MARCH_CAL="March"
++APRIL_CAL="April"
++MAY_CAL="May"
++JUNE_CAL="June"
++JULY_CAL="July"
++AUGUST_CAL="August"
++SEPTEMBER_CAL="September"
++OCTOBER_CAL="October"
++NOVEMBER_CAL="November"
++DECEMBER_CAL="December"
++
++; Prefix, Suffix and separator Calendar
++PREFIX_MONTH="CALENDAR_PREFIX_MONTH_FACULTATIVE"
++SUFFIX_MONTH="CALENDAR_SUFFIX_MONTH_FACULTATIVE"
++PREFIX_YEAR="CALENDAR_PREFIX_YEAR_FACULTATIVE"
++SUFFIX_YEAR="CALENDAR_SUFFIX_YEAR_FACULTATIVE"
++SEPARATOR_MONTH_YEAR="CALENDAR_SEPARATOR_MONTH_YEAR_FACULTATIVE"
++
+ ; Days of the Week
+ 
+ SAT="Sat"
+diff --git a/administrator/language/en-GB/en-GB.xml b/administrator/language/en-GB/en-GB.xml
+old mode 100755
+new mode 100644
+index 2e2ab27..b93f027
+--- a/administrator/language/en-GB/en-GB.xml
++++ b/administrator/language/en-GB/en-GB.xml
+@@ -15,6 +15,7 @@
+ 		<rtl>0</rtl>
+ 		<locale>en_GB.utf8, en_GB.UTF-8, en_GB, eng_GB, en, english, english-uk, uk, gbr, britain, england, great britain, uk, united kingdom, united-kingdom</locale>
+ 		<firstDay>0</firstDay>
++		<monthBeforeYear>1</monthBeforeYear>
+ 		<weekEnd>0,6</weekEnd>
+ 	</metadata>
+ 	<params />
+diff --git a/language/en-GB/en-GB.ini b/language/en-GB/en-GB.ini
+old mode 100755
+new mode 100644
+index 202f268..b2459f9
+--- a/language/en-GB/en-GB.ini
++++ b/language/en-GB/en-GB.ini
+@@ -282,6 +282,27 @@ NOVEMBER="November"
+ DECEMBER_SHORT="Dec"
+ DECEMBER="December"
+ 
++; Months Calendar
++JANUARY_CAL="January"
++FEBRUARY_CAL="February"
++MARCH_CAL="March"
++APRIL_CAL="April"
++MAY_CAL="May"
++JUNE_CAL="June"
++JULY_CAL="July"
++AUGUST_CAL="August"
++SEPTEMBER_CAL="September"
++OCTOBER_CAL="October"
++NOVEMBER_CAL="November"
++DECEMBER_CAL="December"
++
++; Prefix, Suffix and separator Calendar
++PREFIX_MONTH="CALENDAR_PREFIX_MONTH_FACULTATIVE"
++SUFFIX_MONTH="CALENDAR_SUFFIX_MONTH_FACULTATIVE"
++PREFIX_YEAR="CALENDAR_PREFIX_YEAR_FACULTATIVE"
++SUFFIX_YEAR="CALENDAR_SUFFIX_YEAR_FACULTATIVE"
++SEPARATOR_MONTH_YEAR="CALENDAR_SEPARATOR_MONTH_YEAR_FACULTATIVE"
++
+ ;Days of the Week
+ SAT="Sat"
+ SATURDAY="Saturday"
+diff --git a/language/en-GB/en-GB.xml b/language/en-GB/en-GB.xml
+old mode 100755
+new mode 100644
+index 98ea811..2aaa933
+--- a/language/en-GB/en-GB.xml
++++ b/language/en-GB/en-GB.xml
+@@ -15,6 +15,7 @@
+ 		<rtl>0</rtl>
+ 		<locale>en_GB.utf8, en_GB.UTF-8, en_GB, eng_GB, en, english, english-uk, uk, gbr, britain, england, great britain, uk, united kingdom, united-kingdom</locale>
+ 		<firstDay>0</firstDay>
++		<monthBeforeYear>1</monthBeforeYear>
+ 		<weekEnd>0,6</weekEnd>
+ 	</metadata>
+ 	<params />
+diff --git a/libraries/cms/html/behavior.php b/libraries/cms/html/behavior.php
+old mode 100755
+new mode 100644
+index b7a8144..99165be
+--- a/libraries/cms/html/behavior.php
++++ b/libraries/cms/html/behavior.php
+@@ -467,8 +467,8 @@ abstract class JHtmlBehavior
+ 		$tag = JFactory::getLanguage()->getTag();
+ 
+ 		JHtml::_('stylesheet', 'system/calendar-jos.css', array(' title' => JText::_('JLIB_HTML_BEHAVIOR_GREEN'), ' media' => 'all'), true);
+-		JHtml::_('script', $tag . '/calendar.js', false, true);
+-		JHtml::_('script', $tag . '/calendar-setup.js', false, true);
++		JHtml::_('script', $tag . '/calendar-uncompressed.js', false, true);
++		JHtml::_('script', $tag . '/calendar-setup-uncompressed.js', false, true);
+ 
+ 		$translation = static::calendartranslation();
+ 
+@@ -727,8 +727,8 @@ abstract class JHtmlBehavior
+ 		);
+ 		$months_long = array_map(
+ 			$callback, array(
+-				'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+-				'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
++				'JANUARY_CAL', 'FEBRUARY_CAL', 'MARCH_CAL', 'APRIL_CAL', 'MAY_CAL', 'JUNE_CAL',
++				'JULY_CAL', 'AUGUST_CAL', 'SEPTEMBER_CAL', 'OCTOBER_CAL', 'NOVEMBER_CAL', 'DECEMBER_CAL'
+ 			)
+ 		);
+ 		$months_short = array_map(
+@@ -776,12 +776,39 @@ abstract class JHtmlBehavior
+ 			'WK'			=> JText::_('JLIB_HTML_BEHAVIOR_WK'),
+ 			'TIME'			=> JText::_('JLIB_HTML_BEHAVIOR_TIME')
+ 		);
++		// This will load strings from language packs to set prefix, suffix, separator for month and year if needed. If not needed by a language, the translation string could be empty, or a copy/paste of en-GB source translation (usage of a sentence to help understanding on a translation platform such as Transifex)
++		$separator_month_year = JText::_('SEPARATOR_MONTH_YEAR');
++		if ($separator_month_year == 'CALENDAR_SEPARATOR_MONTH_YEAR_FACULTATIVE') {
++			$separator_month_year = ' ';
++		}
++		$prefix_month = JText::_('PREFIX_MONTH');
++		if ($prefix_month == 'CALENDAR_PREFIX_MONTH_FACULTATIVE') {
++			$prefix_month = '';
++		}
++		$suffix_month = JText::_('SUFFIX_MONTH');
++		if ($suffix_month == 'CALENDAR_SUFFIX_MONTH_FACULTATIVE') {
++			$suffix_month = '';
++		}
++		$prefix_year = JText::_('PREFIX_YEAR');
++		if ($prefix_year == 'CALENDAR_PREFIX_YEAR_FACULTATIVE') {
++			$prefix_year = '';
++		}
++		$suffix_year = JText::_('SUFFIX_YEAR');
++		if ($suffix_year == 'CALENDAR_SUFFIX_YEAR_FACULTATIVE') {
++			$suffix_year = '';
++		}
+ 
+ 		return 'Calendar._DN = ' . json_encode($weekdays_full) . ';'
+ 			. ' Calendar._SDN = ' . json_encode($weekdays_short) . ';'
+ 			. ' Calendar._FD = 0;'
+ 			. ' Calendar._MN = ' . json_encode($months_long) . ';'
+ 			. ' Calendar._SMN = ' . json_encode($months_short) . ';'
++			. ' Calendar._MBY = 1;'
++			. ' Calendar._SEP = ' . json_encode($separator_month_year) . ';'
++			. ' Calendar._PM = ' . json_encode($prefix_month) . ';'
++			. ' Calendar._SM = ' . json_encode($suffix_month) . ';'
++			. ' Calendar._PY = ' . json_encode($prefix_year) . ';'
++			. ' Calendar._SY = ' . json_encode($suffix_year) . ';'
+ 			. ' Calendar._TT = ' . json_encode($text) . ';';
+ 	}
+ 
+diff --git a/libraries/cms/html/html.php b/libraries/cms/html/html.php
+old mode 100755
+new mode 100644
+index ca56a66..e0de240
+--- a/libraries/cms/html/html.php
++++ b/libraries/cms/html/html.php
+@@ -996,7 +996,8 @@ abstract class JHtml
+ 				// Alignment (defaults to "Bl")
+ 				align: "Tl",
+ 				singleClick: true,
+-				firstDay: ' . JFactory::getLanguage()->getFirstDay() . '
++				firstDay: ' . JFactory::getLanguage()->getFirstDay() . ',
++				monthBeforeYear: ' . JFactory::getLanguage()->getMonthBeforeYear() . '
+ 				});});'
+ 				);
+ 				$done[] = $id;
+diff --git a/libraries/joomla/language/language.php b/libraries/joomla/language/language.php
+old mode 100755
+new mode 100644
+index ee48981..ec6445b
+--- a/libraries/joomla/language/language.php
++++ b/libraries/joomla/language/language.php
+@@ -1277,6 +1277,18 @@ class JLanguage
+ 	}
+ 
+ 	/**
++	 * Get if month before year for this language.
++	 *
++	 * @return  integer  Month before Year according to the language
++	 *
++	 * @since   3.2.2
++	 */
++	public function getMonthBeforeYear()
++	{
++		return (int) (isset($this->metadata['monthBeforeYear']) ? $this->metadata['monthBeforeYear'] : 1);
++	}
++
++	/**
+ 	 * Get the weekends days for this language.
+ 	 *
+ 	 * @return  string  The weekend days of the week separated by a comma according to the language
+-- 
+1.8.4.2
+
