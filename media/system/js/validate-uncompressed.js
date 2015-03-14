@@ -212,5 +212,10 @@ var JFormValidator = function() {
 
 document.formvalidator = null;
 jQuery(function() {
+	var iconFieldRequired =  jQuery('.icon-field-required').width();
+	if ( iconFieldRequired === 0 ) {
+		jQuery('.icon-field-required').text('*').css('width', '0');
+		jQuery('.icon-field-required').removeClass('icon-field-required');
+	}
 	document.formvalidator = new JFormValidator();
 });
