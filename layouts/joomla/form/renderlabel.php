@@ -44,7 +44,14 @@ if ($req)
 	$classes[] = 'required';
 }
 
+// If required, adds icon-field-required (if class not set in template, will replace with *. See validate.js).
+$asterisk = '<span class="icon-field-required"></span>';
+
+JHtmlBootstrap::tooltip('.abbrTooltip', array("html" => false, "placement" => "bottom"));
 ?>
 <label id="<?php echo $id; ?>" for="<?php echo $for; ?>" class="<?php echo implode(' ', $classes); ?>"<?php echo $title; ?><?php echo $position; ?>>
-	<?php echo $text; ?><?php if ($req) : ?><span class="star">&#160;*</span><?php endif; ?>
+	<?php echo $text; ?>
 </label>
+<?php if ($req) : ?>
+	<abbr class="abbrTooltip" title="<?php echo JText::_('JLIB_FORM_FIELD_REQUIRED'); ?>"><?php echo $asterisk; ?></abbr>
+<?php endif; ?>
