@@ -6255,6 +6255,9 @@ dl.article-info dd.hits span[class*=" icon-"] {
 [class*=" icon-"].disabled {
 	font-weight: normal;
 }
+.icon-field-required:before {
+	content: "\204e";
+}
 .icon-joomla:before {
 	content: "\e200";
 }
@@ -6992,6 +6995,12 @@ dl.article-info dd.hits span[class*=" icon-"] {
 .icon-expired:before,
 .icon-pending:before {
 	color: #f89406;
+}
+.icon-field-required {
+	width: .5em;
+	font-size: .5em;
+	line-height: .5em;
+	vertical-align: super;
 }
 html {
 	height: 100%;
@@ -8047,13 +8056,13 @@ a.grid_true {
 	padding: 0;
 }
 .j-toggle-button-wrapper.j-toggle-hidden {
-	right: -20px;
+	right: -24px;
 }
 .j-toggle-button-wrapper.j-toggle-visible {
 	right: 10px;
 }
 .j-toggle-sidebar-button {
-	font-size: 14px;
+	font-size: 16px;
 	color: #08c;
 	text-decoration: none;
 	cursor: pointer;
@@ -8081,7 +8090,7 @@ a.grid_true {
 }
 @media (max-width: 979px) {
 	.j-toggle-button-wrapper.j-toggle-hidden {
-		right: -16px;
+		right: -20px;
 	}
 }
 @media (max-width: 767px) {

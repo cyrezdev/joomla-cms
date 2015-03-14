@@ -6255,6 +6255,9 @@ dl.article-info dd.hits span[class*=" icon-"] {
 [class*=" icon-"].disabled {
 	font-weight: normal;
 }
+.icon-field-required:before {
+	content: "\204e";
+}
 .icon-joomla:before {
 	content: "\e200";
 }
@@ -6967,6 +6970,12 @@ dl.article-info dd.hits span[class*=" icon-"] {
 }
 .icon-expired:before {
 	content: "\4b";
+}
+.icon-field-required {
+	width: .5em;
+	font-size: .5em;
+	line-height: .5em;
+	vertical-align: super;
 }
 body {
 	-webkit-font-smoothing: antialiased;
