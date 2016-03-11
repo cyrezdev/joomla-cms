@@ -3,20 +3,14 @@
  * @package     Joomla.UnitTest
  * @subpackage  Document
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-require_once JPATH_PLATFORM . '/joomla/document/raw/raw.php';
-
 /**
- * Test class for JDocumentRAW.
- *
- * @package     Joomla.UnitTest
- * @subpackage  Document
- * @since       11.1
+ * Test class for JDocumentRaw
  */
-class JDocumentRAWTest extends TestCase
+class JDocumentRawTest extends TestCase
 {
 	/**
 	 * @var  JDocumentRaw
@@ -26,8 +20,6 @@ class JDocumentRAWTest extends TestCase
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
-	 *
-	 * @return  void
 	 */
 	protected function setUp()
 	{
@@ -43,39 +35,19 @@ class JDocumentRAWTest extends TestCase
 	/**
 	 * Tears down the fixture, for example, closes a network connection.
 	 * This method is called after a test is executed.
-	 *
-	 * @return  void
 	 */
 	protected function tearDown()
 	{
 		$this->restoreFactoryState();
+
+		parent::tearDown();
 	}
 
 	/**
-	 * Test Render
-	 *
-	 * @return  void
+	 * @testdox  Test the default return for render
 	 */
-	public function testRender()
+	public function testTheDefaultReturnForRender()
 	{
-		$this->object->setBuffer('Unit Test Buffer');
-
-		$this->assertThat(
-			$this->object->render(),
-			$this->equalTo('Unit Test Buffer')
-		);
-
-		$headers = JFactory::getApplication()->getHeaders();
-
-		foreach ($headers as $head)
-		{
-			if ($head['name'] == 'Expires')
-			{
-				$this->assertThat(
-					$head['value'],
-					$this->stringContains('GMT')
-				);
-			}
-		}
+		$this->assertEmpty($this->object->render());
 	}
 }
