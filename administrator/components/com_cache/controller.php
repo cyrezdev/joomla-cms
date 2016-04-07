@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_cache
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,22 +12,23 @@ defined('_JEXEC') or die;
 /**
  * Cache Controller
  *
- * @package     Joomla.Administrator
- * @subpackage  com_cache
- * @since       1.6
+ * @since  1.6
  */
 class CacheController extends JControllerLegacy
 {
 	/**
-	 * @param   boolean			If true, the view output will be cached
-	 * @param   array  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * Display a view.
 	 *
-	 * @return  JController		This object to support chaining.
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController  This object to support chaining.
+	 *
 	 * @since   1.5
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		require_once JPATH_COMPONENT.'/helpers/cache.php';
+		require_once JPATH_COMPONENT . '/helpers/cache.php';
 
 		// Get the document object.
 		$document = JFactory::getDocument();
@@ -63,10 +64,15 @@ class CacheController extends JControllerLegacy
 		}
 	}
 
+	/**
+	 * Method to delete a list of cache groups.
+	 *
+	 * @return  void
+	 */
 	public function delete()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$cid = $this->input->post->get('cid', array(), 'array');
 
@@ -81,13 +87,18 @@ class CacheController extends JControllerLegacy
 			$model->cleanlist($cid);
 		}
 
-		$this->setRedirect('index.php?option=com_cache&client='.$model->getClient()->id);
+		$this->setRedirect('index.php?option=com_cache&client=' . $model->getClient()->id);
 	}
 
+	/**
+	 * Purge the cache.
+	 *
+	 * @return  void
+	 */
 	public function purge()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$model = $this->getModel('cache');
 		$ret = $model->purge();

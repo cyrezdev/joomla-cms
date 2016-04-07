@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_users
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,16 +12,14 @@ defined('_JEXEC') or die;
 /**
  * User notes model class.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_users
- * @since       2.5
+ * @since  2.5
  */
 class UsersModelNotes extends JModelList
 {
 	/**
 	 * Class constructor.
 	 *
-	 * @param  array  $config  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @since  2.5
 	 */
@@ -31,19 +29,14 @@ class UsersModelNotes extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id',
-				'a.id',
-				'user_id',
-				'a.user_id',
+				'id', 'a.id',
+				'user_id', 'a.user_id',
 				'u.name',
-				'subject',
-				'a.subject',
-				'catid',
-				'a.catid',
+				'subject', 'a.subject',
+				'catid', 'a.catid', 'category_id',
 				'state', 'a.state',
 				'c.title',
-				'review_time',
-				'a.review_time',
+				'review_time', 'a.review_time',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 			);
@@ -63,7 +56,6 @@ class UsersModelNotes extends JModelList
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$section = $this->getState('filter.category_id');
 
 		// Select the required fields from the table.
 		$query->select(
@@ -89,6 +81,7 @@ class UsersModelNotes extends JModelList
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -101,33 +94,34 @@ class UsersModelNotes extends JModelList
 			}
 			else
 			{
-				$search = $db->quote('%' . $db->escape($search, true) . '%');
+				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
 				$query->where('((a.subject LIKE ' . $search . ') OR (u.name LIKE ' . $search . ') OR (u.username LIKE ' . $search . '))');
 			}
 		}
 
 		// Filter by published state
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
-			$query->where('a.state = '.(int) $published);
-		} elseif ($published === '')
+			$query->where('a.state = ' . (int) $published);
+		}
+		elseif ($published === '')
 		{
 			$query->where('(a.state IN (0, 1))');
 		}
 
 		// Filter by a single or group of categories.
-		$categoryId = (int) $this->getState('filter.category_id');
-		if ($categoryId)
+		$categoryId = $this->getState('filter.category_id');
+
+		if ($categoryId && is_scalar($categoryId))
 		{
-			if (is_scalar($section))
-			{
-				$query->where('a.catid = ' . $categoryId);
-			}
+			$query->where('a.catid = ' . $categoryId);
 		}
 
 		// Filter by a single user.
 		$userId = (int) $this->getState('filter.user_id');
+
 		if ($userId)
 		{
 			// Add the body and where filter.
@@ -136,9 +130,7 @@ class UsersModelNotes extends JModelList
 		}
 
 		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering');
-		$orderDirn = $this->state->get('list.direction');
-		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+		$query->order($db->escape($this->getState('list.ordering', 'a.review_time')) . ' ' . $db->escape($this->getState('list.direction', 'DESC')));
 
 		return $query;
 	}
@@ -162,6 +154,7 @@ class UsersModelNotes extends JModelList
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.state');
 		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $this->getState('filter.user_id');
 
 		return parent::getStoreId($id);
 	}
@@ -178,7 +171,8 @@ class UsersModelNotes extends JModelList
 		$user = new JUser;
 
 		// Filter by search in title
-		$search = JFactory::getApplication()->input->get('u_id', 0, 'int');
+		$search = (int) $this->getState('filter.user_id');
+
 		if ($search != 0)
 		{
 			$user->load((int) $search);
@@ -192,33 +186,29 @@ class UsersModelNotes extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.review_time', $direction = 'desc')
 	{
-		$app = JFactory::getApplication();
-		$input = $app->input;
-
 		// Adjust the context to support modal layouts.
-		if ($layout = $input->get('layout'))
+		if ($layout = JFactory::getApplication()->input->get('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
 
-		$value = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $value);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
+		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
 
-		$section = $app->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
-		$this->setState('filter.category_id', $section);
+		$this->setState('filter.category_id', $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id'));
 
-		$userId = $input->get('u_id', 0, 'int');
-		$this->setState('filter.user_id', $userId);
+		$this->setState('filter.user_id', $this->getUserStateFromRequest($this->context . '.filter.user_id', 'filter_user_id'));
 
-		parent::populateState('a.review_time', 'DESC');
+		parent::populateState($ordering, $direction);
 	}
 }

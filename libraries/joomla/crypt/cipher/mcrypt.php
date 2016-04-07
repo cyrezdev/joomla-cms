@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Crypt
  *
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,9 +12,7 @@ defined('JPATH_PLATFORM') or die;
 /**
  * JCrypt cipher for mcrypt algorithm encryption, decryption and key generation.
  *
- * @package     Joomla.Platform
- * @subpackage  Crypt
- * @since       12.1
+ * @since  12.1
  */
 abstract class JCryptCipherMcrypt implements JCryptCipher
 {
@@ -118,7 +116,7 @@ abstract class JCryptCipherMcrypt implements JCryptCipher
 		$key = new JCryptKey($this->keyType);
 
 		// Generate an initialisation vector based on the algorithm.
-		$key->public = mcrypt_create_iv(mcrypt_get_iv_size($this->type, $this->mode));
+		$key->public = mcrypt_create_iv(mcrypt_get_iv_size($this->type, $this->mode), MCRYPT_DEV_URANDOM);
 
 		// Get the salt and password setup.
 		$salt = (isset($options['salt'])) ? $options['salt'] : substr(pack("h*", md5(JCrypt::genRandomBytes())), 0, 16);

@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Cache
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,10 +12,8 @@ defined('JPATH_PLATFORM') or die;
 /**
  * APC cache storage handler
  *
- * @package     Joomla.Platform
- * @subpackage  Cache
- * @see         http://php.net/manual/en/book.apc.php
- * @since       11.1
+ * @see    http://php.net/manual/en/book.apc.php
+ * @since  11.1
  */
 class JCacheStorageApc extends JCacheStorage
 {
@@ -33,6 +31,7 @@ class JCacheStorageApc extends JCacheStorage
 	public function get($id, $group, $checkTime = true)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
+
 		return apc_fetch($cache_id);
 	}
 
@@ -55,8 +54,8 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
-
-			$name = $key['info'];
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$name = isset($key['info']) ? $key['info'] : $key['key'];
 			$namearr = explode('-', $name);
 
 			if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache')
@@ -95,6 +94,7 @@ class JCacheStorageApc extends JCacheStorage
 	public function store($id, $group, $data)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
+
 		return apc_store($cache_id, $data, $this->_lifetime);
 	}
 
@@ -111,6 +111,7 @@ class JCacheStorageApc extends JCacheStorage
 	public function remove($id, $group)
 	{
 		$cache_id = $this->_getCacheId($id, $group);
+
 		return apc_delete($cache_id);
 	}
 
@@ -135,12 +136,15 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$internalKey = isset($key['info']) ? $key['info'] : $key['key'];
 
-			if (strpos($key['info'], $secret . '-cache-' . $group . '-') === 0 xor $mode != 'group')
+			if (strpos($internalKey, $secret . '-cache-' . $group . '-') === 0 xor $mode != 'group')
 			{
-				apc_delete($key['info']);
+				apc_delete($internalKey);
 			}
 		}
+
 		return true;
 	}
 
@@ -159,9 +163,12 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
-			if (strpos($key['info'], $secret . '-cache-'))
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$internalKey = isset($key['info']) ? $key['info'] : $key['key'];
+
+			if (strpos($internalKey, $secret . '-cache-'))
 			{
-				apc_fetch($key['info']);
+				apc_fetch($internalKey);
 			}
 		}
 	}
@@ -175,7 +182,15 @@ class JCacheStorageApc extends JCacheStorage
 	 */
 	public static function isSupported()
 	{
-		return extension_loaded('apc');
+		$supported = extension_loaded('apc') && ini_get('apc.enabled');
+
+		// If on the CLI interface, the `apc.enable_cli` option must also be enabled
+		if ($supported && php_sapi_name() === 'cli')
+		{
+			$supported = ini_get('apc.enable_cli');
+		}
+
+		return (bool) $supported;
 	}
 
 	/**
@@ -202,14 +217,12 @@ class JCacheStorageApc extends JCacheStorage
 
 		if ($data_lock === false)
 		{
-
 			$lock_counter = 0;
 
 			// Loop until you find that the lock has been released.
 			// That implies that data get from other thread has finished
 			while ($data_lock === false)
 			{
-
 				if ($lock_counter > $looptime)
 				{
 					$returning->locked = false;
@@ -221,8 +234,8 @@ class JCacheStorageApc extends JCacheStorage
 				$data_lock = apc_add($cache_id, 1, $locktime);
 				$lock_counter++;
 			}
-
 		}
+
 		$returning->locked = $data_lock;
 
 		return $returning;
@@ -243,6 +256,7 @@ class JCacheStorageApc extends JCacheStorage
 		$cache_id = $this->_getCacheId($id, $group) . '_lock';
 
 		$unlock = apc_delete($cache_id);
+
 		return $unlock;
 	}
 }

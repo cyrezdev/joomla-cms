@@ -317,8 +317,8 @@
 			label="COM_CONTENT_SHOW_PUBLISHING_OPTIONS_LABEL"
 			description="COM_CONTENT_SHOW_PUBLISHING_OPTIONS_DESC"
 			>
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 		<field
 			name="show_article_options"
@@ -328,8 +328,8 @@
 			label="COM_CONTENT_SHOW_ARTICLE_OPTIONS_LABEL"
 			description="COM_CONTENT_SHOW_ARTICLE_OPTIONS_DESC"
 			>
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 		<field
 			name="save_history"
@@ -358,8 +358,8 @@
 			label="COM_CONTENT_SHOW_IMAGES_URLS_FRONT_LABEL"
 			description="COM_CONTENT_SHOW_IMAGES_URLS_FRONT_DESC"
 			>
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 		<field
 			name="show_urls_images_backend"
@@ -369,8 +369,8 @@
 			label="COM_CONTENT_SHOW_IMAGES_URLS_BACK_LABEL"
 			description="COM_CONTENT_SHOW_IMAGES_URLS_BACK_DESC"
 			>
-			<option value="1">JYES</option>
-			<option value="0">JNO</option>
+			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
 		</field>
 		<field
 			name="spacer3"
@@ -384,7 +384,7 @@
 			description="COM_CONTENT_URL_FIELD_BROWSERNAV_DESC"
 			default="Parent"
 			filter="int"
-			class="inputbox">
+			>
 				<option value="0">JBROWSERTARGET_PARENT</option>
 				<option value="1">JBROWSERTARGET_NEW</option>
 				<option value="2">JBROWSERTARGET_POPUP</option>
@@ -397,7 +397,7 @@
 			description="COM_CONTENT_URL_FIELD_BROWSERNAV_DESC"
 			default="Parent"
 			filter="int"
-			class="inputbox">
+			>
 				<option value="0">JBROWSERTARGET_PARENT</option>
 				<option value="1">JBROWSERTARGET_NEW</option>
 				<option value="2">JBROWSERTARGET_POPUP</option>
@@ -410,7 +410,7 @@
 			description="COM_CONTENT_URL_FIELD_BROWSERNAV_DESC"
 			default="Parent"
 			filter="int"
-			class="inputbox">
+			>
 				<option value="0">JBROWSERTARGET_PARENT</option>
 				<option value="1">JBROWSERTARGET_NEW</option>
 				<option value="2">JBROWSERTARGET_POPUP</option>
@@ -555,7 +555,7 @@
 			<option value="0">JHIDE</option>
 		</field>
 
-		<field name="show_tags" type="radio"
+		<field name="show_cat_tags" type="radio"
 			label="COM_CONTENT_FIELD_SHOW_CAT_TAGS_LABEL"
 			description="COM_CONTENT_FIELD_SHOW_CAT_TAGS_DESC"
 			class="btn-group btn-group-yesno"
@@ -846,6 +846,15 @@
 				<option value="0">JHIDE</option>
 		</field>
 
+		<field name="show_featured" type="list" default="show"
+			   label="JGLOBAL_SHOW_FEATURED_ARTICLES_LABEL"
+			   description="JGLOBAL_SHOW_FEATURED_ARTICLES_DESC"
+				>
+			<option value="show">JSHOW</option>
+			<option value="hide">JHIDE</option>
+			<option value="only">JONLY</option>
+		</field>
+
 	</fieldset>
 
 	<fieldset name="integration"
@@ -898,7 +907,6 @@
 			name="rules"
 			type="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
 			validate="rules"
 			filter="rules"
 			component="com_content"
