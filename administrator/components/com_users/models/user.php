@@ -81,11 +81,19 @@ class UsersModelUser extends JModelAdmin
 
 		$result->tags = new JHelperTags;
 		$result->tags->getTagIds($result->id, $context);
+<<<<<<< HEAD
 
 		// Get the dispatcher and load the content plugins.
 		$dispatcher = JEventDispatcher::getInstance();
 		JPluginHelper::importPlugin('content');
 
+=======
+
+		// Get the dispatcher and load the content plugins.
+		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
+
+>>>>>>> joomla/staging
 		// Load the user plugins for backward compatibility (v3.3.3 and earlier).
 		JPluginHelper::importPlugin('user');
 
@@ -684,6 +692,16 @@ class UsersModelUser extends JModelAdmin
 		// Prune out the current user if they are in the supplied user ID array
 		$user_ids = array_diff($user_ids, array(JFactory::getUser()->id));
 
+<<<<<<< HEAD
+=======
+		if (empty($user_ids))
+		{
+			$this->setError(JText::_('COM_USERS_USERS_ERROR_CANNOT_REQUIRERESET_SELF'));
+
+			return false;
+		}
+
+>>>>>>> joomla/staging
 		// Get the DB object
 		$db = $this->getDbo();
 

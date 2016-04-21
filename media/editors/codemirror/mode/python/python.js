@@ -53,7 +53,11 @@
     var doubleDelimiters = parserConf.doubleDelimiters || /^(\+=|\-=|\*=|%=|\/=|&=|\|=|\^=)/;
     var tripleDelimiters = parserConf.tripleDelimiters || /^(\/\/=|>>=|<<=|\*\*=)/;
 
+<<<<<<< HEAD
     if (parserConf.version && parseInt(parserConf.version, 10) == 3){
+=======
+    if (parserConf.version && parseInt(parserConf.version, 10) == 3) {
+>>>>>>> joomla/staging
         // since http://legacy.python.org/dev/peps/pep-0465/ @ is also an operator
         var singleOperators = parserConf.singleOperators || /^[\+\-\*\/%&|\^~<>!@]/;
         var identifiers = parserConf.identifiers|| /^[_A-Za-z\u00A1-\uFFFF][_A-Za-z0-9\u00A1-\uFFFF]*/;
@@ -65,12 +69,21 @@
     var hangingIndent = parserConf.hangingIndent || conf.indentUnit;
 
     var myKeywords = commonKeywords, myBuiltins = commonBuiltins;
+<<<<<<< HEAD
     if(parserConf.extra_keywords != undefined){
       myKeywords = myKeywords.concat(parserConf.extra_keywords);
     }
     if(parserConf.extra_builtins != undefined){
       myBuiltins = myBuiltins.concat(parserConf.extra_builtins);
     }
+=======
+    if (parserConf.extra_keywords != undefined)
+      myKeywords = myKeywords.concat(parserConf.extra_keywords);
+
+    if (parserConf.extra_builtins != undefined)
+      myBuiltins = myBuiltins.concat(parserConf.extra_builtins);
+
+>>>>>>> joomla/staging
     if (parserConf.version && parseInt(parserConf.version, 10) == 3) {
       myKeywords = myKeywords.concat(py3.keywords);
       myBuiltins = myBuiltins.concat(py3.builtins);
@@ -85,13 +98,21 @@
 
     // tokenizers
     function tokenBase(stream, state) {
+<<<<<<< HEAD
+=======
+      if (stream.sol()) state.indent = stream.indentation()
+>>>>>>> joomla/staging
       // Handle scope changes
       if (stream.sol() && top(state).type == "py") {
         var scopeOffset = top(state).offset;
         if (stream.eatSpace()) {
           var lineOffset = stream.indentation();
           if (lineOffset > scopeOffset)
+<<<<<<< HEAD
             pushScope(stream, state, "py");
+=======
+            pushPyScope(state);
+>>>>>>> joomla/staging
           else if (lineOffset < scopeOffset && dedent(stream, state))
             state.errorToken = true;
           return null;
@@ -224,6 +245,7 @@
       return tokenString;
     }
 
+<<<<<<< HEAD
     function pushScope(stream, state, type) {
       var offset = 0, align = null;
       if (type == "py") {
@@ -234,6 +256,20 @@
       if (type != "py" && !stream.match(/^(\s|#.*)*$/, false))
         align = stream.column() + 1;
       state.scopes.push({offset: offset, type: type, align: align});
+=======
+    function pushPyScope(state) {
+      while (top(state).type != "py") state.scopes.pop()
+      state.scopes.push({offset: top(state).offset + conf.indentUnit,
+                         type: "py",
+                         align: null})
+    }
+
+    function pushBracketScope(stream, state, type) {
+      var align = stream.match(/^([\s\[\{\(]|#.*)*$/, false) ? null : stream.column() + 1
+      state.scopes.push({offset: state.indent + hangingIndent,
+                         type: type,
+                         align: align})
+>>>>>>> joomla/staging
     }
 
     function dedent(stream, state) {
@@ -250,12 +286,20 @@
       var current = stream.current();
 
       // Handle decorators
+<<<<<<< HEAD
       if (current == "@"){
         if(parserConf.version && parseInt(parserConf.version, 10) == 3){
             return stream.match(identifiers, false) ? "meta" : "operator";
         } else {
             return stream.match(identifiers, false) ? "meta" : ERRORCLASS;
         }
+=======
+      if (current == "@") {
+        if (parserConf.version && parseInt(parserConf.version, 10) == 3)
+          return stream.match(identifiers, false) ? "meta" : "operator";
+        else
+          return stream.match(identifiers, false) ? "meta" : ERRORCLASS;
+>>>>>>> joomla/staging
       }
 
       if ((style == "variable" || style == "builtin")
@@ -268,6 +312,7 @@
 
       if (current == "lambda") state.lambda = true;
       if (current == ":" && !state.lambda && top(state).type == "py")
+<<<<<<< HEAD
         pushScope(stream, state, "py");
 
       var delimiter_index = current.length == 1 ? "[({".indexOf(current) : -1;
@@ -277,6 +322,17 @@
       delimiter_index = "])}".indexOf(current);
       if (delimiter_index != -1) {
         if (top(state).type == current) state.scopes.pop();
+=======
+        pushPyScope(state);
+
+      var delimiter_index = current.length == 1 ? "[({".indexOf(current) : -1;
+      if (delimiter_index != -1)
+        pushBracketScope(stream, state, "])}".slice(delimiter_index, delimiter_index+1));
+
+      delimiter_index = "])}".indexOf(current);
+      if (delimiter_index != -1) {
+        if (top(state).type == current) state.indent = state.scopes.pop().offset - hangingIndent
+>>>>>>> joomla/staging
         else return ERRORCLASS;
       }
       if (state.dedent > 0 && stream.eol() && top(state).type == "py") {
@@ -292,6 +348,10 @@
         return {
           tokenize: tokenBase,
           scopes: [{offset: basecolumn || 0, type: "py", align: null}],
+<<<<<<< HEAD
+=======
+          indent: basecolumn || 0,
+>>>>>>> joomla/staging
           lastToken: null,
           lambda: false,
           dedent: 0
@@ -316,6 +376,7 @@
         if (state.tokenize != tokenBase)
           return state.tokenize.isString ? CodeMirror.Pass : 0;
 
+<<<<<<< HEAD
         var scope = top(state);
         var closing = textAfter && textAfter.charAt(0) == scope.type;
         if (scope.align != null)
@@ -326,6 +387,16 @@
           return scope.offset;
       },
 
+=======
+        var scope = top(state), closing = scope.type == textAfter.charAt(0)
+        if (scope.align != null)
+          return scope.align - (closing ? 1 : 0)
+        else
+          return scope.offset - (closing ? hangingIndent : 0)
+      },
+
+      electricInput: /^\s*[\}\]\)]$/,
+>>>>>>> joomla/staging
       closeBrackets: {triples: "'\""},
       lineComment: "#",
       fold: "indent"

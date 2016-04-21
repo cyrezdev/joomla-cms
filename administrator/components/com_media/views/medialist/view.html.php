@@ -46,7 +46,11 @@ class MediaViewMediaList extends JViewLegacy
 		// Check for invalid folder name
 		if (empty($state->folder))
 		{
+<<<<<<< HEAD
 			$dirname = JRequest::getVar('folder', '', '', 'string');
+=======
+			$dirname = JFactory::getApplication()->input->getPath('folder', '');
+>>>>>>> joomla/staging
 
 			if (!empty($dirname))
 			{

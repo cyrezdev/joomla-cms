@@ -28,6 +28,7 @@ class JErrorPageTest extends TestCaseDatabase
 	/**
 	 * Tears down the fixture, for example, closes a network connection.
 	 * This method is called after a test is executed.
+<<<<<<< HEAD
 	 */
 	protected function tearDown()
 	{
@@ -43,6 +44,23 @@ class JErrorPageTest extends TestCaseDatabase
 	public function testEnsureTheErrorPageIsCorrectlyRendered()
 	{
 		$documentResponse = '<title>500 - Testing JErrorPage::render()</title>';
+=======
+	 */
+	protected function tearDown()
+	{
+		TestReflection::setValue('JDocument', 'instances', array());
+		$this->restoreFactoryState();
+
+		parent::tearDown();
+	}
+
+	/**
+	 * @covers  JErrorPage::render
+	 */
+	public function testEnsureTheErrorPageIsCorrectlyRendered()
+	{
+		$documentResponse = '<title>500 - Testing JErrorPage::render() with RuntimeException</title>Testing JErrorPage::render() with RuntimeException';
+>>>>>>> joomla/staging
 
 		$key = serialize(array('error', array()));
 
@@ -57,7 +75,11 @@ class JErrorPageTest extends TestCaseDatabase
 		TestReflection::setValue('JDocument', 'instances', array($key => $mockErrorDocument));
 
 		// Create an Exception to inject into the method
+<<<<<<< HEAD
 		$exception = new RuntimeException('Testing JErrorPage::render()', 500);
+=======
+		$exception = new RuntimeException('Testing JErrorPage::render() with RuntimeException', 500);
+>>>>>>> joomla/staging
 
 		// The render method echoes the output, so catch it in a buffer
 		ob_start();
@@ -70,6 +92,7 @@ class JErrorPageTest extends TestCaseDatabase
 
 	/**
 	 * @covers  JErrorPage::render
+<<<<<<< HEAD
 	 */
 	public function testEnsureTheErrorPageIsCorrectlyRenderedWithEngineExceptions()
 	{
@@ -81,14 +104,42 @@ class JErrorPageTest extends TestCaseDatabase
 
 		// Create an Error to inject into the method
 		$exception = new Error('Testing JErrorPage::render()', 500);
+=======
+	 *
+	 * @requires  PHP 7.0
+	 */
+	public function testEnsureTheErrorPageIsCorrectlyRenderedWithThrowables()
+	{
+		$documentResponse = '<title>500 - Testing JErrorPage::render() with PHP 7 Error</title>Testing JErrorPage::render() with PHP 7 Error';
+
+		$key = serialize(array('error', array()));
+
+		$mockErrorDocument = $this->getMockBuilder('JDocumentError')
+			->setMethods(array('setError', 'setTitle', 'render'))
+			->getMock();
+
+		$mockErrorDocument->expects($this->any())
+			->method('render')
+			->willReturn($documentResponse);
+
+		TestReflection::setValue('JDocument', 'instances', array($key => $mockErrorDocument));
+
+		// Create an Error to inject into the method
+		$exception = new Error('Testing JErrorPage::render() with PHP 7 Error', 500);
+>>>>>>> joomla/staging
 
 		// The render method echoes the output, so catch it in a buffer
 		ob_start();
 		JErrorPage::render($exception);
 		$output = ob_get_clean();
 
+<<<<<<< HEAD
 		// Validate the <title> element was set correctly
 		$this->assertContains('Testing JErrorPage::render()', $output);
+=======
+		// Validate the mocked response from JDocument was received
+		$this->assertEquals($documentResponse, $output);
+>>>>>>> joomla/staging
 	}
 
 	/**
@@ -104,7 +155,11 @@ class JErrorPageTest extends TestCaseDatabase
 		JErrorPage::render($object);
 		$output = ob_get_clean();
 
+<<<<<<< HEAD
 		// Validate the <title> element was set correctly
 		$this->assertContains('Error displaying the error page', $output);
+=======
+		$this->assertEquals('Error displaying the error page', $output);
+>>>>>>> joomla/staging
 	}
 }

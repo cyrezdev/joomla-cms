@@ -55,6 +55,10 @@ function random_int($min, $max)
             'random_int(): $min must be an integer'
         );
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     try {
         $max = RandomCompat_intval($max);
     } catch (TypeError $ex) {
@@ -73,6 +77,10 @@ function random_int($min, $max)
             'Minimum value must be less than or equal to the maximum value'
         );
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     if ($max === $min) {
         return $min;
     }
@@ -98,6 +106,10 @@ function random_int($min, $max)
      * Test for integer overflow:
      */
     if (!is_int($range)) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
         /**
          * Still safely calculate wider ranges.
          * Provided by @CodesInChaos, @oittaa
@@ -111,7 +123,13 @@ function random_int($min, $max)
          */
         $bytes = PHP_INT_SIZE;
         $mask = ~0;
+<<<<<<< HEAD
     } else {
+=======
+
+    } else {
+
+>>>>>>> joomla/staging
         /**
          * $bits is effectively ceil(log($range, 2)) without dealing with 
          * type juggling
@@ -181,5 +199,9 @@ function random_int($min, $max)
          * then try again.
          */
     } while (!is_int($val) || $val > $max || $val < $min);
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     return (int) $val;
 }

@@ -23,6 +23,10 @@ if ($data['view'] instanceof MenusViewItems)
 		.js-stools .js-stools-menutype {
 			float: left;
 			margin-right: 10px;
+<<<<<<< HEAD
+=======
+			min-width: 220px;
+>>>>>>> joomla/staging
 		}
 		html[dir=rtl] .js-stools .js-stools-menutype {
 			float: right;

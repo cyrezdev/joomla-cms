@@ -20,7 +20,13 @@ use Symfony\Component\Yaml\Exception\ParseException;
  */
 class Parser
 {
+<<<<<<< HEAD
     const FOLDED_SCALAR_PATTERN = '(?P<separator>\||>)(?P<modifiers>\+|\-|\d+|\+\d+|\-\d+|\d+\+|\d+\-)?(?P<comments> +#.*)?';
+=======
+    const BLOCK_SCALAR_HEADER_PATTERN = '(?P<separator>\||>)(?P<modifiers>\+|\-|\d+|\+\d+|\-\d+|\d+\+|\d+\-)?(?P<comments> +#.*)?';
+    // BC - wrongly named
+    const FOLDED_SCALAR_PATTERN = self::BLOCK_SCALAR_HEADER_PATTERN;
+>>>>>>> joomla/staging
 
     private $offset = 0;
     private $lines = array();
@@ -60,7 +66,11 @@ class Parser
         $value = $this->cleanup($value);
         $this->lines = explode("\n", $value);
 
+<<<<<<< HEAD
         if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
+=======
+        if (2 /* MB_OVERLOAD_STRING */ & (int) ini_get('mbstring.func_overload')) {
+>>>>>>> joomla/staging
             $mbEncoding = mb_internal_encoding();
             mb_internal_encoding('UTF-8');
         }
@@ -112,7 +122,11 @@ class Parser
 
                         $data[] = $parser->parse($block, $exceptionOnInvalidType, $objectSupport, $objectForMap);
                     } else {
+<<<<<<< HEAD
                         $data[] = $this->parseValue($values['value'], $exceptionOnInvalidType, $objectSupport, $objectForMap);
+=======
+                        $data[] = $this->parseValue($values['value'], $exceptionOnInvalidType, $objectSupport, $objectForMap, $context);
+>>>>>>> joomla/staging
                     }
                 }
                 if ($isRef) {
@@ -228,7 +242,11 @@ class Parser
                         }
                     }
                 } else {
+<<<<<<< HEAD
                     $value = $this->parseValue($values['value'], $exceptionOnInvalidType, $objectSupport, $objectForMap);
+=======
+                    $value = $this->parseValue($values['value'], $exceptionOnInvalidType, $objectSupport, $objectForMap, $context);
+>>>>>>> joomla/staging
                     // Spec: Keys MUST be unique; first one wins.
                     // But overwriting is allowed when a merge node is used in current block.
                     if ($allowOverwrite || !isset($data[$key])) {
@@ -301,6 +319,19 @@ class Parser
             mb_internal_encoding($mbEncoding);
         }
 
+<<<<<<< HEAD
+=======
+        if ($objectForMap && !is_object($data) && 'mapping' === $context) {
+            $object = new \stdClass();
+
+            foreach ($data as $key => $value) {
+                $object->$key = $value;
+            }
+
+            $data = $object;
+        }
+
+>>>>>>> joomla/staging
         return empty($data) ? null : $data;
     }
 
@@ -337,6 +368,14 @@ class Parser
     private function getNextEmbedBlock($indentation = null, $inSequence = false)
     {
         $oldLineIndentation = $this->getCurrentLineIndentation();
+<<<<<<< HEAD
+=======
+        $blockScalarIndentations = array();
+
+        if ($this->isBlockScalarHeader()) {
+            $blockScalarIndentations[] = $this->getCurrentLineIndentation();
+        }
+>>>>>>> joomla/staging
 
         if (!$this->moveToNextLine()) {
             return;
@@ -345,7 +384,11 @@ class Parser
         if (null === $indentation) {
             $newIndent = $this->getCurrentLineIndentation();
 
+<<<<<<< HEAD
             $unindentedEmbedBlock = $this->isStringUnIndentedCollectionItem($this->currentLine);
+=======
+            $unindentedEmbedBlock = $this->isStringUnIndentedCollectionItem();
+>>>>>>> joomla/staging
 
             if (!$this->isCurrentLineEmpty() && 0 === $newIndent && !$unindentedEmbedBlock) {
                 throw new ParseException('Indentation problem.', $this->getRealCurrentLineNb() + 1, $this->currentLine);
@@ -371,20 +414,49 @@ class Parser
             return;
         }
 
+<<<<<<< HEAD
         $isItUnindentedCollection = $this->isStringUnIndentedCollectionItem($this->currentLine);
 
         // Comments must not be removed inside a string block (ie. after a line ending with "|")
         $removeCommentsPattern = '~'.self::FOLDED_SCALAR_PATTERN.'$~';
         $removeComments = !preg_match($removeCommentsPattern, $this->currentLine);
+=======
+        $isItUnindentedCollection = $this->isStringUnIndentedCollectionItem();
+
+        if (empty($blockScalarIndentations) && $this->isBlockScalarHeader()) {
+            $blockScalarIndentations[] = $this->getCurrentLineIndentation();
+        }
+
+        $previousLineIndentation = $this->getCurrentLineIndentation();
+>>>>>>> joomla/staging
 
         while ($this->moveToNextLine()) {
             $indent = $this->getCurrentLineIndentation();
 
+<<<<<<< HEAD
             if ($indent === $newIndent) {
                 $removeComments = !preg_match($removeCommentsPattern, $this->currentLine);
             }
 
             if ($isItUnindentedCollection && !$this->isStringUnIndentedCollectionItem($this->currentLine) && $newIndent === $indent) {
+=======
+            // terminate all block scalars that are more indented than the current line
+            if (!empty($blockScalarIndentations) && $indent < $previousLineIndentation && trim($this->currentLine) !== '') {
+                foreach ($blockScalarIndentations as $key => $blockScalarIndentation) {
+                    if ($blockScalarIndentation >= $this->getCurrentLineIndentation()) {
+                        unset($blockScalarIndentations[$key]);
+                    }
+                }
+            }
+
+            if (empty($blockScalarIndentations) && !$this->isCurrentLineComment() && $this->isBlockScalarHeader()) {
+                $blockScalarIndentations[] = $this->getCurrentLineIndentation();
+            }
+
+            $previousLineIndentation = $indent;
+
+            if ($isItUnindentedCollection && !$this->isStringUnIndentedCollectionItem() && $newIndent === $indent) {
+>>>>>>> joomla/staging
                 $this->moveToPreviousLine();
                 break;
             }
@@ -394,7 +466,12 @@ class Parser
                 continue;
             }
 
+<<<<<<< HEAD
             if ($removeComments && $this->isCurrentLineComment()) {
+=======
+            // we ignore "comment" lines only when we are not inside a scalar block
+            if (empty($blockScalarIndentations) && $this->isCurrentLineComment()) {
+>>>>>>> joomla/staging
                 continue;
             }
 
@@ -443,12 +520,20 @@ class Parser
      * @param bool   $exceptionOnInvalidType True if an exception must be thrown on invalid types false otherwise
      * @param bool   $objectSupport          True if object support is enabled, false otherwise
      * @param bool   $objectForMap           true if maps should return a stdClass instead of array()
+<<<<<<< HEAD
+=======
+     * @param string $context                The parser context (either sequence or mapping)
+>>>>>>> joomla/staging
      *
      * @return mixed A PHP value
      *
      * @throws ParseException When reference does not exist
      */
+<<<<<<< HEAD
     private function parseValue($value, $exceptionOnInvalidType, $objectSupport, $objectForMap)
+=======
+    private function parseValue($value, $exceptionOnInvalidType, $objectSupport, $objectForMap, $context)
+>>>>>>> joomla/staging
     {
         if (0 === strpos($value, '*')) {
             if (false !== $pos = strpos($value, '#')) {
@@ -464,6 +549,7 @@ class Parser
             return $this->refs[$value];
         }
 
+<<<<<<< HEAD
         if (preg_match('/^'.self::FOLDED_SCALAR_PATTERN.'$/', $value, $matches)) {
             $modifiers = isset($matches['modifiers']) ? $matches['modifiers'] : '';
 
@@ -472,6 +558,25 @@ class Parser
 
         try {
             return Inline::parse($value, $exceptionOnInvalidType, $objectSupport, $objectForMap, $this->refs);
+=======
+        if (preg_match('/^'.self::BLOCK_SCALAR_HEADER_PATTERN.'$/', $value, $matches)) {
+            $modifiers = isset($matches['modifiers']) ? $matches['modifiers'] : '';
+
+            return $this->parseBlockScalar($matches['separator'], preg_replace('#\d+#', '', $modifiers), (int) abs($modifiers));
+        }
+
+        try {
+            $parsedValue = Inline::parse($value, $exceptionOnInvalidType, $objectSupport, $objectForMap, $this->refs);
+
+            if ('mapping' === $context && '"' !== $value[0] && "'" !== $value[0] && '[' !== $value[0] && '{' !== $value[0] && '!' !== $value[0] && false !== strpos($parsedValue, ': ')) {
+                @trigger_error(sprintf('Using a colon in the unquoted mapping value "%s" in line %d is deprecated since Symfony 2.8 and will throw a ParseException in 3.0.', $value, $this->getRealCurrentLineNb() + 1), E_USER_DEPRECATED);
+
+                // to be thrown in 3.0
+                // throw new ParseException('A colon cannot be used in an unquoted mapping value.');
+            }
+
+            return $parsedValue;
+>>>>>>> joomla/staging
         } catch (ParseException $e) {
             $e->setParsedLine($this->getRealCurrentLineNb() + 1);
             $e->setSnippet($this->currentLine);
@@ -481,6 +586,7 @@ class Parser
     }
 
     /**
+<<<<<<< HEAD
      * Parses a folded scalar.
      *
      * @param string $separator   The separator that was used to begin this folded scalar (| or >)
@@ -490,6 +596,17 @@ class Parser
      * @return string The text value
      */
     private function parseFoldedScalar($separator, $indicator = '', $indentation = 0)
+=======
+     * Parses a block scalar.
+     *
+     * @param string $style       The style indicator that was used to begin this block scalar (| or >)
+     * @param string $chomping    The chomping indicator that was used to begin this block scalar (+ or -)
+     * @param int    $indentation The indentation indicator that was used to begin this block scalar
+     *
+     * @return string The text value
+     */
+    private function parseBlockScalar($style, $chomping = '', $indentation = 0)
+>>>>>>> joomla/staging
     {
         $notEOF = $this->moveToNextLine();
         if (!$notEOF) {
@@ -497,13 +614,21 @@ class Parser
         }
 
         $isCurrentLineBlank = $this->isCurrentLineBlank();
+<<<<<<< HEAD
         $text = '';
+=======
+        $blockLines = array();
+>>>>>>> joomla/staging
 
         // leading blank lines are consumed before determining indentation
         while ($notEOF && $isCurrentLineBlank) {
             // newline only if not EOF
             if ($notEOF = $this->moveToNextLine()) {
+<<<<<<< HEAD
                 $text .= "\n";
+=======
+                $blockLines[] = '';
+>>>>>>> joomla/staging
                 $isCurrentLineBlank = $this->isCurrentLineBlank();
             }
         }
@@ -524,19 +649,32 @@ class Parser
                     preg_match($pattern, $this->currentLine, $matches)
                 )
             ) {
+<<<<<<< HEAD
                 if ($isCurrentLineBlank) {
                     $text .= substr($this->currentLine, $indentation);
                 } else {
                     $text .= $matches[1];
+=======
+                if ($isCurrentLineBlank && strlen($this->currentLine) > $indentation) {
+                    $blockLines[] = substr($this->currentLine, $indentation);
+                } elseif ($isCurrentLineBlank) {
+                    $blockLines[] = '';
+                } else {
+                    $blockLines[] = $matches[1];
+>>>>>>> joomla/staging
                 }
 
                 // newline only if not EOF
                 if ($notEOF = $this->moveToNextLine()) {
+<<<<<<< HEAD
                     $text .= "\n";
+=======
+>>>>>>> joomla/staging
                     $isCurrentLineBlank = $this->isCurrentLineBlank();
                 }
             }
         } elseif ($notEOF) {
+<<<<<<< HEAD
             $text .= "\n";
         }
 
@@ -555,6 +693,53 @@ class Parser
         if ('' === $indicator) {
             $text = preg_replace('/\n+$/', "\n", $text);
         } elseif ('-' === $indicator) {
+=======
+            $blockLines[] = '';
+        }
+
+        if ($notEOF) {
+            $blockLines[] = '';
+            $this->moveToPreviousLine();
+        }
+
+        // folded style
+        if ('>' === $style) {
+            $text = '';
+            $previousLineIndented = false;
+            $previousLineBlank = false;
+
+            for ($i = 0; $i < count($blockLines); ++$i) {
+                if ('' === $blockLines[$i]) {
+                    $text .= "\n";
+                    $previousLineIndented = false;
+                    $previousLineBlank = true;
+                } elseif (' ' === $blockLines[$i][0]) {
+                    $text .= "\n".$blockLines[$i];
+                    $previousLineIndented = true;
+                    $previousLineBlank = false;
+                } elseif ($previousLineIndented) {
+                    $text .= "\n".$blockLines[$i];
+                    $previousLineIndented = false;
+                    $previousLineBlank = false;
+                } elseif ($previousLineBlank || 0 === $i) {
+                    $text .= $blockLines[$i];
+                    $previousLineIndented = false;
+                    $previousLineBlank = false;
+                } else {
+                    $text .= ' '.$blockLines[$i];
+                    $previousLineIndented = false;
+                    $previousLineBlank = false;
+                }
+            }
+        } else {
+            $text = implode("\n", $blockLines);
+        }
+
+        // deal with trailing newlines
+        if ('' === $chomping) {
+            $text = preg_replace('/\n+$/', "\n", $text);
+        } elseif ('-' === $chomping) {
+>>>>>>> joomla/staging
             $text = preg_replace('/\n+$/', '', $text);
         }
 
@@ -619,7 +804,11 @@ class Parser
         //checking explicitly the first char of the trim is faster than loops or strpos
         $ltrimmedLine = ltrim($this->currentLine, ' ');
 
+<<<<<<< HEAD
         return $ltrimmedLine[0] === '#';
+=======
+        return '' !== $ltrimmedLine && $ltrimmedLine[0] === '#';
+>>>>>>> joomla/staging
     }
 
     /**
@@ -682,7 +871,11 @@ class Parser
         if (
             $this->getCurrentLineIndentation() == $currentIndentation
             &&
+<<<<<<< HEAD
             $this->isStringUnIndentedCollectionItem($this->currentLine)
+=======
+            $this->isStringUnIndentedCollectionItem()
+>>>>>>> joomla/staging
         ) {
             $ret = true;
         }
@@ -699,6 +892,20 @@ class Parser
      */
     private function isStringUnIndentedCollectionItem()
     {
+<<<<<<< HEAD
         return (0 === strpos($this->currentLine, '- '));
+=======
+        return 0 === strpos($this->currentLine, '- ');
+    }
+
+    /**
+     * Tests whether or not the current line is the header of a block scalar.
+     *
+     * @return bool
+     */
+    private function isBlockScalarHeader()
+    {
+        return (bool) preg_match('~'.self::BLOCK_SCALAR_HEADER_PATTERN.'$~', $this->currentLine);
+>>>>>>> joomla/staging
     }
 }

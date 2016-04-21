@@ -12,6 +12,10 @@ defined('_JEXEC') or die;
 // Note. It is important to remove spaces between elements.
 $class = $item->anchor_css ? 'class="' . $item->anchor_css . '" ' : '';
 $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
+<<<<<<< HEAD
+=======
+$rel   = $item->anchor_rel ? 'rel="' . $item->anchor_rel . '" ' : '';
+>>>>>>> joomla/staging
 
 if ($item->menu_image)
 {
@@ -30,11 +34,11 @@ $flink = JFilterOutput::ampReplace(htmlspecialchars($flink));
 switch ($item->browserNav) :
 	default:
 	case 0:
-?><a <?php echo $class; ?>href="<?php echo $flink; ?>" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+?><a <?php echo $class; ?>href="<?php echo $flink; ?>" <?php echo $title . $rel; ?>><?php echo $linktype; ?></a><?php
 		break;
 	case 1:
 		// _blank
-?><a <?php echo $class; ?>href="<?php echo $flink; ?>" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+?><a <?php echo $class; ?>href="<?php echo $flink; ?>" target="_blank" <?php echo $title . $rel; ?>><?php echo $linktype; ?></a><?php
 		break;
 	case 2:
 		// Use JavaScript "window.open"

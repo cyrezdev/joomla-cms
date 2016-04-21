@@ -23,24 +23,11 @@ class JCacheStorageTest extends TestCase
 	protected static $actualError;
 
 	/**
-	 * @var  boolean
-	 */
-	protected $apcAvailable;
+	 * Array of known cache stores and whether they are available for this test
 
-	/**
-	 * @var  boolean
+	 * @var  array
 	 */
-	protected $eacceleratorAvailable;
-
-	/**
-	 * @var  boolean
-	 */
-	protected $memcacheAvailable;
-
-	/**
-	 * @var  boolean
-	 */
-	protected $xcacheAvailable;
+	private $available = array();
 
 	/**
 	 * Receives the callback from JError and logs the required error information for the test.
@@ -59,12 +46,18 @@ class JCacheStorageTest extends TestCase
 	}
 
 	/**
-	 * Setup.
+	 * Sets up the fixture, for example, opens a network connection.
+	 * This method is called before a test is executed.
 	 *
 	 * @return void
 	 */
 	protected function setUp()
 	{
+<<<<<<< HEAD
+=======
+		parent::setUp();
+
+>>>>>>> joomla/staging
 		$this->saveErrorHandlers();
 		$this->setErrorCallback('JCacheStorageTest');
 		self::$actualError = array();
@@ -72,6 +65,10 @@ class JCacheStorageTest extends TestCase
 		$this->object = new JCacheStorage;
 
 		$this->checkStores();
+
+		$this->saveFactoryState();
+
+		JFactory::$application = $this->getMockCmsApp();
 	}
 
 	/**
@@ -81,10 +78,17 @@ class JCacheStorageTest extends TestCase
 	 */
 	protected function checkStores()
 	{
-		$this->apcAvailable = extension_loaded('apc');
-		$this->eacceleratorAvailable = extension_loaded('eaccelerator') && function_exists('eaccelerator_get');
-		$this->memcacheAvailable = (extension_loaded('memcache') && class_exists('Memcache')) != true;
-		$this->xcacheAvailable = extension_loaded('xcache');
+		$this->available = array(
+			'apc'       => JCacheStorageApc::isSupported(),
+			'apcu'      => JCacheStorageApcu::isSupported(),
+			'cachelite' => JCacheStorageCachelite::isSupported(),
+			'file'      => true,
+			'memcache'  => JCacheStorageMemcache::isSupported(),
+			'memcached' => JCacheStorageMemcached::isSupported(),
+			'redis'     => JCacheStorageRedis::isSupported(),
+			'wincache'  => JCacheStorageWincache::isSupported(),
+			'xcache'    => JCacheStorageXcache::isSupported(),
+		);
 	}
 
 	/**
@@ -92,12 +96,13 @@ class JCacheStorageTest extends TestCase
 	 * This method is called after a test is executed.
 	 *
 	 * @return void
-	 *
-	 * @access protected
 	 */
 	protected function tearDown()
 	{
 		$this->restoreErrorHandlers();
+		$this->restoreFactoryState();
+
+		parent::tearDown();
 	}
 
 	/**
@@ -110,6 +115,41 @@ class JCacheStorageTest extends TestCase
 		$this->checkStores();
 
 		return array(
+			'defaultapc' => array(
+				'apc',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'now' => time(),
+				),
+				($this->available['apc'] ? 'JCacheStorageApc' : false),
+			),
+			'defaultapcu' => array(
+				'apcu',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'now' => time(),
+				),
+				($this->available['apcu'] ? 'JCacheStorageApcu' : false),
+			),
+			'defaultcachelite' => array(
+				'cachelite',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'cachebase' => JPATH_BASE . '/cache',
+					'caching' => true,
+					'now' => time(),
+				),
+				($this->available['cachelite'] ? 'JCacheStorageCachelite' : false),
+			),
 			'defaultfile' => array(
 				'file',
 				array(
@@ -122,28 +162,6 @@ class JCacheStorageTest extends TestCase
 				),
 				'JCacheStorageFile',
 			),
-			'defaultapc' => array(
-				'apc',
-				array(
-					'application' => null,
-					'language' => 'en-GB',
-					'locking' => true,
-					'lifetime' => null,
-					'now' => time(),
-				),
-				($this->apcAvailable ? 'JCacheStorageApc' : false),
-			),
-			'defaulteaccelerator' => array(
-				'eaccelerator',
-				array(
-					'application' => null,
-					'language' => 'en-GB',
-					'locking' => true,
-					'lifetime' => null,
-					'now' => time(),
-				),
-				$this->eacceleratorAvailable ? 'JCacheStorageEaccelerator' : false,
-			),
 			'defaultmemcache' => array(
 				'memcache',
 				array(
@@ -153,7 +171,40 @@ class JCacheStorageTest extends TestCase
 					'lifetime' => null,
 					'now' => time(),
 				),
-				$this->memcacheAvailable ? 'JCacheStorageMemcache' : false,
+				$this->available['memcache'] ? 'JCacheStorageMemcache' : false,
+			),
+			'defaultmemcached' => array(
+				'memcached',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'now' => time(),
+				),
+				$this->available['memcached'] ? 'JCacheStorageMemcached' : false,
+			),
+			'defaultredis' => array(
+				'redis',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'now' => time(),
+				),
+				$this->available['redis'] ? 'JCacheStorageRedis' : false,
+			),
+			'defaultwincache' => array(
+				'wincache',
+				array(
+					'application' => null,
+					'language' => 'en-GB',
+					'locking' => true,
+					'lifetime' => null,
+					'now' => time(),
+				),
+				$this->available['wincache'] ? 'JCacheStorageWincache' : false,
 			),
 			'defaultxcache' => array(
 				'xcache',
@@ -164,7 +215,7 @@ class JCacheStorageTest extends TestCase
 					'lifetime' => null,
 					'now' => time(),
 				),
-				$this->xcacheAvailable ? 'JCacheStorageXcache' : false,
+				$this->available['xcache'] ? 'JCacheStorageXcache' : false,
 			),
 		);
 	}

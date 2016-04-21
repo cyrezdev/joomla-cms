@@ -77,7 +77,11 @@ class JHtmlUsers
 
 		$title = JText::_('COM_USERS_FILTER_NOTES');
 
+<<<<<<< HEAD
 		return '<a href="' . JRoute::_('index.php?option=com_users&view=notes&filter_search=uid:' . (int) $userId)
+=======
+		return '<a href="' . JRoute::_('index.php?option=com_users&view=notes&filter[search]=uid:' . (int) $userId)
+>>>>>>> joomla/staging
 			. '" class="hasTooltip btn btn-mini" title="' . $title . '"><span class="icon-filter"></span></a>';
 	}
 
@@ -134,7 +138,11 @@ class JHtmlUsers
 				'keyboard' => true,
 				'closeButton' => true,
 				'footer' => $footer,
+<<<<<<< HEAD
 				'url' => JRoute::_('index.php?option=com_users&view=notes&tmpl=component&layout=modal&u_id=' . (int) $userId),
+=======
+				'url' => JRoute::_('index.php?option=com_users&view=notes&tmpl=component&layout=modal&filter[user_id]=' . (int) $userId),
+>>>>>>> joomla/staging
 				'height' => '300px',
 				'width' => '800px'
 			)

@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 jimport('joomla.updater.update');
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Installer Update Model
  *
@@ -31,13 +33,11 @@ class InstallerModelUpdate extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'name',
-				'client_id',
-				'type',
-				'folder',
-				'extension_id',
-				'update_id',
-				'update_site_id',
+				'name', 'u.name',
+				'client_id', 'u.client_id', 'client_translated',
+				'type', 'u.type', 'type_translated',
+				'folder', 'u.folder', 'folder_translated',
+				'extension_id', 'u.extension_id',
 			);
 		}
 
@@ -56,28 +56,21 @@ class InstallerModelUpdate extends JModelList
 	 *
 	 * @since   1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'u.name', $direction = 'asc')
 	{
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.client_id', $this->getUserStateFromRequest($this->context . '.filter.client_id', 'filter_client_id', null, 'int'));
+		$this->setState('filter.type', $this->getUserStateFromRequest($this->context . '.filter.type', 'filter_type', '', 'string'));
+		$this->setState('filter.folder', $this->getUserStateFromRequest($this->context . '.filter.folder', 'filter_folder', '', 'string'));
+
 		$app = JFactory::getApplication();
-		$value = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $value);
-
-		$clientId = $this->getUserStateFromRequest($this->context . '.filter.client_id', 'filter_client_id', '');
-		$this->setState('filter.client_id', $clientId);
-
-		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.type', 'filter_type', '');
-		$this->setState('filter.type', $categoryId);
-
-		$group = $this->getUserStateFromRequest($this->context . '.filter.group', 'filter_group', '');
-		$this->setState('filter.group', $group);
-
 		$this->setState('message', $app->getUserState('com_installer.message'));
 		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
 		$app->setUserState('com_installer.message', '');
 		$app->setUserState('com_installer.extension_message', '');
 		$this->setState('list.ordering', 'name');
 
-		parent::populateState('name', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -90,14 +83,11 @@ class InstallerModelUpdate extends JModelList
 	protected function getListQuery()
 	{
 		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$type = $this->getState('filter.type');
-		$client = $this->getState('filter.client_id');
-		$group = $this->getState('filter.group');
 
 		// Grab updates ignoring new installs
 		$query = $db->getQuery(true)
 			->select('u.*')
+<<<<<<< HEAD
 			->select('e.manifest_cache')
 			->from($db->quoteName('#__updates', 'u'))
 			->join('LEFT', $db->quoteName('#__extensions', 'e') . ' ON ' . $db->quoteName('e.extension_id') . ' = ' . $db->quoteName('u.extension_id'))
@@ -117,12 +107,41 @@ class InstallerModelUpdate extends JModelList
 		if ($group != '' && in_array($type, array('plugin', 'library', '')))
 		{
 			$query->where('u.folder = ' . $db->quote($group == '*' ? '' : $group));
+=======
+			->select($db->quoteName('e.manifest_cache'))
+			->from($db->quoteName('#__updates', 'u'))
+			->join('LEFT', $db->quoteName('#__extensions', 'e') . ' ON ' . $db->quoteName('e.extension_id') . ' = ' . $db->quoteName('u.extension_id'))
+			->where($db->quoteName('u.extension_id') . ' != ' . $db->quote(0));
+
+		// Process select filters.
+		$clientId    = $this->getState('filter.client_id');
+		$type        = $this->getState('filter.type');
+		$folder      = $this->getState('filter.folder');
+		$extensionId = $this->getState('filter.extension_id');
+
+		if ($type)
+		{
+			$query->where($db->quoteName('u.type') . ' = ' . $db->quote($type));
 		}
 
-		// Filter by extension_id
-		if ($eid = $this->getState('filter.extension_id'))
+		if ($clientId != '')
 		{
+			$query->where($db->quoteName('u.client_id') . ' = ' . (int) $clientId);
+		}
+
+		if ($folder != '' && in_array($type, array('plugin', 'library', '')))
+		{
+			$query->where($db->quoteName('u.folder') . ' = ' . $db->quote($folder == '*' ? '' : $folder));
+>>>>>>> joomla/staging
+		}
+
+		if ($extensionId)
+		{
+<<<<<<< HEAD
 			$query->where($db->quoteName('u.extension_id') . ' = ' . $db->quote((int) $eid));
+=======
+			$query->where($db->quoteName('u.extension_id') . ' = ' . $db->quote((int) $extensionId));
+>>>>>>> joomla/staging
 		}
 		else
 		{
@@ -130,19 +149,113 @@ class InstallerModelUpdate extends JModelList
 				->where($db->quoteName('u.extension_id') . ' != ' . $db->quote(700));
 		}
 
-		// Filter by search
+		// Process search filter.
 		$search = $this->getState('filter.search');
 
 		if (!empty($search))
 		{
+<<<<<<< HEAD
 			$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
 			$query->where('u.name LIKE ' . $search);
+=======
+			if (stripos($search, 'eid:') !== false)
+			{
+				$query->where($db->quoteName('u.extension_id') . ' = ' . (int) substr($search, 4));
+			}
+			else
+			{
+				if (stripos($search, 'uid:') !== false)
+				{
+					$query->where($db->quoteName('u.update_site_id') . ' = ' . (int) substr($search, 4));
+				}
+				elseif (stripos($search, 'id:') !== false)
+				{
+					$query->where($db->quoteName('u.update_id') . ' = ' . (int) substr($search, 3));
+				}
+				else
+				{
+					$query->where($db->quoteName('u.name') . ' LIKE ' . $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true)) . '%'));
+				}
+			}
+>>>>>>> joomla/staging
 		}
 
 		return $query;
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Translate a list of objects
+	 *
+	 * @param   array  &$items  The array of objects
+	 *
+	 * @return  array The array of translated objects
+	 *
+	 * @since   3.5
+	 */
+	protected function translate(&$items)
+	{
+		foreach ($items as &$item)
+		{
+			$item->client_translated  = $item->client_id ? JText::_('JADMINISTRATOR') : JText::_('JSITE');
+			$manifest                 = json_decode($item->manifest_cache);
+			$item->current_version    = isset($manifest->version) ? $manifest->version : JText::_('JLIB_UNKNOWN');
+			$item->type_translated    = JText::_('COM_INSTALLER_TYPE_' . strtoupper($item->type));
+			$item->folder_translated  = $item->folder ? $item->folder : JText::_('COM_INSTALLER_TYPE_NONAPPLICABLE');
+			$item->install_type       = $item->extension_id ? JText::_('COM_INSTALLER_MSG_UPDATE_UPDATE') : JText::_('COM_INSTALLER_NEW_INSTALL');
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Returns an object list
+	 *
+	 * @param   string  $query       The query
+	 * @param   int     $limitstart  Offset
+	 * @param   int     $limit       The number of records
+	 *
+	 * @return  array
+	 *
+	 * @since   3.5
+	 */
+	protected function _getList($query, $limitstart = 0, $limit = 0)
+	{
+		$db = $this->getDbo();
+		$listOrder = $this->getState('list.ordering', 'u.name');
+		$listDirn  = $this->getState('list.direction', 'asc');
+
+		// Process ordering.
+		if (in_array($listOrder, array('client_translated', 'folder_translated', 'type_translated')))
+		{
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+			$this->translate($result);
+			$result = ArrayHelper::sortObjects($result, $listOrder, strtolower($listDirn) === 'desc' ? -1 : 1, true, true);
+			$total = count($result);
+
+			if ($total < $limitstart)
+			{
+				$limitstart = 0;
+				$this->setState('list.start', 0);
+			}
+
+			return array_slice($result, $limitstart, $limit ? $limit : null);
+		}
+		else
+		{
+			$query->order($db->quoteName($listOrder) . ' ' . $db->escape($listDirn));
+
+			$result = parent::_getList($query, $limitstart, $limit);
+			$this->translate($result);
+
+			return $result;
+		}
+	}
+
+	/**
+>>>>>>> joomla/staging
 	 * Get the count of disabled update sites
 	 *
 	 * @return  integer
@@ -154,9 +267,15 @@ class InstallerModelUpdate extends JModelList
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
+<<<<<<< HEAD
 			->select('count(*)')
 			->from('#__update_sites')
 			->where('enabled = 0');
+=======
+			->select('COUNT(*)')
+			->from($db->quoteName('#__update_sites'))
+			->where($db->quoteName('enabled') . ' = 0');
+>>>>>>> joomla/staging
 
 		$db->setQuery($query);
 
@@ -179,8 +298,12 @@ class InstallerModelUpdate extends JModelList
 		// Purge the updates list
 		$this->purge();
 
+<<<<<<< HEAD
 		$updater = JUpdater::getInstance();
 		$updater->findUpdates($eid, $cache_timeout, $minimum_stability);
+=======
+		JUpdater::getInstance()->findUpdates($eid, $cache_timeout, $minimum_stability);
+>>>>>>> joomla/staging
 
 		return true;
 	}
@@ -229,9 +352,9 @@ class InstallerModelUpdate extends JModelList
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true)
-			->update('#__update_sites')
-			->set('enabled = 1')
-			->where('enabled = 0');
+			->update($db->quoteName('#__update_sites'))
+			->set($db->quoteName('enabled') . ' = 1')
+			->where($db->quoteName('enabled') . ' = 0');
 		$db->setQuery($query);
 
 		if (!$db->execute())
@@ -300,12 +423,29 @@ class InstallerModelUpdate extends JModelList
 	private function install($update)
 	{
 		$app = JFactory::getApplication();
+<<<<<<< HEAD
 
 		if (!isset($update->get('downloadurl')->_data))
 		{
 			JError::raiseWarning('', JText::_('COM_INSTALLER_INVALID_EXTENSION_UPDATE'));
 
 			return false;
+=======
+
+		if (!isset($update->get('downloadurl')->_data))
+		{
+			JError::raiseWarning('', JText::_('COM_INSTALLER_INVALID_EXTENSION_UPDATE'));
+
+			return false;
+		}
+
+		$url = $update->downloadurl->_data;
+
+		if ($extra_query = $update->get('extra_query'))
+		{
+			$url .= (strpos($url, '?') === false) ? '?' : '&amp;';
+			$url .= $extra_query;
+>>>>>>> joomla/staging
 		}
 
 		$url = $update->downloadurl->_data;
@@ -420,7 +560,11 @@ class InstallerModelUpdate extends JModelList
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
+<<<<<<< HEAD
 		$data = JFactory::getApplication()->getUserState($this->context . '.data', array());
+=======
+		$data = JFactory::getApplication()->getUserState($this->context, array());
+>>>>>>> joomla/staging
 
 		return $data;
 	}

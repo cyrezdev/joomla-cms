@@ -72,6 +72,10 @@ class AdminModelSysInfo extends JModelLegacy
 			'Cookie',
 			'DOCUMENT_ROOT',
 			'extension_dir',
+<<<<<<< HEAD
+=======
+			'error_log',
+>>>>>>> joomla/staging
 			'Host',
 			'HTTP_COOKIE',
 			'HTTP_HOST',
@@ -99,7 +103,13 @@ class AdminModelSysInfo extends JModelLegacy
 			'Server Root',
 			'session.name',
 			'session.save_path',
+<<<<<<< HEAD
 			'User/Group',
+=======
+			'upload_tmp_dir',
+			'User/Group',
+			'open_basedir'
+>>>>>>> joomla/staging
 		),
 		'other' => array(
 			'db',
@@ -122,7 +132,12 @@ class AdminModelSysInfo extends JModelLegacy
 			'session_memcached_server_host',
 			'sitename',
 			'smtphost',
+<<<<<<< HEAD
 			'tmp_path'
+=======
+			'tmp_path',
+			'open_basedir'
+>>>>>>> joomla/staging
 		)
 	);
 
@@ -201,6 +216,13 @@ class AdminModelSysInfo extends JModelLegacy
 	{
 		if (!is_array($sectionValues))
 		{
+<<<<<<< HEAD
+=======
+			if (strstr($sectionValues, JPATH_ROOT))
+			{
+				$sectionValues = 'xxxxxx';
+			}
+>>>>>>> joomla/staging
 			return strlen($sectionValues) ? 'xxxxxx' : '';
 		}
 
@@ -305,6 +327,7 @@ class AdminModelSysInfo extends JModelLegacy
 			'platform'              => $platform->getLongVersion(),
 			'useragent'             => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ""
 		);
+<<<<<<< HEAD
 
 		return $this->info;
 	}
@@ -321,16 +344,42 @@ class AdminModelSysInfo extends JModelLegacy
 		return !in_array('phpinfo', explode(',', ini_get('disable_functions')));
 	}
 
+=======
+
+		return $this->info;
+	}
+
+	/**
+	 * Check if the phpinfo function is enabled
+	 *
+	 * @return  boolean True if enabled
+	 *
+	 * @since   3.4.1
+	 */
+	public function phpinfoEnabled()
+	{
+		return !in_array('phpinfo', explode(',', ini_get('disable_functions')));
+	}
+
+>>>>>>> joomla/staging
 	/**
 	 * Method to get filter data from the model
 	 *
 	 * @param   string  $dataType  Type of data to get safely
+<<<<<<< HEAD
+=======
+	 * @param   bool    $public    If true no sensitive information will be removed
+>>>>>>> joomla/staging
 	 *
 	 * @return  array
 	 *
 	 * @since   3.5
 	 */
+<<<<<<< HEAD
 	public function getSafeData($dataType)
+=======
+	public function getSafeData($dataType, $public = true)
+>>>>>>> joomla/staging
 	{
 		if (isset($this->safeData[$dataType]))
 		{
@@ -344,7 +393,11 @@ class AdminModelSysInfo extends JModelLegacy
 			return array();
 		}
 
+<<<<<<< HEAD
 		$data = $this->$methodName();
+=======
+		$data = $this->$methodName($public);
+>>>>>>> joomla/staging
 
 		$this->safeData[$dataType] = $this->cleanPrivateData($data, $dataType);
 
@@ -365,6 +418,7 @@ class AdminModelSysInfo extends JModelLegacy
 			$this->php_info = JText::_('COM_ADMIN_PHPINFO_DISABLED');
 
 			return $this->php_info;
+<<<<<<< HEAD
 		}
 
 		if (!is_null($this->php_info))
@@ -372,6 +426,15 @@ class AdminModelSysInfo extends JModelLegacy
 			return $this->php_info;
 		}
 
+=======
+		}
+
+		if (!is_null($this->php_info))
+		{
+			return $this->php_info;
+		}
+
+>>>>>>> joomla/staging
 		ob_start();
 		date_default_timezone_set('UTC');
 		phpinfo(INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES);
@@ -483,11 +546,20 @@ class AdminModelSysInfo extends JModelLegacy
 	/**
 	 * Method to get the directory states
 	 *
+<<<<<<< HEAD
+=======
+	 * @param   bool  $public  If true no information is going to be removed
+	 *
+>>>>>>> joomla/staging
 	 * @return  array States of directories
 	 *
 	 * @since   1.6
 	 */
+<<<<<<< HEAD
 	public function getDirectory()
+=======
+	public function getDirectory($public = false)
+>>>>>>> joomla/staging
 	{
 		if (!empty($this->directories))
 		{
@@ -498,10 +570,17 @@ class AdminModelSysInfo extends JModelLegacy
 
 		$registry = JFactory::getConfig();
 		$cparams  = JComponentHelper::getParams('com_media');
+<<<<<<< HEAD
 
 		$this->addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
 		$this->addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
 
+=======
+
+		$this->addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
+		$this->addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
+
+>>>>>>> joomla/staging
 		// List all admin languages
 		$admin_langs = new DirectoryIterator(JPATH_ADMINISTRATOR . '/language');
 
@@ -532,9 +611,15 @@ class AdminModelSysInfo extends JModelLegacy
 		$this->addDirectory('administrator/templates', JPATH_THEMES);
 
 		$this->addDirectory('components', JPATH_SITE . '/components');
+<<<<<<< HEAD
 
 		$this->addDirectory($cparams->get('image_path'), JPATH_SITE . '/' . $cparams->get('image_path'));
 
+=======
+
+		$this->addDirectory($cparams->get('image_path'), JPATH_SITE . '/' . $cparams->get('image_path'));
+
+>>>>>>> joomla/staging
 		// List all images folders
 		$image_folders = new DirectoryIterator(JPATH_SITE . '/' . $cparams->get('image_path'));
 
@@ -580,10 +665,17 @@ class AdminModelSysInfo extends JModelLegacy
 
 			$this->addDirectory('plugins/' . $folder->getFilename(), JPATH_PLUGINS . '/' . $folder->getFilename());
 		}
+<<<<<<< HEAD
 
 		$this->addDirectory('templates', JPATH_SITE . '/templates');
 		$this->addDirectory('configuration.php', JPATH_CONFIGURATION . '/configuration.php');
 
+=======
+
+		$this->addDirectory('templates', JPATH_SITE . '/templates');
+		$this->addDirectory('configuration.php', JPATH_CONFIGURATION . '/configuration.php');
+
+>>>>>>> joomla/staging
 		// Is there a cache path in configuration.php?
 		if ($cache_path = trim($registry->get('cache_path', '')))
 		{
@@ -594,6 +686,20 @@ class AdminModelSysInfo extends JModelLegacy
 		{
 			$this->addDirectory('cache', JPATH_SITE . '/cache', 'COM_ADMIN_CACHE_DIRECTORY');
 			$this->addDirectory('administrator/cache', JPATH_CACHE, 'COM_ADMIN_CACHE_DIRECTORY');
+<<<<<<< HEAD
+=======
+		}
+
+		if ($public)
+		{
+			$this->addDirectory('log', $registry->get('log_path', JPATH_ROOT . '/log'), 'COM_ADMIN_LOG_DIRECTORY');
+			$this->addDirectory('tmp', $registry->get('tmp_path', JPATH_ROOT . '/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
+		}
+		else
+		{
+			$this->addDirectory($registry->get('log_path', JPATH_ROOT . '/log'), $registry->get('log_path', JPATH_ROOT . '/log'), 'COM_ADMIN_LOG_DIRECTORY');
+			$this->addDirectory($registry->get('tmp_path', JPATH_ROOT . '/tmp'), $registry->get('tmp_path', JPATH_ROOT . '/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
+>>>>>>> joomla/staging
 		}
 
 		$this->addDirectory($registry->get('log_path', JPATH_ROOT . '/log'), $registry->get('log_path', JPATH_ROOT . '/log'), 'COM_ADMIN_LOG_DIRECTORY');

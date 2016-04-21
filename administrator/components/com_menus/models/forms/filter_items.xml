@@ -22,6 +22,7 @@
 			filter="*,0,1,-2"
 			label="COM_MENUS_FILTER_PUBLISHED"
 			description="COM_MENUS_FILTER_PUBLISHED_DESC"
+			filter="*,0,1,-2"
 			onchange="this.form.submit();"
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
@@ -45,6 +46,7 @@
 			<option value="">JOPTION_SELECT_LANGUAGE</option>
 			<option value="*">JALL</option>
 		</field>
+<<<<<<< HEAD
         <field
                 name="level"
                 type="integer"
@@ -58,14 +60,29 @@
                 >
             <option value="">JOPTION_SELECT_MAX_LEVELS</option>
         </field>
+=======
+		<field
+			name="level"
+			type="integer"
+			label="JOPTION_FILTER_LEVEL"
+			description="JOPTION_FILTER_LEVEL_DESC"
+			first="1"
+			last="10"
+			step="1"
+			languages="*"
+			onchange="this.form.submit();"
+			>
+			<option value="">JOPTION_SELECT_MAX_LEVELS</option>
+		</field>
+>>>>>>> joomla/staging
 	</fields>
 	<fields name="list">
 		<field
 			name="fullordering"
 			type="list"
 			label="JGLOBAL_SORT_BY"
-			statuses="*,0,1,2,-2"
 			description="JGLOBAL_SORT_BY"
+			statuses="*,0,1,2,-2"
 			onchange="this.form.submit();"
 			default="a.lft ASC"
 			>
@@ -90,10 +107,15 @@
 		<field
 			name="limit"
 			type="limitbox"
+<<<<<<< HEAD
 			class="input-mini"
 			default="25"
+=======
+>>>>>>> joomla/staging
 			label="COM_MENUS_LIST_LIMIT"
 			description="COM_MENUS_LIST_LIMIT_DESC"
+			class="input-mini"
+			default="25"
 			onchange="this.form.submit();"
 		/>
 	</fields>

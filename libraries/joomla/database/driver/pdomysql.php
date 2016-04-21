@@ -72,6 +72,7 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 	 */
 	public function __construct($options)
 	{
+<<<<<<< HEAD
 		/**
 		 * Pre-populate the UTF-8 Multibyte compatibility flag. Unfortuantely PDO won't report the server version
 		 * unless we're connected to it and we cannot connect to it unless we know if it supports utf8mb4 which requires
@@ -85,11 +86,27 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 		$options['charset'] = (isset($options['charset'])) ? $options['charset'] : 'utf8';
 
 		if ($this->utf8mb4 && ($options['charset'] == 'utf8'))
+=======
+		// Get some basic values from the options.
+		$options['driver']  = 'mysql';
+
+		if (!isset($options['charset']) || $options['charset'] == 'utf8')
+>>>>>>> joomla/staging
 		{
 			$options['charset'] = 'utf8mb4';
 		}
 
+<<<<<<< HEAD
 		$this->charset = $options['charset'];
+=======
+		/**
+		 * Pre-populate the UTF-8 Multibyte compatibility flag. Unfortunately PDO won't report the server version
+		 * unless we're connected to it, and we cannot connect to it unless we know if it supports utf8mb4, which requires
+		 * us knowing the server version. Because of this chicken and egg issue, we _assume_ it's supported and we'll just
+		 * catch any problems at connection time.
+		 */
+		$this->utf8mb4 = ($options['charset'] == 'utf8mb4');
+>>>>>>> joomla/staging
 
 		// Finalize initialisation.
 		parent::__construct($options);
@@ -112,12 +129,18 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 		}
 		catch (\RuntimeException $e)
 		{
+<<<<<<< HEAD
 			// If the connection failed but not because of the wrong character set bubble up the exception
 			if (!$this->utf8mb4 || ($this->options['charset'] != 'utf8mb4'))
+=======
+			// If the connection failed, but not because of the wrong character set, then bubble up the exception.
+			if (!$this->utf8mb4)
+>>>>>>> joomla/staging
 			{
 				throw $e;
 			}
 
+<<<<<<< HEAD
 			/**
 			 * If the connection failed and I was trying to use the utf8mb4 charset then it is likely that the server
 			 * doesn't support utf8mb4 despite claiming otherwise.
@@ -127,12 +150,41 @@ class JDatabaseDriverPdomysql extends JDatabaseDriverPdo
 			 * UTF-8 Multibyte (i.e. it's MySQL 5.5.3 or later). Since the utf8mb4 charset is undefined in this case we
 			 * catch the error and determine that utf8mb4 is not supported!
 			 */
+=======
+			/*
+			 * Otherwise, try connecting again without using
+			 * utf8mb4 and see if maybe that was the problem. If the
+			 * connection succeeds, then we will have learned that the
+			 * client end of the connection does not support utf8mb4.
+  			 */
+>>>>>>> joomla/staging
 			$this->utf8mb4 = false;
 			$this->options['charset'] = 'utf8';
 
 			parent::connect();
 		}
 
+<<<<<<< HEAD
+=======
+		if ($this->utf8mb4)
+		{
+			/*
+ 			 * At this point we know the client supports utf8mb4.  Now
+ 			 * we must check if the server supports utf8mb4 as well.
+ 			 */
+			$serverVersion = $this->connection->getAttribute(PDO::ATTR_SERVER_VERSION);
+			$this->utf8mb4 = version_compare($serverVersion, '5.5.3', '>=');
+
+			if (!$this->utf8mb4)
+			{
+				// Reconnect with the utf8 character set.
+				parent::disconnect();
+				$this->options['charset'] = 'utf8';
+				parent::connect();
+			}
+		}
+
+>>>>>>> joomla/staging
 		$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
 	}

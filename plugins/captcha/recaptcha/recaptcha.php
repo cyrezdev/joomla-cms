@@ -46,6 +46,7 @@ class PlgCaptchaRecaptcha extends JPlugin
 		}
 
 		if ($this->params->get('version', '1.0') == '1.0')
+<<<<<<< HEAD
 		{
 			JHtml::_('jquery.framework');
 
@@ -61,6 +62,24 @@ class PlgCaptchaRecaptcha extends JPlugin
 		}
 
 		JHtml::_('script', $file);
+=======
+		{
+			JHtml::_('jquery.framework');
+
+			$theme	= $this->params->get('theme', 'clean');
+			$file	= 'https://www.google.com/recaptcha/api/js/recaptcha_ajax.js';
+
+			JHtml::_('script', $file);
+			JFactory::getDocument()->addScriptDeclaration('jQuery( document ).ready(function()
+				{Recaptcha.create("' . $pubkey . '", "' . $id . '", {theme: "' . $theme . '",' . $this->_getLanguage() . 'tabindex: 0});});');
+		}
+		else
+		{
+			$file = 'https://www.google.com/recaptcha/api.js?onload=JoomlaInitReCaptcha2&render=explicit&hl=' . JFactory::getLanguage()->getTag();
+			JHtml::_('script', $file);
+			JHtml::_('script', 'plg_captcha_recaptcha/recaptcha.min.js', false, true);
+		}
+>>>>>>> joomla/staging
 
 		return true;
 	}

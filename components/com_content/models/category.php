@@ -126,6 +126,7 @@ class ContentModelCategory extends JModelList
 
 		$this->setState('params', $mergedParams);
 		$user  = JFactory::getUser();
+<<<<<<< HEAD
 
 		// Create a new query object.
 		$db    = $this->getDbo();
@@ -146,9 +147,20 @@ class ContentModelCategory extends JModelList
 			// Filter by start and end dates.
 			$nullDate = $db->quote($db->getNullDate());
 			$nowDate = $db->quote(JFactory::getDate()->toSql());
+=======
 
-			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+		$asset = 'com_content';
+>>>>>>> joomla/staging
+
+		if ($pk)
+		{
+			$asset .= '.category.' . $pk;
+		}
+
+		if ((!$user->authorise('core.edit.state', $asset)) &&  (!$user->authorise('core.edit', $asset)))
+		{
+			// Limit to published for people who can't edit or edit.state.
+			$this->setState('filter.published', 1);
 		}
 		else
 		{

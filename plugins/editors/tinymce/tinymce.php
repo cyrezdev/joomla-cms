@@ -47,11 +47,67 @@ class PlgEditorTinymce extends JPlugin
 	public function onInit()
 	{
 		JHtml::script($this->_basePath . '/tinymce.min.js', false, false, false, false, false);
+<<<<<<< HEAD
+
+=======
 
 		return;
 	}
 
 	/**
+	 * TinyMCE WYSIWYG Editor - get the editor content
+	 *
+	 * @param   string  $editor  The name of the editor
+	 *
+	 * @return  string
+	 */
+	public function onGetContent($editor)
+	{
+		return 'tinyMCE.activeEditor.getContent();';
+	}
+
+	/**
+	 * TinyMCE WYSIWYG Editor - set the editor content
+	 *
+	 * @param   string  $editor  The name of the editor
+	 * @param   string  $html    The html to place in the editor
+	 *
+	 * @return  string
+	 */
+	public function onSetContent($editor, $html)
+	{
+		return 'tinyMCE.activeEditor.setContent(' . $html . ');';
+	}
+
+	/**
+	 * TinyMCE WYSIWYG Editor - copy editor content to form field
+	 *
+	 * @param   string  $editor  The name of the editor
+	 *
+	 * @return  string
+	 */
+	public function onSave($editor)
+	{
+		return 'if (tinyMCE.get("' . $editor . '").isHidden()) {tinyMCE.get("' . $editor . '").show()};';
+	}
+
+	/**
+	 * Inserts html code into the editor
+	 *
+	 * @param   string  $name  The name of the editor
+	 *
+	 * @return  void
+	 *
+	 * @deprecated 3.5 tinyMCE (API v4) will get the content automatically from the text area
+	 */
+	public function onGetInsertMethod($name)
+	{
+>>>>>>> joomla/staging
+		return;
+	}
+
+	/**
+<<<<<<< HEAD
 	 * TinyMCE WYSIWYG Editor - get the editor content
 	 *
 	 * @param   string  $editor  The name of the editor
@@ -133,6 +189,43 @@ class PlgEditorTinymce extends JPlugin
 			// List the skins
 			$skindirs = glob(JPATH_ROOT . '/media/editors/tinymce/skins' . '/*', GLOB_ONLYDIR);
 
+=======
+	 * Display the editor area.
+	 *
+	 * @param   string   $name     The name of the editor area.
+	 * @param   string   $content  The content of the field.
+	 * @param   string   $width    The width of the editor area.
+	 * @param   string   $height   The height of the editor area.
+	 * @param   int      $col      The number of columns for the editor area.
+	 * @param   int      $row      The number of rows for the editor area.
+	 * @param   boolean  $buttons  True and the editor buttons will be displayed.
+	 * @param   string   $id       An optional ID for the textarea. If not supplied the name is used.
+	 * @param   string   $asset    The object asset
+	 * @param   object   $author   The author.
+	 *
+	 * @return  string
+	 */
+	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null)
+	{
+		static $declaredJs = false;
+
+		if (empty($id))
+		{
+			$id = $name;
+		}
+
+		if (!$declaredJs)
+		{
+			$app      = JFactory::getApplication();
+			$language = JFactory::getLanguage();
+			$mode     = (int) $this->params->get('mode', 1);
+			$theme    = 'modern';
+			$idField  = str_replace('[', '_', substr($name, 0, -1));
+
+			// List the skins
+			$skindirs = glob(JPATH_ROOT . '/media/editors/tinymce/skins' . '/*', GLOB_ONLYDIR);
+
+>>>>>>> joomla/staging
 			// Set the selected skin
 			if ($app->isSite())
 			{
@@ -673,6 +766,7 @@ class PlgEditorTinymce extends JPlugin
 				$plugins[]      = 'codesample';
 				$toolbar4_add[] = 'codesample';
 			}
+<<<<<<< HEAD
 
 			// Autosave
 			$autosave = $this->params->get('autosave', 1);
@@ -747,6 +841,82 @@ class PlgEditorTinymce extends JPlugin
 
 				$dragDropPlg = 'jdragdrop';
 
+=======
+
+			// Autosave
+			$autosave = $this->params->get('autosave', 1);
+
+			if (isset($access[$autosave]))
+			{
+				$plugins[] = 'autosave';
+			}
+
+			// Context menu
+			$contextmenu = $this->params->get('contextmenu', 1);
+
+			if (isset($access[$contextmenu]))
+			{
+				$plugins[] = 'contextmenu';
+			}
+
+			$custom_plugin = $this->params->get('custom_plugin', '');
+
+			if ($custom_plugin != "")
+			{
+				$plugins[] = $custom_plugin;
+			}
+
+			$custom_button = $this->params->get('custom_button', '');
+
+			if ($custom_button != "")
+			{
+				$toolbar4_add[] = $custom_button;
+			}
+
+			// We shall put the XTD button inside tinymce
+			$btns      = $this->tinyButtons($id, $buttons);
+			$btnsNames = $btns['names'];
+			$tinyBtns  = $btns['script'];
+
+			// Drag and drop Images
+			$allowImgPaste = "false";
+			$dragDropPlg   = '';
+			$dragdrop      = $this->params->get('drag_drop', 1);
+			$user          = JFactory::getUser();
+
+			if ($dragdrop && $user->authorise('core.create', 'com_media'))
+			{
+				$allowImgPaste = "true";
+				$isSubDir      = '';
+				$session       = JFactory::getSession();
+				$uploadUrl     = JUri::base() . 'index.php?option=com_media&task=file.upload&tmpl=component&'
+					. $session->getName() . '=' . $session->getId()
+					. '&' . JSession::getFormToken() . '=1'
+					. '&asset=image&format=json';
+
+				if (JFactory::getApplication()->isSite())
+				{
+					$uploadUrl = htmlentities($uploadUrl, null, 'UTF-8', null);
+				}
+
+				// Is Joomla installed in subdirectory
+				if (JUri::root(true) != '/')
+				{
+					$isSubDir = JUri::root(true);
+				}
+
+				// Get specific path
+				$tempPath = $this->params->get('path', '');
+
+				if (!empty($tempPath))
+				{
+					$tempPath = rtrim($tempPath, '/');
+					$tempPath = ltrim($tempPath, '/');
+				}
+
+				$dragDropPlg = 'jdragdrop';
+
+>>>>>>> joomla/staging
 				JText::script('PLG_TINY_ERR_UNSUPPORTEDBROWSER');
 				JFactory::getDocument()->addScriptDeclaration(
 					"
@@ -780,6 +950,7 @@ class PlgEditorTinymce extends JPlugin
 			 * If mobile view is on force into simple mode and enlarge the buttons
 			 **/
 			if (!$this->app->client->mobile)
+<<<<<<< HEAD
 			{
 				$smallButtons = 'toolbar_items_size: "small",';
 			}
@@ -960,8 +1131,185 @@ class PlgEditorTinymce extends JPlugin
 		}
 
 		if (empty($id))
+=======
+			{
+				$smallButtons = 'toolbar_items_size: "small",';
+			}
+			elseif ($mobileVersion == false)
+			{
+				$smallButtons = '';
+			}
+			else
+			{
+				$smallButtons = '';
+				$mode         = 0;
+			}
+
+			$script = '';
+
+			// First line is for Mootools b/c
+			$script .= "
+		window.getSize = window.getSize || function(){return {x: jQuery(window).width(), y: jQuery(window).height()};};
+		tinymce.suffix = '.min';
+		tinymce.baseURL = '" . JUri::root() . "media/editors/tinymce';
+		tinymce.init({
+		";
+
+			// General
+			$script .= "
+			directionality: \"$text_direction\",
+			selector: \"textarea.mce_editable\",
+			language : \"$langPrefix\",
+			mode : \"specific_textareas\",
+			autosave_restore_when_empty: false,
+			$skin
+			theme : \"$theme\",
+			schema: \"html5\",
+			";
+
+			// Cleanup/Output
+			$script .= "
+			inline_styles : true,
+			gecko_spellcheck : true,
+			entity_encoding : \"$entity_encoding\",
+			$forcenewline
+			$smallButtons
+		";
+
+			// URL
+			$script .= "
+			relative_urls : $relative_urls,
+			remove_script_host : false,
+		";
+
+			// Layout
+			$script .= "
+			$content_css
+			document_base_url : \"" . JUri::root() . "\",
+			setup: function (editor) {
+		$tinyBtns
+			},
+			paste_data_images: $allowImgPaste,
+		";
+			switch ($mode)
+			{
+				case 0: /* Simple mode*/
+					$script .= "
+			menubar: false,
+			toolbar1: \"bold italics underline strikethrough | undo redo | bullist numlist | $toolbar5 | code\",
+			plugins: \"$dragDropPlg code\",
+		});
+		";
+					break;
+
+				case 1:
+				default: /* Advanced mode*/
+					$toolbar1 = "bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | formatselect | bullist numlist "
+						. "| outdent indent | undo redo | link unlink anchor image code | hr table | subscript superscript | charmap";
+
+					$script .= "
+			valid_elements : \"$valid_elements\",
+			extended_valid_elements : \"$elements\",
+			invalid_elements : \"$invalid_elements\",
+			// Plugins
+			plugins : \"table link image code hr charmap autolink lists importcss $dragDropPlg\",
+			// Toolbar
+			toolbar1: \"$toolbar1 | $toolbar5\",
+			removed_menuitems: \"newdocument\",
+			// Layout
+			importcss_append: true,
+			// Advanced Options
+			$resizing
+			height : \"$html_height\",
+			width : \"$html_width\"
+		});
+			";
+					break;
+
+				case 2: /* Extended mode*/
+					$script .= "
+			valid_elements : \"$valid_elements\",
+			extended_valid_elements : \"$elements\",
+			invalid_elements : \"$invalid_elements\",
+			// Plugins
+			plugins : \"$plugins $dragDropPlg\",
+			// Toolbar
+			toolbar1: \"$toolbar1\",
+			removed_menuitems: \"newdocument\",
+			// URL
+			rel_list : [
+				{title: 'Alternate', value: 'alternate'},
+				{title: 'Author', value: 'author'},
+				{title: 'Bookmark', value: 'bookmark'},
+				{title: 'Help', value: 'help'},
+				{title: 'License', value: 'license'},
+				{title: 'Lightbox', value: 'lightbox'},
+				{title: 'Next', value: 'next'},
+				{title: 'No Follow', value: 'nofollow'},
+				{title: 'No Referrer', value: 'noreferrer'},
+				{title: 'Prefetch', value: 'prefetch'},
+				{title: 'Prev', value: 'prev'},
+				{title: 'Search', value: 'search'},
+				{title: 'Tag', value: 'tag'}
+			],
+			//Templates
+			" . $templates . "
+			// Layout
+			importcss_append: true,
+			// Advanced Options
+			$resizing
+			image_advtab: $image_advtab,
+			height : \"$html_height\",
+			width : \"$html_width\",
+		});
+		";
+					break;
+			}
+
+			$script .= "
+		function jInsertEditorText( text, editor )
 		{
-			$id = $name;
+			tinyMCE.activeEditor.execCommand('mceInsertContent', false, text);
+		}
+		";
+
+		if (!empty($btnsNames))
+>>>>>>> joomla/staging
+		{
+			JFactory::getDocument()->addScriptDeclaration(
+				"
+		if (jModalClose === undefined && typeof(jModalClose) != 'function') {
+			var jModalClose;
+			jModalClose = function() {
+				tinyMCE.activeEditor.windowManager.close();
+			}
+		} else {
+			var oldClose = jModalClose;
+			jModalClose = function() {
+				oldClose.apply(this, arguments);
+				tinyMCE.activeEditor.windowManager.close();
+			};
+		}
+		if (SqueezeBox != undefined) {
+			var oldSqueezeBox = SqueezeBox.close;
+			SqueezeBox.close = function() {
+				oldSqueezeBox.apply(this, arguments);
+				tinyMCE.activeEditor.windowManager.close();
+			}
+		} else {
+			var SqueezeBox = {};
+			SqueezeBox.close = function() {
+				tinyMCE.activeEditor.windowManager.close();
+			}
+		}
+			"
+			);
+		}
+
+			JFactory::getDocument()->addScriptDeclaration($script);
+			JFactory::getDocument()->addStyleDeclaration(".mce-in { padding: 5px 10px !important;}");
+
+			$declaredJs = true;
 		}
 
 		// Only add "px" to width and height if they are not given as a percentage
@@ -1008,14 +1356,25 @@ class PlgEditorTinymce extends JPlugin
 	/**
 	 * Get the XTD buttons and render them inside tinyMCE
 	 *
+<<<<<<< HEAD
+=======
+	 * @param   string  $name      the id of the editor field
+>>>>>>> joomla/staging
 	 * @param   string  $excluded  the buttons that should be hidden
 	 *
 	 * @return array
 	 */
+<<<<<<< HEAD
 	private function tinyButtons($excluded)
 	{
 		// Get the available buttons
 		$buttons = $this->_subject->getButtons($this->_name, $excluded);
+=======
+	private function tinyButtons($name, $excluded)
+	{
+		// Get the available buttons
+		$buttons = $this->_subject->getButtons($name, $excluded);
+>>>>>>> joomla/staging
 
 		// Init the arrays for the buttons
 		$tinyBtns  = array();

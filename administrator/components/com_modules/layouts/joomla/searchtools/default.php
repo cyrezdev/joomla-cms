@@ -21,6 +21,10 @@ $doc->addStyleDeclaration("
 	.js-stools .js-stools-client_id {
 		float: left;
 		margin-right: 10px;
+<<<<<<< HEAD
+=======
+		min-width: 220px;
+>>>>>>> joomla/staging
 	}
 	html[dir=rtl] .js-stools .js-stools-client_id {
 		float: right;

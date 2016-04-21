@@ -44,6 +44,7 @@
     return attrRegexpCache[attr] = new RegExp("\\s+" + attr + "\\s*=\\s*('|\")?([^'\"]+)('|\")?\\s*");
   }
 
+<<<<<<< HEAD
   function getAttrValue(stream, attr) {
     var pos = stream.pos, match;
     while (pos >= 0 && stream.string.charAt(pos) !== "<") pos--;
@@ -51,6 +52,11 @@
     if (match = stream.string.slice(pos, stream.pos).match(getAttrRegexp(attr)))
       return match[2];
     return "";
+=======
+  function getAttrValue(text, attr) {
+    var match = text.match(getAttrRegexp(attr))
+    return match ? match[2] : ""
+>>>>>>> joomla/staging
   }
 
   function getTagRegexp(tagName, anchored) {
@@ -66,10 +72,17 @@
     }
   }
 
+<<<<<<< HEAD
   function findMatchingMode(tagInfo, stream) {
     for (var i = 0; i < tagInfo.length; i++) {
       var spec = tagInfo[i];
       if (!spec[0] || spec[1].test(getAttrValue(stream, spec[0]))) return spec[2];
+=======
+  function findMatchingMode(tagInfo, tagText) {
+    for (var i = 0; i < tagInfo.length; i++) {
+      var spec = tagInfo[i];
+      if (!spec[0] || spec[1].test(getAttrValue(tagText, spec[0]))) return spec[2];
+>>>>>>> joomla/staging
     }
   }
 
@@ -89,6 +102,7 @@
       tags.script.unshift(["type", configScript[i].matches, configScript[i].mode])
 
     function html(stream, state) {
+<<<<<<< HEAD
       var tagName = state.htmlState.tagName && state.htmlState.tagName.toLowerCase();
       var tagInfo = tagName && tags.hasOwnProperty(tagName) && tags[tagName];
 
@@ -98,6 +112,19 @@
           (modeSpec = findMatchingMode(tagInfo, stream))) {
         var mode = CodeMirror.getMode(config, modeSpec);
         var endTagA = getTagRegexp(tagName, true), endTag = getTagRegexp(tagName, false);
+=======
+      var style = htmlMode.token(stream, state.htmlState), tag = /\btag\b/.test(style), tagName
+      if (tag && !/[<>\s\/]/.test(stream.current()) &&
+          (tagName = state.htmlState.tagName && state.htmlState.tagName.toLowerCase()) &&
+          tags.hasOwnProperty(tagName)) {
+        state.inTag = tagName + " "
+      } else if (state.inTag && tag && />$/.test(stream.current())) {
+        var inTag = /^([\S]+) (.*)/.exec(state.inTag)
+        state.inTag = null
+        var modeSpec = stream.current() == ">" && findMatchingMode(tags[inTag[1]], inTag[2])
+        var mode = CodeMirror.getMode(config, modeSpec)
+        var endTagA = getTagRegexp(inTag[1], true), endTag = getTagRegexp(inTag[1], false);
+>>>>>>> joomla/staging
         state.token = function (stream, state) {
           if (stream.match(endTagA, false)) {
             state.token = html;
@@ -108,6 +135,12 @@
         };
         state.localMode = mode;
         state.localState = CodeMirror.startState(mode, htmlMode.indent(state.htmlState, ""));
+<<<<<<< HEAD
+=======
+      } else if (state.inTag) {
+        state.inTag += stream.current()
+        if (stream.eol()) state.inTag += " "
+>>>>>>> joomla/staging
       }
       return style;
     };
@@ -115,7 +148,11 @@
     return {
       startState: function () {
         var state = htmlMode.startState();
+<<<<<<< HEAD
         return {token: html, localMode: null, localState: null, htmlState: state};
+=======
+        return {token: html, inTag: null, localMode: null, localState: null, htmlState: state};
+>>>>>>> joomla/staging
       },
 
       copyState: function (state) {
@@ -123,7 +160,12 @@
         if (state.localState) {
           local = CodeMirror.copyState(state.localMode, state.localState);
         }
+<<<<<<< HEAD
         return {token: state.token, localMode: state.localMode, localState: local,
+=======
+        return {token: state.token, inTag: state.inTag,
+                localMode: state.localMode, localState: local,
+>>>>>>> joomla/staging
                 htmlState: CodeMirror.copyState(htmlMode, state.htmlState)};
       },
 

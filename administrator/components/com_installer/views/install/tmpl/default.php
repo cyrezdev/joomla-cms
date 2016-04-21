@@ -75,12 +75,17 @@ JFactory::getDocument()->addScriptDeclaration(
 	jQuery(document).ready(function($) {
 		var outerDiv = $("#installer-install");
 
+<<<<<<< HEAD
 		$(\'<div id="loading"></div>\')
 		.css("background", \'rgba(255, 255, 255, .8) url("../media/jui/img/ajax-loader.gif") 50% 15% no-repeat\')
+=======
+		$("#loading")
+>>>>>>> joomla/staging
 		.css("top", outerDiv.position().top - $(window).scrollTop())
 		.css("left", outerDiv.position().left - $(window).scrollLeft())
 		.css("width", outerDiv.width())
 		.css("height", outerDiv.height())
+<<<<<<< HEAD
 		.css("position", "fixed")
 		.css("opacity", "0.80")
 		.css("-ms-filter", "progid:DXImageTransform.Microsoft.Alpha(Opacity = 80)")
@@ -94,10 +99,26 @@ JFactory::getDocument()->addScriptDeclaration(
 <style type="text/css">
 	#loading {
 		background: rgba(255, 255, 255, .8) url('<?php echo JHtml::_('image', 'jui/ajax-loader.gif', '', null, true, true); ?>') 50% 15% no-repeat;
+=======
+		.css("display", "none")
+	});
+	'
+);
+
+JFactory::getDocument()->addStyleDeclaration(
+	'
+	#loading {
+		background: rgba(255, 255, 255, .8) url(\'' . JHtml::_('image', 'jui/ajax-loader.gif', '', null, true, true) . '\') 50% 15% no-repeat;
+>>>>>>> joomla/staging
 		position: fixed;
 		opacity: 0.8;
 		-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 80);
 		filter: alpha(opacity = 80);
+<<<<<<< HEAD
+=======
+		margin: -10px -50px 0 -50px;
+		overflow: hidden;
+>>>>>>> joomla/staging
 	}
 
 	.j-jed-message {
@@ -105,7 +126,14 @@ JFactory::getDocument()->addScriptDeclaration(
 		line-height: 2em;
 		color:#333333;
 	}
+<<<<<<< HEAD
 </style>
+=======
+	'
+);
+
+?>
+>>>>>>> joomla/staging
 
 <div id="installer-install" class="clearfix">
 	<?php if (!empty( $this->sidebar)) : ?>

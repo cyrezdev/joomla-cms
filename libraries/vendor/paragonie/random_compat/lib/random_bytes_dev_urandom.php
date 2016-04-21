@@ -62,6 +62,7 @@ function random_bytes($bytes)
                 $fp = false;
             }
         }
+<<<<<<< HEAD
         /**
          * stream_set_read_buffer() does not exist in HHVM
          * 
@@ -74,6 +75,27 @@ function random_bytes($bytes)
             stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
         }
     }
+=======
+
+        if (!empty($fp)) {
+            /**
+             * stream_set_read_buffer() does not exist in HHVM
+             * 
+             * If we don't set the stream's read buffer to 0, PHP will
+             * internally buffer 8192 bytes, which can waste entropy
+             * 
+             * stream_set_read_buffer returns 0 on success
+             */
+            if (function_exists('stream_set_read_buffer')) {
+                stream_set_read_buffer($fp, RANDOM_COMPAT_READ_BUFFER);
+            }
+            if (function_exists('stream_set_chunk_size')) {
+                stream_set_chunk_size($fp, RANDOM_COMPAT_READ_BUFFER);
+            }
+        }
+    }
+
+>>>>>>> joomla/staging
     try {
         $bytes = RandomCompat_intval($bytes);
     } catch (TypeError $ex) {
@@ -81,11 +103,19 @@ function random_bytes($bytes)
             'random_bytes(): $bytes must be an integer'
         );
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     if ($bytes < 1) {
         throw new Error(
             'Length must be greater than 0'
         );
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     /**
      * This if() block only runs if we managed to open a file handle
      * 
@@ -96,6 +126,10 @@ function random_bytes($bytes)
     if (!empty($fp)) {
         $remaining = $bytes;
         $buf = '';
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
         /**
          * We use fread() in a loop to protect against partial reads
          */
@@ -128,10 +162,18 @@ function random_bytes($bytes)
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
     /**
      * If we reach here, PHP has failed us.
      */
     throw new Exception(
+<<<<<<< HEAD
         'PHP failed to generate random data.'
+=======
+        'Error reading from source device'
+>>>>>>> joomla/staging
     );
 }

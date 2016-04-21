@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('bootstrap.tooltip');
+<<<<<<< HEAD
 JHtml::_('formbehavior.chosen', 'select');
 
 $user       = JFactory::getUser();
@@ -35,6 +36,15 @@ JFactory::getDocument()->addScriptDeclaration('
 		Joomla.tableOrdering(order, dirn, "");
 	};
 ');
+=======
+JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
+
+$user       = JFactory::getUser();
+$canEdit    = $user->authorise('core.edit', 'com_users');
+$listOrder  = $this->escape($this->state->get('list.ordering'));
+$listDirn   = $this->escape($this->state->get('list.direction'));
+>>>>>>> joomla/staging
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_users&view=notes');?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -59,14 +69,19 @@ JFactory::getDocument()->addScriptDeclaration('
 						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
 					<th width="5%" class="nowrap center">
+<<<<<<< HEAD
 						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 					</th>
 					<th class="left" class="nowrap">
 						<?php echo JHtml::_('grid.sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
+=======
+						<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+>>>>>>> joomla/staging
 					</th>
 					<th class="left" class="nowrap">
-						<?php echo JHtml::_('grid.sort', 'COM_USERS_SUBJECT_HEADING', 'a.subject', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_USER', 'u.name', $listDirn, $listOrder); ?>
 					</th>
+<<<<<<< HEAD
 					<th width="20%" class="nowrap">
 						<?php echo JHtml::_('grid.sort', 'COM_USERS_CATEGORY_HEADING', 'c.title', $listDirn, $listOrder); ?>
 					</th>
@@ -75,6 +90,19 @@ JFactory::getDocument()->addScriptDeclaration('
 					</th>
 					<th width="1%" class="nowrap">
 						<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+=======
+					<th class="left" class="nowrap">
+						<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+					</th>
+					<th width="20%" class="nowrap">
+						<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_CATEGORY', 'c.title', $listDirn, $listOrder); ?>
+					</th>
+					<th width="10%" class="nowrap">
+						<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_REVIEW', 'a.review_time', $listDirn, $listOrder); ?>
+					</th>
+					<th width="1%" class="nowrap">
+						<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+>>>>>>> joomla/staging
 					</th>
 				</tr>
 			</thead>
@@ -138,8 +166,11 @@ JFactory::getDocument()->addScriptDeclaration('
 		<div>
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="boxchecked" value="0" />
+<<<<<<< HEAD
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+=======
+>>>>>>> joomla/staging
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
 	</div>

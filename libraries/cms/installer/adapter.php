@@ -979,6 +979,12 @@ abstract class JInstallerAdapter extends JAdapterInstance
 					{
 						if ($method != 'postflight')
 						{
+<<<<<<< HEAD
+=======
+							// Clean and close the output buffer
+							ob_end_clean();
+
+>>>>>>> joomla/staging
 							// The script failed, rollback changes
 							throw new RuntimeException(
 								JText::sprintf(
@@ -998,6 +1004,12 @@ abstract class JInstallerAdapter extends JAdapterInstance
 					{
 						if ($method != 'uninstall')
 						{
+<<<<<<< HEAD
+=======
+							// Clean and close the output buffer
+							ob_end_clean();
+
+>>>>>>> joomla/staging
 							// The script failed, rollback changes
 							throw new RuntimeException(
 								JText::sprintf(

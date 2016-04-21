@@ -13,7 +13,7 @@
  * @package     Joomla.UnitTest
  * @subpackage  Cache
  */
-class JCacheTest extends PHPUnit_Framework_TestCase
+class JCacheTest extends TestCase
 {
 	/** @var JCache */
 	protected $object;
@@ -34,11 +34,28 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		parent::setUp();
-		include_once JPATH_PLATFORM . '/joomla/cache/cache.php';
-		include_once JPATH_PLATFORM . '/joomla/cache/controller.php';
-		include_once JPATH_PLATFORM . '/joomla/cache/storage.php';
 
 		$this->checkAvailability();
+<<<<<<< HEAD
+=======
+
+		$this->saveFactoryState();
+
+		JFactory::$application = $this->getMockCmsApp();
+	}
+
+	/**
+	 * Tears down the fixture, for example, close a network connection.
+	 * This method is called after a test is executed.
+	 *
+	 * @return void
+	 */
+	protected function tearDown()
+	{
+		$this->restoreFactoryState();
+
+		parent::tearDown();
+>>>>>>> joomla/staging
 	}
 
 	/**
@@ -48,6 +65,7 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 	 */
 	private function checkAvailability()
 	{
+<<<<<<< HEAD
 		$config = JFactory::getConfig();
 		$host = $config->get('memcache_server_host', 'localhost');
 		$port = $config->get('memcache_server_port', 11211);
@@ -61,6 +79,19 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 			&& class_exists('Memcache')
 			&& $memcacheServerAvailable;
 		$this->available['xcache'] = extension_loaded('xcache');
+=======
+		$this->available = array(
+			'apc'       => JCacheStorageApc::isSupported(),
+			'apcu'      => JCacheStorageApcu::isSupported(),
+			'cachelite' => JCacheStorageCachelite::isSupported(),
+			'file'      => true,
+			'memcache'  => JCacheStorageMemcache::isSupported(),
+			'memcached' => JCacheStorageMemcached::isSupported(),
+			'redis'     => JCacheStorageRedis::isSupported(),
+			'wincache'  => JCacheStorageWincache::isSupported(),
+			'xcache'    => JCacheStorageXcache::isSupported(),
+		);
+>>>>>>> joomla/staging
 	}
 
 	private function setDefaultOptions()
@@ -457,6 +488,7 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 		$this->setDefaultOptions();
 
 		$storages = array(
+<<<<<<< HEAD
 			'file'         => 'JCacheStorageFile',
 			'apc'          => 'JCacheStorageApc',
 			'xcache'       => 'JCacheStorageXcache',
@@ -465,6 +497,21 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 		);
 
 		$cases = array();
+=======
+			'apc'          => 'JCacheStorageApc',
+			'apcu'         => 'JCacheStorageApcu',
+			'cachelite'    => 'JCacheStorageCachelite',
+			'file'         => 'JCacheStorageFile',
+			'memcache'     => 'JCacheStorageMemcache',
+			'memcached'    => 'JCacheStorageMemcached',
+			'redis'        => 'JCacheStorageRedis',
+			'wincache'     => 'JCacheStorageWincache',
+			'xcache'       => 'JCacheStorageXcache',
+		);
+
+		$cases = array();
+
+>>>>>>> joomla/staging
 		foreach ($storages as $key => $class)
 		{
 			$options = $this->defaultOptions;
@@ -492,6 +539,10 @@ class JCacheTest extends PHPUnit_Framework_TestCase
 		{
 			$this->markTestSkipped("The {$options['storage']} storage handler is currently not available");
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> joomla/staging
 		$this->object = JCache::getInstance($handler, $options);
 
 		$this->assertThat(

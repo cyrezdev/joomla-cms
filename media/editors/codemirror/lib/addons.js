@@ -1650,6 +1650,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
   "use strict";
   var WRAP_CLASS = "CodeMirror-activeline";
   var BACK_CLASS = "CodeMirror-activeline-background";
+<<<<<<< HEAD
+=======
+  var GUTT_CLASS = "CodeMirror-activeline-gutter";
+>>>>>>> joomla/staging
 
   CodeMirror.defineOption("styleActiveLine", false, function(cm, val, old) {
     var prev = old && old != CodeMirror.Init;
@@ -1668,6 +1672,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
     for (var i = 0; i < cm.state.activeLines.length; i++) {
       cm.removeLineClass(cm.state.activeLines[i], "wrap", WRAP_CLASS);
       cm.removeLineClass(cm.state.activeLines[i], "background", BACK_CLASS);
+<<<<<<< HEAD
+=======
+      cm.removeLineClass(cm.state.activeLines[i], "gutter", GUTT_CLASS);
+>>>>>>> joomla/staging
     }
   }
 
@@ -1692,6 +1700,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
       for (var i = 0; i < active.length; i++) {
         cm.addLineClass(active[i], "wrap", WRAP_CLASS);
         cm.addLineClass(active[i], "background", BACK_CLASS);
+<<<<<<< HEAD
+=======
+        cm.addLineClass(active[i], "gutter", GUTT_CLASS);
+>>>>>>> joomla/staging
       }
       cm.state.activeLines = active;
     });
@@ -1868,6 +1880,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
     { keys: 'v', type: 'action', action: 'toggleVisualMode' },
     { keys: 'V', type: 'action', action: 'toggleVisualMode', actionArgs: { linewise: true }},
     { keys: '<C-v>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true }},
+<<<<<<< HEAD
+=======
+    { keys: '<C-q>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true }},
+>>>>>>> joomla/staging
     { keys: 'gv', type: 'action', action: 'reselectLastSelection' },
     { keys: 'J', type: 'action', action: 'joinLines', isEdit: true },
     { keys: 'p', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: true, isEdit: true }},
@@ -2385,6 +2401,12 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
         // Add user defined key bindings.
         exCommandDispatcher.map(lhs, rhs, ctx);
       },
+<<<<<<< HEAD
+=======
+      unmap: function(lhs, ctx) {
+        exCommandDispatcher.unmap(lhs, ctx);
+      },
+>>>>>>> joomla/staging
       // TODO: Expose setOption and getOption as instance methods. Need to decide how to namespace
       // them, or somehow make them work with the existing CodeMirror setOption/getOption API.
       setOption: setOption,

@@ -297,7 +297,12 @@ class CategoriesModelCategories extends JModelList
 				a.lft, 
 				a.rgt, 
 				a.language, 
+<<<<<<< HEAD
 				l.title, 
+=======
+				l.title,
+				l.image,
+>>>>>>> joomla/staging
 				uc.name, 
 				ag.title, 
 				ua.name'

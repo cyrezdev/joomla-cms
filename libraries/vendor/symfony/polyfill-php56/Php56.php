@@ -122,6 +122,7 @@ final class Php56
         // Do the main replacement
         $result = strtr($subject, $charMap);
 
+<<<<<<< HEAD
         // Encode leading/trailing spaces if self::LDAP_ESCAPE_DN is passed
         if ($flags & self::LDAP_ESCAPE_DN) {
             if ($result[0] === ' ') {
@@ -133,6 +134,8 @@ final class Php56
             }
         }
 
+=======
+>>>>>>> joomla/staging
         return $result;
     }
 }

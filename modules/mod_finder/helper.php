@@ -47,7 +47,11 @@ class ModFinderHelper
 		// Add a field for Itemid if we need one.
 		if ($needId)
 		{
+<<<<<<< HEAD
 			$id = JFactory::getApplication()->input->get('Itemid', '0', 'int');
+=======
+			$id = $paramItem ? $paramItem : JFactory::getApplication()->input->get('Itemid', '0', 'int');
+>>>>>>> joomla/staging
 			$fields[] = '<input type="hidden" name="Itemid" value="' . $id . '" />';
 		}
 

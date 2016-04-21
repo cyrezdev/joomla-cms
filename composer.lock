@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "d500f4784ce37841dad0b29e32660849",
+=======
+    "hash": "e4a0c44baa97f2acbd3ef1fe14f63200",
+>>>>>>> joomla/staging
     "content-hash": "800b07fe877fd7416bf7c046ad42a55a",
     "packages": [
         {
@@ -230,6 +234,7 @@
         },
         {
             "name": "joomla/filter",
+<<<<<<< HEAD
             "version": "1.1.5",
             "source": {
                 "type": "git",
@@ -243,17 +248,40 @@
                 "shasum": ""
             },
             "require": {
+=======
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/filter.git",
+                "reference": "45a504f0cd6fa2312a0260955e957435ca2cedc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/filter/zipball/45a504f0cd6fa2312a0260955e957435ca2cedc9",
+                "reference": "45a504f0cd6fa2312a0260955e957435ca2cedc9",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/string": "~1.3",
+>>>>>>> joomla/staging
                 "php": ">=5.3.10"
             },
             "require-dev": {
                 "joomla/language": "~1.0",
+<<<<<<< HEAD
                 "joomla/string": "~1.0",
+=======
+>>>>>>> joomla/staging
                 "phpunit/phpunit": "4.*",
                 "squizlabs/php_codesniffer": "1.*"
             },
             "suggest": {
+<<<<<<< HEAD
                 "joomla/language": "Required only if you want to use `OutputFilter::stringURLSafe`.",
                 "joomla/string": "Required only if you want to use `OutputFilter::stringURLSafe` and `OutputFilter::stringURLUnicodeSlug`."
+=======
+                "joomla/language": "Required only if you want to use `OutputFilter::stringURLSafe`."
+>>>>>>> joomla/staging
             },
             "type": "joomla-package",
             "extra": {
@@ -278,7 +306,11 @@
                 "framework",
                 "joomla"
             ],
+<<<<<<< HEAD
             "time": "2014-12-12 21:46:44"
+=======
+            "time": "2016-01-08 17:27:47"
+>>>>>>> joomla/staging
         },
         {
             "name": "joomla/input",
@@ -384,17 +416,30 @@
         },
         {
             "name": "joomla/session",
+<<<<<<< HEAD
             "version": "1.3.0",
+=======
+            "version": "1.3.1",
+>>>>>>> joomla/staging
             "target-dir": "Joomla/Session",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/session.git",
+<<<<<<< HEAD
                 "reference": "6b5d16661213ea41d3ef7dcb8c8d355e18e75d45"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/joomla-framework/session/zipball/6b5d16661213ea41d3ef7dcb8c8d355e18e75d45",
                 "reference": "6b5d16661213ea41d3ef7dcb8c8d355e18e75d45",
+=======
+                "reference": "a91ea38b797f505c8ab20773604b901b567ed0ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/session/zipball/a91ea38b797f505c8ab20773604b901b567ed0ab",
+                "reference": "a91ea38b797f505c8ab20773604b901b567ed0ab",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
@@ -429,7 +474,11 @@
                 "joomla",
                 "session"
             ],
+<<<<<<< HEAD
             "time": "2015-07-26 23:44:05"
+=======
+            "time": "2015-12-14 18:23:13"
+>>>>>>> joomla/staging
         },
         {
             "name": "joomla/string",
@@ -517,6 +566,7 @@
         },
         {
             "name": "joomla/utilities",
+<<<<<<< HEAD
             "version": "1.3.3",
             "source": {
                 "type": "git",
@@ -527,6 +577,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/joomla-framework/utilities/zipball/3e43b0806c194a92b58a176b73d6cc2dc6c9c3a4",
                 "reference": "3e43b0806c194a92b58a176b73d6cc2dc6c9c3a4",
+=======
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/utilities.git",
+                "reference": "ecf18231ff86ab06cf555a7c3ed4dd447ae39e9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/utilities/zipball/ecf18231ff86ab06cf555a7c3ed4dd447ae39e9b",
+                "reference": "ecf18231ff86ab06cf555a7c3ed4dd447ae39e9b",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
@@ -560,7 +622,11 @@
                 "joomla",
                 "utilities"
             ],
+<<<<<<< HEAD
             "time": "2015-03-28 17:52:43"
+=======
+            "time": "2015-09-05 16:41:24"
+>>>>>>> joomla/staging
         },
         {
             "name": "leafo/lessphp",
@@ -605,6 +671,7 @@
         },
         {
             "name": "paragonie/random_compat",
+<<<<<<< HEAD
             "version": "1.0.10",
             "source": {
                 "type": "git",
@@ -615,11 +682,29 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/paragonie/random_compat/zipball/2fa50aa2f17066fa74ba00d943e8cee1a98284af",
                 "reference": "2fa50aa2f17066fa74ba00d943e8cee1a98284af",
+=======
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
+                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
             },
+<<<<<<< HEAD
+=======
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*"
+            },
+>>>>>>> joomla/staging
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
@@ -646,7 +731,11 @@
                 "pseudorandom",
                 "random"
             ],
+<<<<<<< HEAD
             "time": "2015-10-23 13:21:37"
+=======
+            "time": "2016-02-29 17:25:04"
+>>>>>>> joomla/staging
         },
         {
             "name": "phpmailer/phpmailer",
@@ -749,6 +838,7 @@
         },
         {
             "name": "symfony/polyfill-php56",
+<<<<<<< HEAD
             "version": "v1.0.0",
             "source": {
                 "type": "git",
@@ -759,6 +849,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/a6bd4770a6967517e6610529e14afaa3111094a3",
                 "reference": "a6bd4770a6967517e6610529e14afaa3111094a3",
+=======
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php56.git",
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/4d891fff050101a53a4caabb03277284942d1ad9",
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
@@ -768,7 +870,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "1.0-dev"
+=======
+                    "dev-master": "1.1-dev"
+>>>>>>> joomla/staging
                 }
             },
             "autoload": {
@@ -801,7 +907,11 @@
                 "portable",
                 "shim"
             ],
+<<<<<<< HEAD
             "time": "2015-11-04 20:28:58"
+=======
+            "time": "2016-01-20 09:13:37"
+>>>>>>> joomla/staging
         },
         {
             "name": "symfony/polyfill-util",
@@ -857,6 +967,7 @@
         },
         {
             "name": "symfony/yaml",
+<<<<<<< HEAD
             "version": "v2.7.5",
             "source": {
                 "type": "git",
@@ -867,11 +978,24 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/yaml/zipball/31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
                 "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
+=======
+            "version": "v2.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "2a4ee40acb880c56f29fb1b8886e7ffe94f3b995"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/2a4ee40acb880c56f29fb1b8886e7ffe94f3b995",
+                "reference": "2a4ee40acb880c56f29fb1b8886e7ffe94f3b995",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
             },
+<<<<<<< HEAD
             "require-dev": {
                 "symfony/phpunit-bridge": "~2.7"
             },
@@ -879,12 +1003,25 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.7-dev"
+=======
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+>>>>>>> joomla/staging
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Yaml\\": ""
+<<<<<<< HEAD
                 }
+=======
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+>>>>>>> joomla/staging
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -902,7 +1039,11 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
+<<<<<<< HEAD
             "time": "2015-09-14 14:14:09"
+=======
+            "time": "2016-02-23 07:41:20"
+>>>>>>> joomla/staging
         }
     ],
     "packages-dev": [
@@ -927,7 +1068,11 @@
                 "athletic/athletic": "~0.1.8",
                 "ext-pdo": "*",
                 "ext-phar": "*",
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.0",
+=======
+                "phpunit/phpunit": "4.*",
+>>>>>>> joomla/staging
                 "squizlabs/php_codesniffer": "~2.0"
             },
             "type": "library",
@@ -1028,7 +1173,11 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.0"
+=======
+                "phpunit/phpunit": "4.*"
+>>>>>>> joomla/staging
             },
             "suggest": {
                 "dflydev/markdown": "~1.0",
@@ -1388,7 +1537,11 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.2"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "type": "library",
             "extra": {
@@ -1420,6 +1573,7 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
             "version": "4.8.11",
             "source": {
                 "type": "git",
@@ -1430,6 +1584,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bdd199472410fd7e32751f9c814c7e06f2c21bd5",
                 "reference": "bdd199472410fd7e32751f9c814c7e06f2c21bd5",
+=======
+            "version": "4.8.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6e351261f9cd33daf205a131a1ba61c6d33bd483",
+                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483",
+>>>>>>> joomla/staging
                 "shasum": ""
             },
             "require": {
@@ -1511,7 +1677,11 @@
                 "sebastian/exporter": "~1.2"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.4"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "suggest": {
                 "ext-soap": "*"
@@ -1566,7 +1736,11 @@
                 "sebastian/exporter": "~1.2"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.4"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "type": "library",
             "extra": {
@@ -1680,7 +1854,11 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.4"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "type": "library",
             "extra": {
@@ -1731,7 +1909,11 @@
                 "sebastian/recursion-context": "~1.0"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.4"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "type": "library",
             "extra": {
@@ -1796,7 +1978,11 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.2"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "suggest": {
                 "ext-uopz": "*"
@@ -1847,7 +2033,11 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "phpunit/phpunit": "~4.4"
+=======
+                "phpunit/phpunit": "~4.8"
+>>>>>>> joomla/staging
             },
             "type": "library",
             "extra": {

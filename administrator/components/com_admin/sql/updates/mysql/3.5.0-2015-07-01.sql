@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- WARNING: Do not rename this file with a different date. It MUST run before any other table updates when upgrading to Joomla! 3.5.0
 
 -- Index and field changes to cater for UTF-8 Multibyte (utf8mb4)
@@ -87,3 +88,7 @@ ALTER TABLE `#__menu` MODIFY `alias` varchar(191) CHARACTER SET utf8mb4 COLLATE 
 ALTER TABLE `#__newsfeeds` MODIFY `alias` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 ALTER TABLE `#__tags` MODIFY `alias` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 ALTER TABLE `#__ucm_content` MODIFY `core_alias` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
+=======
+ALTER TABLE `#__session` MODIFY `session_id` varchar(191) NOT NULL DEFAULT '';
+ALTER TABLE `#__user_keys` MODIFY `series` varchar(191) NOT NULL;
+>>>>>>> joomla/staging

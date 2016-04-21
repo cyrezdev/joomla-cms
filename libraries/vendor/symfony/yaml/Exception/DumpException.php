@@ -15,8 +15,11 @@ namespace Symfony\Component\Yaml\Exception;
  * Exception class thrown when an error occurs during dumping.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
  *
  * @api
+=======
+>>>>>>> joomla/staging
  */
 class DumpException extends RuntimeException
 {

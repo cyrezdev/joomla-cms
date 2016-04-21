@@ -70,7 +70,11 @@ class JCacheStorageMainTest extends TestCase
 
 			foreach ($names as $name)
 			{
-				$ret[] = array($name);
+				// Make sure the adapter is not in our blacklist; this means the adapter cannot be tested or there is an internal failure
+				if (!in_array($name, array('redis')))
+				{
+					$ret["$name adapter"] = array($name);
+				}
 			}
 		}
 
@@ -88,8 +92,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheHit($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID';
 		$group = '_testing';
 		$data = 'testData';
@@ -117,8 +124,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheMiss($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID2423423';
 		$group = '_testing';
 		$data = 'testData';
@@ -132,7 +142,11 @@ class JCacheStorageMainTest extends TestCase
 
 	/**
 	 * Test...
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> joomla/staging
 	 * @medium
 	 *
 	 * @dataProvider provider
@@ -143,8 +157,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheTimeout($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID';
 		$group = '_testing';
 		$data = 'testData';
@@ -175,8 +192,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheRemove($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID';
 		$group = '_testing';
 		$data = 'testData';
@@ -210,8 +230,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheClearGroup($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID';
 		$group = '_testing';
 		$data = 'testData';
@@ -244,8 +267,11 @@ class JCacheStorageMainTest extends TestCase
 	 */
 	public function testCacheClearNotGroup($store)
 	{
+<<<<<<< HEAD
 		$this->checkStore($store);
 
+=======
+>>>>>>> joomla/staging
 		$id = 'randomTestID';
 		$group = '_testing';
 		$data = 'testData';

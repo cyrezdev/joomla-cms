@@ -13,8 +13,13 @@
 
 CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
+<<<<<<< HEAD
   var htmlFound = CodeMirror.modes.hasOwnProperty("xml");
   var htmlMode = CodeMirror.getMode(cmCfg, htmlFound ? {name: "xml", htmlMode: true} : "text/plain");
+=======
+  var htmlMode = CodeMirror.getMode(cmCfg, "text/html");
+  var htmlModeMissing = htmlMode.name == "null"
+>>>>>>> joomla/staging
 
   function getMode(name) {
     if (CodeMirror.findModeByName) {
@@ -55,8 +60,11 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   if (modeCfg.tokenTypeOverrides === undefined)
     modeCfg.tokenTypeOverrides = {};
 
+<<<<<<< HEAD
   var codeDepth = 0;
 
+=======
+>>>>>>> joomla/staging
   var tokenTypes = {
     header: "header",
     code: "comment",
@@ -121,7 +129,11 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     state.quote = 0;
     // Reset state.indentedCode
     state.indentedCode = false;
+<<<<<<< HEAD
     if (!htmlFound && state.f == htmlBlock) {
+=======
+    if (htmlModeMissing && state.f == htmlBlock) {
+>>>>>>> joomla/staging
       state.f = inlineNormal;
       state.block = blockNormal;
     }
@@ -215,7 +227,11 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       if (state.localMode) state.localState = state.localMode.startState();
       state.f = state.block = local;
       if (modeCfg.highlightFormatting) state.formatting = "code-block";
+<<<<<<< HEAD
       state.code = true;
+=======
+      state.code = -1
+>>>>>>> joomla/staging
       return getType(state);
     }
 
@@ -224,12 +240,24 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   function htmlBlock(stream, state) {
     var style = htmlMode.token(stream, state.htmlState);
+<<<<<<< HEAD
     if ((htmlFound && state.htmlState.tagStart === null &&
          (!state.htmlState.context && state.htmlState.tokenize.isInText)) ||
         (state.md_inside && stream.current().indexOf(">") > -1)) {
       state.f = inlineNormal;
       state.block = blockNormal;
       state.htmlState = null;
+=======
+    if (!htmlModeMissing) {
+      var inner = CodeMirror.innerMode(htmlMode, state.htmlState)
+      if ((inner.mode.name == "xml" && inner.state.tagStart === null &&
+           (!inner.state.context && inner.state.tokenize.isInText)) ||
+          (state.md_inside && stream.current().indexOf(">") > -1)) {
+        state.f = inlineNormal;
+        state.block = blockNormal;
+        state.htmlState = null;
+      }
+>>>>>>> joomla/staging
     }
     return style;
   }
@@ -253,9 +281,15 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     state.f = inlineNormal;
     state.fencedChars = null;
     if (modeCfg.highlightFormatting) state.formatting = "code-block";
+<<<<<<< HEAD
     state.code = true;
     var returnType = getType(state);
     state.code = false;
+=======
+    state.code = 1
+    var returnType = getType(state);
+    state.code = 0
+>>>>>>> joomla/staging
     return returnType;
   }
 
@@ -378,6 +412,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
     var ch = stream.next();
 
+<<<<<<< HEAD
     if (ch === '\\') {
       stream.next();
       if (modeCfg.highlightFormatting) {
@@ -387,6 +422,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       }
     }
 
+=======
+>>>>>>> joomla/staging
     // Matches link titles present on next line
     if (state.linkTitle) {
       state.linkTitle = false;
@@ -405,6 +442,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     if (ch === '`') {
       var previousFormatting = state.formatting;
       if (modeCfg.highlightFormatting) state.formatting = "code";
+<<<<<<< HEAD
       var t = getType(state);
       var before = stream.pos;
       stream.eatWhile('`');
@@ -420,11 +458,37 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         }
         state.formatting = previousFormatting;
         return getType(state);
+=======
+      stream.eatWhile('`');
+      var count = stream.current().length
+      if (state.code == 0) {
+        state.code = count
+        return getType(state)
+      } else if (count == state.code) { // Must be exact
+        var t = getType(state)
+        state.code = 0
+        return t
+      } else {
+        state.formatting = previousFormatting
+        return getType(state)
+>>>>>>> joomla/staging
       }
     } else if (state.code) {
       return getType(state);
     }
 
+<<<<<<< HEAD
+=======
+    if (ch === '\\') {
+      stream.next();
+      if (modeCfg.highlightFormatting) {
+        var type = getType(state);
+        var formattingEscape = tokenTypes.formatting + "-escape";
+        return type ? type + " " + formattingEscape : formattingEscape;
+      }
+    }
+
+>>>>>>> joomla/staging
     if (ch === '!' && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
       stream.match(/\[[^\]]*\]/);
       state.inline = state.f = linkHref;
@@ -692,6 +756,10 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         linkText: false,
         linkHref: false,
         linkTitle: false,
+<<<<<<< HEAD
+=======
+        code: 0,
+>>>>>>> joomla/staging
         em: false,
         strong: false,
         header: 0,

@@ -70,7 +70,14 @@
           return "operator";
         case "\\":
           if (stream.match(/\\[a-z]+/)) return "string-2";
+<<<<<<< HEAD
           else return null;
+=======
+          else {
+            stream.next();
+            return "atom";
+          }
+>>>>>>> joomla/staging
         case ".":
         case ",":
         case ";":

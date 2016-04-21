@@ -525,7 +525,14 @@ class JSession implements IteratorAggregate
 			return null;
 		}
 
+<<<<<<< HEAD
 		return $this->data->set($namespace . '.' . $name, $value);
+=======
+		$prev = $this->data->get($namespace . '.' . $name, null);
+		$this->data->set($namespace . '.' . $name, $value);
+
+		return $prev;
+>>>>>>> joomla/staging
 	}
 
 	/**

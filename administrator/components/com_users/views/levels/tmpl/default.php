@@ -21,8 +21,11 @@ $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $canOrder   = $user->authorise('core.edit.state', 'com_users');
 $saveOrder  = $listOrder == 'a.ordering';
+<<<<<<< HEAD
 $sortFields = $this->getSortFields();
 $saveOrder  = $listOrder == 'a.ordering';
+=======
+>>>>>>> joomla/staging
 
 if ($saveOrder)
 {
@@ -30,6 +33,7 @@ if ($saveOrder)
 	JHtml::_('sortablelist.sortable', 'levelList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
+<<<<<<< HEAD
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.orderTable = function()
 	{
@@ -47,6 +51,8 @@ JFactory::getDocument()->addScriptDeclaration('
 		Joomla.tableOrdering(order, dirn, "");
 	};
 ');
+=======
+>>>>>>> joomla/staging
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_users&view=levels');?>" method="post" id="adminForm" name="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -57,6 +63,7 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
+<<<<<<< HEAD
 		<div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
 				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('COM_USERS_SEARCH_TITLE_LEVELS'); ?>" />
@@ -85,6 +92,9 @@ JFactory::getDocument()->addScriptDeclaration('
 				</select>
 			</div>
 		</div>
+=======
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => false))); ?>
+>>>>>>> joomla/staging
 		<div class="clearfix"> </div>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
@@ -95,22 +105,37 @@ JFactory::getDocument()->addScriptDeclaration('
 				<thead>
 					<tr>
 						<th width="1%" class="nowrap center hidden-phone">
+<<<<<<< HEAD
 							<?php echo JHtml::_('grid.sort', '<span class="icon-menu-2"></span>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+=======
+							<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+>>>>>>> joomla/staging
 						</th>
 						<th width="1%">
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						<th>
+<<<<<<< HEAD
 							<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_LEVEL_NAME', 'a.title', $listDirn, $listOrder); ?>
 						</th>
 						<th width="5%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+=======
+							<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_LEVEL_NAME', 'a.title', $listDirn, $listOrder); ?>
+						</th>
+						<th width="5%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+>>>>>>> joomla/staging
 						</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
+<<<<<<< HEAD
 						<td colspan="15">
+=======
+						<td colspan="4">
+>>>>>>> joomla/staging
 							<?php echo $this->pagination->getListFooter(); ?>
 						</td>
 					</tr>
@@ -162,11 +187,12 @@ JFactory::getDocument()->addScriptDeclaration('
 				</tbody>
 			</table>
 		<?php endif;?>
+<<<<<<< HEAD
 
+=======
+>>>>>>> joomla/staging
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

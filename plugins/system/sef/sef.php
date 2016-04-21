@@ -17,24 +17,37 @@ defined('_JEXEC') or die;
 class PlgSystemSef extends JPlugin
 {
 	/**
+<<<<<<< HEAD
+=======
+	 * Application object.
+	 *
+	 * @var    JApplicationCms
+	 * @since  3.5
+	 */
+	protected $app;
+
+	/**
+>>>>>>> joomla/staging
 	 * Add the canonical uri to the head.
 	 *
 	 * @return  void
 	 *
-	 * @since   3.0
+	 * @since   3.5
 	 */
-	public function onAfterRoute()
+	public function onAfterDispatch()
 	{
-		$app = JFactory::getApplication();
-		$doc = JFactory::getDocument();
+		$doc = $this->app->getDocument();
 
-		if ($app->getName() != 'site' || $doc->getType() !== 'html')
+		if (!$this->app->isSite() || $doc->getType() !== 'html')
 		{
 			return;
 		}
 
+<<<<<<< HEAD
 		$router = $app::getRouter();
 
+=======
+>>>>>>> joomla/staging
 		$uri     = JUri::getInstance();
 		$domain  = $this->params->get('domain');
 
@@ -43,7 +56,11 @@ class PlgSystemSef extends JPlugin
 			$domain = $uri->toString(array('scheme', 'host', 'port'));
 		}
 
+<<<<<<< HEAD
 		$link = $domain . JRoute::_('index.php?' . http_build_query($router->getVars()), false);
+=======
+		$link = $domain . JRoute::_('index.php?' . http_build_query($this->app->getRouter()->getVars()), false);
+>>>>>>> joomla/staging
 
 		if (rawurldecode($uri->toString()) !== $link)
 		{
@@ -58,13 +75,44 @@ class PlgSystemSef extends JPlugin
 	 */
 	public function onAfterRender()
 	{
-		$app = JFactory::getApplication();
-
-		if ($app->getName() != 'site' || $app->get('sef') == '0')
+		if (!$this->app->isSite() || $this->app->get('sef', '0') == '0')
 		{
-			return true;
+			return;
 		}
 
+<<<<<<< HEAD
+		if ($app->getName() != 'site' || $app->get('sef') == '0')
+=======
+		// Replace src links.
+		$base   = JUri::base(true) . '/';
+		$buffer = $this->app->getBody();
+
+		// Replace index.php URI by SEF URI.
+		if (strpos($buffer, 'href="index.php?') !== false)
+		{
+			preg_match_all('#href="index.php\?([^"]+)"#m', $buffer, $matches);
+			foreach ($matches[1] as $urlQueryString)
+			{
+				$buffer = str_replace('href="index.php?' . $urlQueryString . '"', 'href="' . JRoute::_('index.php?' . $urlQueryString) . '"', $buffer);
+			}
+			$this->checkBuffer($buffer);
+		}
+
+		// Check for all unknown protocals (a protocol must contain at least one alpahnumeric character followed by a ":").
+		$protocols = '[a-zA-Z0-9\-]+:';
+		$attributes = array('href=', 'src=', 'poster=');
+		foreach ($attributes as $attribute)
+>>>>>>> joomla/staging
+		{
+			if (strpos($buffer, $attribute) !== false)
+			{
+				$regex  = '#\s+' . $attribute . '"(?!/|' . $protocols . '|\#|\')([^"]+)"#m';
+				$buffer = preg_replace($regex, ' ' . $attribute . '"' . $base . '$1"', $buffer);
+				$this->checkBuffer($buffer);
+			}
+		}
+
+<<<<<<< HEAD
 		// Replace src links.
 		$base   = JUri::base(true) . '/';
 		$buffer = $app->getBody();
@@ -111,6 +159,60 @@ class PlgSystemSef extends JPlugin
 		$app->setBody($buffer);
 
 		return true;
+=======
+		// Replace all unknown protocals in javascript window open events.
+		if (strpos($buffer, 'window.open(') !== false)
+		{
+			$regex  = '#onclick="window.open\(\'(?!/|' . $protocols . '|\#)([^/]+[^\']*?\')#m';
+			$buffer = preg_replace($regex, 'onclick="window.open(\'' . $base . '$1', $buffer);
+			$this->checkBuffer($buffer);
+		}
+
+		// Replace all unknown protocols in onmouseover and onmouseout attributes.
+		$attributes = array('onmouseover=', 'onmouseout=');
+		foreach ($attributes as $attribute)
+		{
+			if (strpos($buffer, $attribute) !== false)
+			{
+				$regex  = '#' . $attribute . '"this.src=([\']+)(?!/|' . $protocols . '|\#|\')([^"]+)"#m';
+				$buffer = preg_replace($regex, $attribute . '"this.src=$1' . $base . '$2"', $buffer);
+				$this->checkBuffer($buffer);
+			}
+		}
+
+		// Replace all unknown protocols in CSS background image.
+		if (strpos($buffer, 'style=') !== false)
+		{
+			$regex  = '#style=\s*[\'\"](.*):\s*url\s*\([\'\"]?(?!/|' . $protocols . '|\#)([^\)\'\"]+)[\'\"]?\)#m';
+			$buffer = preg_replace($regex, 'style="$1: url(\'' . $base . '$2$3\')', $buffer);
+			$this->checkBuffer($buffer);
+		}
+
+		// Replace all unknown protocols in OBJECT param tag.
+		if (strpos($buffer, '<param') !== false)
+		{
+			// OBJECT <param name="xx", value="yy"> -- fix it only inside the <param> tag.
+			$regex  = '#(<param\s+)name\s*=\s*"(movie|src|url)"[^>]\s*value\s*=\s*"(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
+			$buffer = preg_replace($regex, '$1name="$2" value="' . $base . '$3"', $buffer);
+			$this->checkBuffer($buffer);
+
+			// OBJECT <param value="xx", name="yy"> -- fix it only inside the <param> tag.
+			$regex  = '#(<param\s+[^>]*)value\s*=\s*"(?!/|' . $protocols . '|\#|\')([^"]*)"\s*name\s*=\s*"(movie|src|url)"#m';
+			$buffer = preg_replace($regex, '<param value="' . $base . '$2" name="$3"', $buffer);
+			$this->checkBuffer($buffer);
+		}
+
+		// Replace all unknown protocols in OBJECT tag.
+		if (strpos($buffer, '<object') !== false)
+		{
+			$regex  = '#(<object\s+[^>]*)data\s*=\s*"(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
+			$buffer = preg_replace($regex, '$1data="' . $base . '$2"', $buffer);
+			$this->checkBuffer($buffer);
+		}
+
+		// Use the replaced HTML body.
+		$this->app->setBody($buffer);
+>>>>>>> joomla/staging
 	}
 
 	/**
@@ -149,9 +251,13 @@ class PlgSystemSef extends JPlugin
 	 * @param   array  &$matches  An array of matches (see preg_match_all).
 	 *
 	 * @return  string
+	 *
+	 * @deprecated  4.0  No replacement.
 	 */
 	protected static function route(&$matches)
 	{
+		JLog::add(__METHOD__ . ' is deprecated, no replacement.', JLog::WARNING, 'deprecated');
+
 		$url   = $matches[1];
 		$url   = str_replace('&amp;', '&', $url);
 		$route = JRoute::_('index.php?' . $url);

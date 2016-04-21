@@ -22,6 +22,7 @@ class PlgEditorCodemirror extends JPlugin
 	 *
 	 * @var    boolean
 	 * @since  12.3
+<<<<<<< HEAD
 	 */
 	protected $autoloadLanguage = true;
 
@@ -30,6 +31,16 @@ class PlgEditorCodemirror extends JPlugin
 	 *
 	 * @var array
 	 */
+=======
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
+	 * Mapping of syntax to CodeMirror modes.
+	 *
+	 * @var array
+	 */
+>>>>>>> joomla/staging
 	protected $modeAlias = array(
 			'html' => 'htmlmixed',
 			'ini'  => 'properties'
@@ -38,7 +49,11 @@ class PlgEditorCodemirror extends JPlugin
 	/**
 	 * Initialises the Editor.
 	 *
+<<<<<<< HEAD
 	 * @return	string	JavaScript Initialization string.
+=======
+	 * @return  void
+>>>>>>> joomla/staging
 	 */
 	public function onInit()
 	{
@@ -47,7 +62,11 @@ class PlgEditorCodemirror extends JPlugin
 		// Do this only once.
 		if ($done)
 		{
+<<<<<<< HEAD
 			return true;
+=======
+			return;
+>>>>>>> joomla/staging
 		}
 
 		$done = true;
@@ -64,6 +83,7 @@ class PlgEditorCodemirror extends JPlugin
 
 		$displayData = (object) array('params'  => $this->params);
 
+<<<<<<< HEAD
 		$initScript = JLayoutHelper::render('editors.codemirror.init', $displayData, __DIR__ . '/layouts');
 
 		if ($initScript)
@@ -95,8 +115,35 @@ class PlgEditorCodemirror extends JPlugin
 		}
 
 		$dispatcher->trigger('onCodeMirrorAfterInit', array(&$this->params));
+=======
+		// We need to do output buffering here because layouts may actually 'echo' things which we do not want.
+		ob_start();
+		JLayoutHelper::render('editors.codemirror.init', $displayData, __DIR__ . '/layouts');
+		ob_end_clean();
 
-		return '';
+		$font = $this->params->get('fontFamily', 0);
+		$fontInfo = $this->getFontInfo($font);
+>>>>>>> joomla/staging
+
+		if (isset($fontInfo))
+		{
+			if (isset($fontInfo->url))
+			{
+				$doc->addStylesheet($fontInfo->url);
+			}
+
+			if (isset($fontInfo->css))
+			{
+				$displayData->fontFamily = $fontInfo->css . '!important';
+			}
+		}
+
+		// We need to do output buffering here because layouts may actually 'echo' things which we do not want.
+		ob_start();
+		JLayoutHelper::render('editors.codemirror.styles', $displayData, __DIR__ . '/layouts');
+		ob_end_clean();
+
+		$dispatcher->trigger('onCodeMirrorAfterInit', array(&$this->params));
 	}
 
 	/**
@@ -153,8 +200,14 @@ class PlgEditorCodemirror extends JPlugin
 
 		$done = true;
 
+<<<<<<< HEAD
 		$js = ";function jInsertEditorText(text, editor) { Joomla.editors.instances[editor].replaceSelection(text); }\n";
 		JFactory::getDocument()->addScriptDeclaration($js);
+=======
+		JFactory::getDocument()->addScriptDeclaration("
+		;function jInsertEditorText(text, editor) { Joomla.editors.instances[editor].replaceSelection(text); }
+		");
+>>>>>>> joomla/staging
 
 		return true;
 	}
@@ -321,6 +374,7 @@ class PlgEditorCodemirror extends JPlugin
 
 		return $return;
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Gets font info from the json data file
@@ -333,6 +387,20 @@ class PlgEditorCodemirror extends JPlugin
 	{
 		static $fonts;
 
+=======
+
+	/**
+	 * Gets font info from the json data file
+	 *
+	 * @param   string  $font  A key from the $fonts array.
+	 *
+	 * @return  object
+	 */
+	protected function getFontInfo($font)
+	{
+		static $fonts;
+
+>>>>>>> joomla/staging
 		if (!$fonts)
 		{
 			$fonts = json_decode(JFile::read(__DIR__ . '/fonts.json'), true);

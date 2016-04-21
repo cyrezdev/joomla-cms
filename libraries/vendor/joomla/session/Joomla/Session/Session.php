@@ -2,7 +2,11 @@
 /**
  * Part of the Joomla Framework Session Package
  *
+<<<<<<< HEAD
  * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+=======
+ * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+>>>>>>> joomla/staging
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -112,7 +116,10 @@ class Session implements \IteratorAggregate
 	 *
 	 * @var    Input
 	 * @since  1.0
+<<<<<<< HEAD
 	 * @deprecated  2.0
+=======
+>>>>>>> joomla/staging
 	 */
 	private $input = null;
 
@@ -820,9 +827,30 @@ class Session implements \IteratorAggregate
 	 * @return  string  Generated token
 	 *
 	 * @since   1.0
+<<<<<<< HEAD
 	 */
 	protected function _createToken($length = 32)
 	{
+=======
+	 * @deprecated  2.0  Use createToken instead
+	 */
+	protected function _createToken($length = 32)
+	{
+		return $this->createToken($length);
+	}
+
+	/**
+	 * Create a token-string
+	 *
+	 * @param   integer  $length  Length of string
+	 *
+	 * @return  string  Generated token
+	 *
+	 * @since   1.3.1
+	 */
+	protected function createToken($length = 32)
+	{
+>>>>>>> joomla/staging
 		static $chars = '0123456789abcdef';
 		$max = strlen($chars) - 1;
 		$token = '';
@@ -1021,7 +1049,10 @@ class Session implements \IteratorAggregate
 
 			$this->set('session.client.address', null);
 			$this->set('session.client.forwarded', null);
+<<<<<<< HEAD
 			$this->set('session.client.browser', null);
+=======
+>>>>>>> joomla/staging
 			$this->set('session.token', null);
 		}
 
@@ -1040,6 +1071,7 @@ class Session implements \IteratorAggregate
 			}
 		}
 
+<<<<<<< HEAD
 		// Record proxy forwarded for in the session in case we need it later
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 		{
@@ -1048,14 +1080,26 @@ class Session implements \IteratorAggregate
 
 		// Check for client address
 		if (in_array('fix_adress', $this->security) && isset($_SERVER['REMOTE_ADDR']))
+=======
+		$remoteAddr = $this->input->server->getString('REMOTE_ADDR', '');
+
+		// Check for client address
+		if (in_array('fix_adress', $this->security) && !empty($remoteAddr) && filter_var($remoteAddr, FILTER_VALIDATE_IP) !== false)
+>>>>>>> joomla/staging
 		{
 			$ip = $this->get('session.client.address');
 
 			if ($ip === null)
 			{
+<<<<<<< HEAD
 				$this->set('session.client.address', $_SERVER['REMOTE_ADDR']);
 			}
 			elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
+=======
+				$this->set('session.client.address', $remoteAddr);
+			}
+			elseif ($remoteAddr !== $ip)
+>>>>>>> joomla/staging
 			{
 				$this->setState('error');
 
@@ -1063,6 +1107,7 @@ class Session implements \IteratorAggregate
 			}
 		}
 
+<<<<<<< HEAD
 		// Check for clients browser
 		if (in_array('fix_browser', $this->security) && isset($_SERVER['HTTP_USER_AGENT']))
 		{
@@ -1077,6 +1122,14 @@ class Session implements \IteratorAggregate
 				// @todo remove code: 				$this->_state	=	'error';
 				// @todo remove code: 				return false;
 			}
+=======
+		$xForwardedFor = $this->input->server->getString('HTTP_X_FORWARDED_FOR', '');
+
+		// Record proxy forwarded for in the session in case we need it later
+		if (!empty($xForwardedFor) && filter_var($xForwardedFor, FILTER_VALIDATE_IP) !== false)
+		{
+			$this->set('session.client.forwarded', $xForwardedFor);
+>>>>>>> joomla/staging
 		}
 
 		return true;

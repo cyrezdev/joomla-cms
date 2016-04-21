@@ -54,7 +54,12 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
+<<<<<<< HEAD
 			$name = $key['info'];
+=======
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$name = isset($key['info']) ? $key['info'] : $key['key'];
+>>>>>>> joomla/staging
 			$namearr = explode('-', $name);
 
 			if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache')
@@ -135,9 +140,16 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
+<<<<<<< HEAD
 			if (strpos($key['info'], $secret . '-cache-' . $group . '-') === 0 xor $mode != 'group')
+=======
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$internalKey = isset($key['info']) ? $key['info'] : $key['key'];
+
+			if (strpos($internalKey, $secret . '-cache-' . $group . '-') === 0 xor $mode != 'group')
+>>>>>>> joomla/staging
 			{
-				apc_delete($key['info']);
+				apc_delete($internalKey);
 			}
 		}
 
@@ -159,9 +171,12 @@ class JCacheStorageApc extends JCacheStorage
 
 		foreach ($keys as $key)
 		{
-			if (strpos($key['info'], $secret . '-cache-'))
+			// If APCu is being used for this adapter, the internal key name changed with APCu 4.0.7 from key to info
+			$internalKey = isset($key['info']) ? $key['info'] : $key['key'];
+
+			if (strpos($internalKey, $secret . '-cache-'))
 			{
-				apc_fetch($key['info']);
+				apc_fetch($internalKey);
 			}
 		}
 	}

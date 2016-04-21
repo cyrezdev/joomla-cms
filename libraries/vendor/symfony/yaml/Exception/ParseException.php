@@ -15,8 +15,11 @@ namespace Symfony\Component\Yaml\Exception;
  * Exception class thrown when an error occurs during parsing.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
  *
  * @api
+=======
+>>>>>>> joomla/staging
  */
 class ParseException extends RuntimeException
 {

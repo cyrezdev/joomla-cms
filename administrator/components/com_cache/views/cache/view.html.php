@@ -16,6 +16,10 @@ defined('_JEXEC') or die;
  */
 class CacheViewCache extends JViewLegacy
 {
+	/**
+	 * @var object client object.
+	 * @deprecated 4.0
+	 */
 	protected $client;
 
 	protected $data;
@@ -33,10 +37,18 @@ class CacheViewCache extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+<<<<<<< HEAD
 		$this->data       = $this->get('Data');
 		$this->client     = $this->get('Client');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
+=======
+		$this->data          = $this->get('Data');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+>>>>>>> joomla/staging
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -60,7 +72,17 @@ class CacheViewCache extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolbarHelper::title(JText::_('COM_CACHE_CLEAR_CACHE'), 'lightning clear');
+		$state = $this->get('State');
+
+		if ($state->get('client_id') == 1)
+		{
+			JToolbarHelper::title(JText::_('COM_CACHE_CLEAR_CACHE_ADMIN_TITLE'), 'lightning clear');
+		}
+		else
+		{
+			JToolbarHelper::title(JText::_('COM_CACHE_CLEAR_CACHE_SITE_TITLE'), 'lightning clear');
+		}
+
 		JToolbarHelper::custom('delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
 		JToolbarHelper::divider();
 
@@ -73,6 +95,7 @@ class CacheViewCache extends JViewLegacy
 		JToolbarHelper::help('JHELP_SITE_MAINTENANCE_CLEAR_CACHE');
 
 		JHtmlSidebar::setAction('index.php?option=com_cache');
+<<<<<<< HEAD
 
 		JHtmlSidebar::addFilter(
 			// @todo We need an actual label here.
@@ -80,5 +103,7 @@ class CacheViewCache extends JViewLegacy
 			'filter_client_id',
 			JHtml::_('select.options', CacheHelper::getClientOptions(), 'value', 'text', $this->state->get('clientId'))
 		);
+=======
+>>>>>>> joomla/staging
 	}
 }

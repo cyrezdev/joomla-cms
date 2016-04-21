@@ -1583,6 +1583,16 @@ abstract class JTable extends JObject implements JObservableInterface, JTableInt
 			$query = $this->_db->getQuery(true)
 				->update($this->_tbl)
 				->set($this->_db->quoteName($publishedField) . ' = ' . (int) $state);
+<<<<<<< HEAD
+=======
+
+			// If publishing, set published date/time if not previously set
+			if ($state && property_exists($this, 'publish_up') && (int) $this->publish_up == 0)
+			{
+				$nowDate = $this->_db->quote(JFactory::getDate()->toSql());
+				$query->set($this->_db->quoteName($this->getColumnAlias('publish_up')) . ' = ' . $nowDate);
+			}
+>>>>>>> joomla/staging
 
 			// Determine if there is checkin support for the table.
 			if (property_exists($this, 'checked_out') || property_exists($this, 'checked_out_time'))

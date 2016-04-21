@@ -216,5 +216,9 @@ tinymce.addI18n('fr',{
 "Tools": "Outils",
 "View": "Voir",
 "Table": "Tableau",
+<<<<<<< HEAD
+=======
+"Language": "Langue",
+>>>>>>> joomla/staging
 "Format": "Format"
 });

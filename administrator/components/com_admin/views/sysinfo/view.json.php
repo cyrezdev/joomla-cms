@@ -59,7 +59,11 @@ class AdminViewSysinfo extends JViewLegacy
 			'info'        => $model->getSafeData('info'),
 			'phpSettings' => $model->getSafeData('phpSettings'),
 			'config'      => $model->getSafeData('config'),
+<<<<<<< HEAD
 			'directories' => $model->getSafeData('directory'),
+=======
+			'directories' => $model->getSafeData('directory', true),
+>>>>>>> joomla/staging
 			'phpInfo'     => $model->getSafeData('phpInfoArray'),
 			'extensions'  => $model->getSafeData('extensions')
 		);

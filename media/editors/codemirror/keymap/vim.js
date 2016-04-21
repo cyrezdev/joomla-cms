@@ -164,6 +164,10 @@
     { keys: 'v', type: 'action', action: 'toggleVisualMode' },
     { keys: 'V', type: 'action', action: 'toggleVisualMode', actionArgs: { linewise: true }},
     { keys: '<C-v>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true }},
+<<<<<<< HEAD
+=======
+    { keys: '<C-q>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true }},
+>>>>>>> joomla/staging
     { keys: 'gv', type: 'action', action: 'reselectLastSelection' },
     { keys: 'J', type: 'action', action: 'joinLines', isEdit: true },
     { keys: 'p', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: true, isEdit: true }},
@@ -681,6 +685,12 @@
         // Add user defined key bindings.
         exCommandDispatcher.map(lhs, rhs, ctx);
       },
+<<<<<<< HEAD
+=======
+      unmap: function(lhs, ctx) {
+        exCommandDispatcher.unmap(lhs, ctx);
+      },
+>>>>>>> joomla/staging
       // TODO: Expose setOption and getOption as instance methods. Need to decide how to namespace
       // them, or somehow make them work with the existing CodeMirror setOption/getOption API.
       setOption: setOption,

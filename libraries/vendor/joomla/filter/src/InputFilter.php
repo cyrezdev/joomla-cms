@@ -2,12 +2,21 @@
 /**
  * Part of the Joomla Framework Filter Package
  *
+<<<<<<< HEAD
  * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+=======
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+>>>>>>> joomla/staging
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
 namespace Joomla\Filter;
 
+<<<<<<< HEAD
+=======
+use Joomla\String\StringHelper;
+
+>>>>>>> joomla/staging
 /**
  * InputFilter is a class for filtering input from any data source
  *
@@ -23,6 +32,10 @@ class InputFilter
 	 *
 	 * @var    InputFilter[]
 	 * @since  1.0
+<<<<<<< HEAD
+=======
+	 * @deprecated  2.0
+>>>>>>> joomla/staging
 	 */
 	protected static $instances = array();
 
@@ -94,7 +107,11 @@ class InputFilter
 		'script',
 		'style',
 		'title',
+<<<<<<< HEAD
 		'xml'
+=======
+		'xml',
+>>>>>>> joomla/staging
 	);
 
 	/**
@@ -108,11 +125,19 @@ class InputFilter
 		'background',
 		'codebase',
 		'dynsrc',
+<<<<<<< HEAD
 		'lowsrc'
 	);
 
 	/**
 	 * Constructor for inputFilter class. Only first parameter is required.
+=======
+		'lowsrc',
+	);
+
+	/**
+	 * Constructor for InputFilter class.
+>>>>>>> joomla/staging
 	 *
 	 * @param   array    $tagsArray   List of user-defined tags
 	 * @param   array    $attrArray   List of user-defined attributes
@@ -142,9 +167,15 @@ class InputFilter
 	 *
 	 * @param   mixed   $source  Input string/array-of-string to be 'cleaned'
 	 * @param   string  $type    The return type for the variable:
+<<<<<<< HEAD
 	 *                           INT:       An integer,
 	 *                           UINT:      An unsigned integer,
 	 *                           FLOAT:     A floating point number,
+=======
+	 *                           INT:       An integer, or an array of integers,
+	 *                           UINT:      An unsigned integer, or an array of unsigned integers,
+	 *                           FLOAT:     A floating point number, or an array of floating point numbers,
+>>>>>>> joomla/staging
 	 *                           BOOLEAN:   A boolean value,
 	 *                           WORD:      A string containing A-Z or underscores only (not case sensitive),
 	 *                           ALNUM:     A string containing A-Z or 0-9 only (not case sensitive),
@@ -153,7 +184,11 @@ class InputFilter
 	 *                           STRING:    A fully decoded and sanitised string (default),
 	 *                           HTML:      A sanitised string,
 	 *                           ARRAY:     An array,
+<<<<<<< HEAD
 	 *                           PATH:      A sanitised file path,
+=======
+	 *                           PATH:      A sanitised file path, or an array of sanitised file paths,
+>>>>>>> joomla/staging
 	 *                           TRIM:      A string trimmed from normal, non-breaking and multibyte spaces
 	 *                           USERNAME:  Do not use (use an application specific filter),
 	 *                           RAW:       The raw string is returned with no filtering,
@@ -166,11 +201,16 @@ class InputFilter
 	 */
 	public function clean($source, $type = 'string')
 	{
+<<<<<<< HEAD
 		// Handle the type constraint
+=======
+		// Handle the type constraint cases
+>>>>>>> joomla/staging
 		switch (strtoupper($type))
 		{
 			case 'INT':
 			case 'INTEGER':
+<<<<<<< HEAD
 				// Only use the first integer value
 				preg_match('/-?[0-9]+/', (string) $source, $matches);
 				$result = isset($matches[0]) ? (int) $matches[0] : 0;
@@ -180,13 +220,78 @@ class InputFilter
 				// Only use the first integer value
 				preg_match('/-?[0-9]+/', (string) $source, $matches);
 				$result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+=======
+				$pattern = '/[-+]?[0-9]+/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (int) $matches[0] : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? (int) $matches[0] : 0;
+				}
+
+				break;
+
+			case 'UINT':
+				$pattern = '/[-+]?[0-9]+/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+				}
+
+>>>>>>> joomla/staging
 				break;
 
 			case 'FLOAT':
 			case 'DOUBLE':
+<<<<<<< HEAD
 				// Only use the first floating point value
 				preg_match('/-?[0-9]+(\.[0-9]+)?/', (string) $source, $matches);
 				$result = isset($matches[0]) ? (float) $matches[0] : 0;
+=======
+				$pattern = '/[-+]?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (float) $matches[0] : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? (float) $matches[0] : 0;
+				}
+
+>>>>>>> joomla/staging
 				break;
 
 			case 'BOOL':
@@ -195,6 +300,7 @@ class InputFilter
 				break;
 
 			case 'WORD':
+<<<<<<< HEAD
 				$result = (string) preg_replace('/[^A-Z_]/i', '', $source);
 				break;
 
@@ -217,6 +323,123 @@ class InputFilter
 
 			case 'HTML':
 				$result = (string) $this->remove((string) $source);
+=======
+				$pattern = '/[^A-Z_]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
+				break;
+
+			case 'ALNUM':
+				$pattern = '/[^A-Z0-9]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
+				break;
+
+			case 'CMD':
+				$pattern = '/[^A-Z0-9_\.-]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$cleaned  = (string) preg_replace($pattern, '', $eachString);
+						$result[] = ltrim($cleaned, '.');
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+					$result = ltrim($result, '.');
+				}
+
+				break;
+
+			case 'BASE64':
+				$pattern = '/[^A-Z0-9\/+=]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
+				break;
+
+			case 'STRING':
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) $this->remove($this->decode((string) $eachString));
+					}
+				}
+				else
+				{
+					$result = (string) $this->remove($this->decode((string) $source));
+				}
+
+				break;
+
+			case 'HTML':
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) $this->remove((string) $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) $this->remove((string) $source);
+				}
+
+>>>>>>> joomla/staging
 				break;
 
 			case 'ARRAY':
@@ -225,6 +448,7 @@ class InputFilter
 
 			case 'PATH':
 				$pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+<<<<<<< HEAD
 				preg_match($pattern, (string) $source, $matches);
 				$result = isset($matches[0]) ? (string) $matches[0] : '';
 				break;
@@ -237,6 +461,68 @@ class InputFilter
 
 			case 'USERNAME':
 				$result = (string) preg_replace('/[\x00-\x1F\x7F<>"\'%&]/', '', $source);
+=======
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (string) $matches[0] : '';
+					}
+				}
+				else
+				{
+					preg_match($pattern, $source, $matches);
+					$result = isset($matches[0]) ? (string) $matches[0] : '';
+				}
+
+				break;
+
+			case 'TRIM':
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$cleaned  = (string) trim($eachString);
+						$cleaned  = StringHelper::trim($cleaned, chr(0xE3) . chr(0x80) . chr(0x80));
+						$result[] = StringHelper::trim($cleaned, chr(0xC2) . chr(0xA0));
+					}
+				}
+				else
+				{
+					$result = (string) trim($source);
+					$result = StringHelper::trim($result, chr(0xE3) . chr(0x80) . chr(0x80));
+					$result = StringHelper::trim($result, chr(0xC2) . chr(0xA0));
+				}
+
+				break;
+
+			case 'USERNAME':
+				$pattern = '/[\x00-\x1F\x7F<>"\'%&]/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
+>>>>>>> joomla/staging
 				break;
 
 			case 'RAW':
@@ -268,7 +554,11 @@ class InputFilter
 					}
 					else
 					{
+<<<<<<< HEAD
 						// Not an array or string.. return the passed parameter
+=======
+						// Not an array or string... return the passed parameter
+>>>>>>> joomla/staging
 						$result = $source;
 					}
 				}

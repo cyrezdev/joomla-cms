@@ -75,7 +75,11 @@ class ConfigHelperConfig extends JHelperContent
 			if (self::hasComponentConfig($component) && (!$authCheck || $user->authorise('core.manage', $component)))
 			{
 				self::loadLanguageForComponent($component);
+<<<<<<< HEAD
 				$result[$component] = JApplication::stringURLSafe(JText::_($component)) . '_' . $component;
+=======
+				$result[$component] = JApplicationHelper::stringURLSafe(JText::_($component)) . '_' . $component;
+>>>>>>> joomla/staging
 			}
 		}
 

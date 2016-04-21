@@ -16,6 +16,11 @@ namespace Symfony\Component\Yaml;
  * YAML strings.
  *
  * @author Matthew Lewinski <matthew@lewinski.org>
+<<<<<<< HEAD
+=======
+ *
+ * @internal
+>>>>>>> joomla/staging
  */
 class Escaper
 {
@@ -31,13 +36,21 @@ class Escaper
                                      "\x08",  "\x09",  "\x0a",  "\x0b",  "\x0c",  "\x0d",  "\x0e",  "\x0f",
                                      "\x10",  "\x11",  "\x12",  "\x13",  "\x14",  "\x15",  "\x16",  "\x17",
                                      "\x18",  "\x19",  "\x1a",  "\x1b",  "\x1c",  "\x1d",  "\x1e",  "\x1f",
+<<<<<<< HEAD
                                      "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9",);
+=======
+                                     "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9");
+>>>>>>> joomla/staging
     private static $escaped = array('\\\\', '\\"', '\\\\', '\\"',
                                      '\\0',   '\\x01', '\\x02', '\\x03', '\\x04', '\\x05', '\\x06', '\\a',
                                      '\\b',   '\\t',   '\\n',   '\\v',   '\\f',   '\\r',   '\\x0e', '\\x0f',
                                      '\\x10', '\\x11', '\\x12', '\\x13', '\\x14', '\\x15', '\\x16', '\\x17',
                                      '\\x18', '\\x19', '\\x1a', '\\e',   '\\x1c', '\\x1d', '\\x1e', '\\x1f',
+<<<<<<< HEAD
                                      '\\N', '\\_', '\\L', '\\P',);
+=======
+                                     '\\N', '\\_', '\\L', '\\P');
+>>>>>>> joomla/staging
 
     /**
      * Determines if a PHP value would require double quoting in YAML.

@@ -79,6 +79,12 @@ class JErrorPage
 
 				echo $app->toString();
 
+<<<<<<< HEAD
+=======
+				$app->close(0);
+
+				// This return is needed to ensure the test suite does not trigger the non-Exception handling below
+>>>>>>> joomla/staging
 				return;
 			}
 			catch (Exception $e)
@@ -97,7 +103,18 @@ class JErrorPage
 
 		if ($isException)
 		{
+<<<<<<< HEAD
 			$message .= ': ' . $e->getMessage() . ': ' . $error->getMessage();
+=======
+			$message .= ': ';
+
+			if (isset($e))
+			{
+				$message .= $e->getMessage() . ': ';
+			}
+
+			$message .= $error->getMessage();
+>>>>>>> joomla/staging
 		}
 
 		echo $message;

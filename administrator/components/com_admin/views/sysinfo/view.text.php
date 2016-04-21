@@ -55,7 +55,11 @@ class AdminViewSysinfo extends JViewLegacy
 			}
 		}
 
+<<<<<<< HEAD
 		echo implode("\n\n", $lines);
+=======
+		echo str_replace(JPATH_ROOT, 'xxxxxx', implode("\n\n", $lines));
+>>>>>>> joomla/staging
 
 		JFactory::getApplication()->close();
 	}
@@ -86,7 +90,11 @@ class AdminViewSysinfo extends JViewLegacy
 			),
 			'directories' => array(
 				'title' => JText::_('COM_ADMIN_DIRECTORY_PERMISSIONS', true),
+<<<<<<< HEAD
 				'data'  => $model->getSafeData('directory')
+=======
+				'data'  => $model->getSafeData('directory', true)
+>>>>>>> joomla/staging
 			),
 			'phpInfo' => array(
 				'title' => JText::_('COM_ADMIN_PHP_INFORMATION', true),

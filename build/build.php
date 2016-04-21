@@ -112,9 +112,15 @@ $filesArray = array(
  * These paths are from the repository root without the leading slash
  */
 $doNotPackage = array(
+<<<<<<< HEAD
 	'.gitignore',
 	'.travis.yml',
 	'CONTRIBUTING.md',
+=======
+	'.github',
+	'.gitignore',
+	'.travis.yml',
+>>>>>>> joomla/staging
 	'README.md',
 	'build',
 	'build.xml',

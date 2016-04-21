@@ -57,10 +57,26 @@ if (isset($params['keyboard']))
  * $('body').addClass('modal-open');
  * $('body').removeClass('modal-open')
  *
+<<<<<<< HEAD
+=======
+ * Scrolling inside bootstrap modals on small screens (adapt to window viewport and avoid modal off screen).
+ * - max-height on .modal-body  if param height is set but too high for the window viewport height.
+ *                              (147 = modal-header height + modal-footer height + 20px padding top and bottom)
+ * - max-height on .iframe      max-height of the modal-body (deducting the 1% of the padding of the modal-body class)
+ *
+>>>>>>> joomla/staging
  * Specific hack for Bootstrap 2.3.x
  */
 $script[] = "jQuery(document).ready(function($) {";
 $script[] = "   $('#" . $selector . "').on('show', function() {";
+<<<<<<< HEAD
+=======
+
+// Set max-height on modal-body.
+$script[] = "       var modalBodyHeight = $(window).height()-147;";
+$script[] = "       $('.modal-body').css('max-height', modalBodyHeight);";
+
+>>>>>>> joomla/staging
 $script[] = "       $('body').addClass('modal-open');";
 
 if (isset($params['url']))
@@ -71,6 +87,12 @@ if (isset($params['url']))
 	$script[] = "       var modalBody = $(this).find('.modal-body');";
 	$script[] = "       modalBody.find('iframe').remove();";
 	$script[] = "       modalBody.prepend('" . trim($iframeHtml) . "');";
+<<<<<<< HEAD
+=======
+
+	// Set max-height for iframe.
+	$script[] = "       $('.iframe').css('max-height', modalBodyHeight*0.98);";
+>>>>>>> joomla/staging
 }
 
 $script[] = "   }).on('hide', function () {";

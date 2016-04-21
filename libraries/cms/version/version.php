@@ -38,7 +38,11 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
+<<<<<<< HEAD
 	const DEV_LEVEL = '0-beta2';
+=======
+	const DEV_LEVEL = '0-rc';
+>>>>>>> joomla/staging
 
 	/**
 	 * Development status.
@@ -46,7 +50,11 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
+<<<<<<< HEAD
 	const DEV_STATUS = 'Beta';
+=======
+	const DEV_STATUS = 'Release Candidate';
+>>>>>>> joomla/staging
 
 	/**
 	 * Build number.
@@ -70,7 +78,11 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
+<<<<<<< HEAD
 	const RELDATE = '27-January-2017';
+=======
+	const RELDATE = '10-March-2016';
+>>>>>>> joomla/staging
 
 	/**
 	 * Release time.
@@ -78,7 +90,11 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
+<<<<<<< HEAD
 	const RELTIME = '23:00';
+=======
+	const RELTIME = '00:30';
+>>>>>>> joomla/staging
 
 	/**
 	 * Release timezone.

@@ -60,6 +60,10 @@
   position: absolute;
   cursor: pointer;
   color: #44c;
+<<<<<<< HEAD
+=======
+  z-index: 3;
+>>>>>>> joomla/staging
 }
 
 .CodeMirror-merge-copy-reverse {

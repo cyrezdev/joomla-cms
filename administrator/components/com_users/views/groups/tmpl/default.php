@@ -19,7 +19,10 @@ JHtml::_('formbehavior.chosen', 'select');
 $user       = JFactory::getUser();
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
+<<<<<<< HEAD
 $sortFields = $this->getSortFields();
+=======
+>>>>>>> joomla/staging
 
 JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 
@@ -54,6 +57,7 @@ JFactory::getDocument()->addScriptDeclaration('
 			Joomla.submitform(task);
 		};
 ');
+<<<<<<< HEAD
 
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.orderTable = function()
@@ -72,6 +76,8 @@ JFactory::getDocument()->addScriptDeclaration('
 		Joomla.tableOrdering(order, dirn, "");
 	};
 ');
+=======
+>>>>>>> joomla/staging
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_users&view=groups');?>" method="post" name="adminForm" id="adminForm">
 <?php if (!empty( $this->sidebar)) : ?>
@@ -82,6 +88,7 @@ JFactory::getDocument()->addScriptDeclaration('
 <?php else : ?>
 	<div id="j-main-container">
 <?php endif;?>
+<<<<<<< HEAD
 		<div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
 				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('COM_USERS_SEARCH_IN_GROUPS'); ?>" />
@@ -110,6 +117,9 @@ JFactory::getDocument()->addScriptDeclaration('
 				</select>
 			</div>
 		</div>
+=======
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'options' => array('filterButton' => false))); ?>
+>>>>>>> joomla/staging
 		<div class="clearfix"> </div>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
@@ -123,6 +133,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php echo JHtml::_('grid.checkall'); ?>
 						</th>
 						<th>
+<<<<<<< HEAD
 							<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_GROUP_TITLE', 'a.title', $listDirn, $listOrder); ?>
 						</th>
 						<th width="20%">
@@ -130,6 +141,15 @@ JFactory::getDocument()->addScriptDeclaration('
 						</th>
 						<th width="1%">
 							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+=======
+							<?php echo JHtml::_('searchtools.sort', 'COM_USERS_HEADING_GROUP_TITLE', 'a.title', $listDirn, $listOrder); ?>
+						</th>
+						<th width="20%" class="center">
+							<?php echo JText::_('COM_USERS_HEADING_USERS_IN_GROUP'); ?>
+						</th>
+						<th width="5%">
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+>>>>>>> joomla/staging
 						</th>
 					</tr>
 				</thead>
@@ -171,8 +191,13 @@ JFactory::getDocument()->addScriptDeclaration('
 								<?php echo JText::_('COM_USERS_DEBUG_GROUP');?></a></div>
 							<?php endif; ?>
 						</td>
+<<<<<<< HEAD
 						<td>
 							<?php echo $item->user_count ? $item->user_count : ''; ?>
+=======
+						<td class="center">
+							<?php echo $item->user_count ? '<a class="badge badge-success" href="' . JRoute::_('index.php?option=com_users&view=users&filter[group_id]=' . $item->id) . '">' . $item->user_count . '</a>' : '<span class="badge">0</span>'; ?>
+>>>>>>> joomla/staging
 						</td>
 						<td>
 							<?php echo (int) $item->id; ?>
@@ -185,8 +210,6 @@ JFactory::getDocument()->addScriptDeclaration('
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

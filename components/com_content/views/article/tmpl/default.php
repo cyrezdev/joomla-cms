@@ -45,11 +45,19 @@ JHtml::_('behavior.caption');
 	<?php endif; ?>
 	<?php if ($params->get('show_title') || $params->get('show_author')) : ?>
 	<div class="page-header">
+<<<<<<< HEAD
 		<h2 itemprop="name">
 			<?php if ($params->get('show_title')) : ?>
 				<?php echo $this->escape($this->item->title); ?>
 			<?php endif; ?>
 		</h2>
+=======
+		<?php if ($params->get('show_title')) : ?>
+			<h2 itemprop="name">
+				<?php echo $this->escape($this->item->title); ?>
+			</h2>
+		<?php endif; ?>
+>>>>>>> joomla/staging
 		<?php if ($this->item->state == 0) : ?>
 			<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 		<?php endif; ?>
@@ -113,8 +121,15 @@ JHtml::_('behavior.caption');
 		<?php echo $this->item->text; ?>
 	</div>
 
+<<<<<<< HEAD
 	<?php if ($useDefList && ($info == 1 || $info == 2)) : ?>
 		<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
+=======
+	<?php if ($info == 1 || $info == 2) : ?>
+		<?php if ($useDefList) : ?>
+			<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
+		<?php endif; ?>
+>>>>>>> joomla/staging
 		<?php if ($params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
 			<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 			<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>

@@ -339,6 +339,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		if (property_exists($result, 'Value'))
 		{
 			return $result->Value;
+<<<<<<< HEAD
 		}
 		else
 		{
@@ -360,6 +361,29 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		$this->setQuery('SHOW VARIABLES LIKE "collation_connection"');
 		$result = $this->loadObject();
 
+=======
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Method to get the database connection collation, as reported by the driver. If the connector doesn't support
+	 * reporting this value please return an empty string.
+	 *
+	 * @return  string
+	 */
+	public function getConnectionCollation()
+	{
+		$this->connect();
+
+		// Attempt to get the database collation by accessing the server system variable.
+		$this->setQuery('SHOW VARIABLES LIKE "collation_connection"');
+		$result = $this->loadObject();
+
+>>>>>>> joomla/staging
 		if (property_exists($result, 'Value'))
 		{
 			return $result->Value;
@@ -954,6 +978,7 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 	private function serverClaimsUtf8mb4Support()
 	{
 		$client_version = mysqli_get_client_info();
+<<<<<<< HEAD
 
 		if (strpos($client_version, 'mysqlnd') !== false)
 		{
@@ -964,6 +989,26 @@ class JDatabaseDriverMysqli extends JDatabaseDriver
 		else
 		{
 			return version_compare($client_version, '5.5.3', '>=');
+=======
+		$server_version = $this->getVersion();
+
+		if (version_compare($server_version, '5.5.3', '<'))
+		{
+			return false;
+		}
+		else
+		{
+			if (strpos($client_version, 'mysqlnd') !== false)
+			{
+				$client_version = preg_replace('/^\D+([\d.]+).*/', '$1', $client_version);
+
+				return version_compare($client_version, '5.0.9', '>=');
+			}
+			else
+			{
+				return version_compare($client_version, '5.5.3', '>=');
+			}
+>>>>>>> joomla/staging
 		}
 	}
 

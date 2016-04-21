@@ -76,6 +76,7 @@ body {
 	height: 100%;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+<<<<<<< HEAD
 }
 
 a:hover,
@@ -84,6 +85,16 @@ a:focus {
 	outline: none;
 }
 
+=======
+}
+
+a:hover,
+a:active,
+a:focus {
+	outline: none;
+}
+
+>>>>>>> joomla/staging
 /* Login */
 .view-login {
 	background-color: @loginBackground;
@@ -368,7 +379,11 @@ body .navbar-fixed-top {
 	z-index: 100;
 }
 @media (max-width: 767px) {
+<<<<<<< HEAD
 	/* Fix ios scrolling inside boottrap modals */
+=======
+	/* Fix ios scrolling inside bootstrap modals */
+>>>>>>> joomla/staging
 	body {
 		-webkit-overflow-scrolling: touch;
 	}
@@ -449,13 +464,28 @@ h6 {
 }
 
 /* Sidebar */
+<<<<<<< HEAD
+=======
+.sidebar-nav .nav-list {
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+>>>>>>> joomla/staging
 .sidebar-nav .nav-list > li > a {
 	color: #555;
+	padding: 3px 25px;
+	margin-left: -25px;
+	margin-right: -25px;
 }
 
 .sidebar-nav .nav-list > li.active > a {
 	color: #fff;
+<<<<<<< HEAD
 	margin-right: -16px;
+=======
+	margin-right: -26px;
+>>>>>>> joomla/staging
 }
 /* Quick-icons */
 .quick-icons .nav li + .nav-header {
@@ -1296,7 +1326,11 @@ body.modal-open {
   -ms-overflow-style: none;
 }
 
+<<<<<<< HEAD
 /*Corrects the modals padding*/
+=======
+/* Corrects the modals padding */
+>>>>>>> joomla/staging
 .field-media-wrapper .modal .modal-body {
 	padding: 5px 10px;
 	overflow: hidden;
@@ -1308,4 +1342,21 @@ body.modal-open {
 }
 .js-pstats-data-details dt {
 	width: 220px;
+<<<<<<< HEAD
 }
+=======
+}
+
+/* Corrects the media modal padding on small devices */
+@media (max-width: 767px) {
+	.field-media-wrapper .modal .modal-body {
+		padding: 5px 0;
+	}
+}
+
+/* Fix iOS scrolling inside bootstrap modals (using iframe) */
+.modal-body {
+	-webkit-overflow-scrolling: touch;
+	overflow-y: auto !important;
+}
+>>>>>>> joomla/staging

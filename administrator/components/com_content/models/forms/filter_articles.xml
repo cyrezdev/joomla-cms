@@ -88,7 +88,11 @@
 			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
 			onchange="this.form.submit();"
 <<<<<<< HEAD
+<<<<<<< HEAD
 			default=""
+=======
+			default="a.id DESC"
+>>>>>>> joomla/staging
 =======
 			default="a.id DESC"
 >>>>>>> joomla/staging

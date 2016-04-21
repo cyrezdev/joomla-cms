@@ -24,6 +24,7 @@ $archived  = $this->state->get('filter.published') == 2 ? true : false;
 $trashed   = $this->state->get('filter.published') == -2 ? true : false;
 $saveOrder = $listOrder == 'a.ordering';
 $columns   = 10;
+<<<<<<< HEAD
 
 $saveListPref =  $app->input->get('setdefault', '');
 $returnSaveDefaultURL = 'index.php?option=com_content&view=articles';
@@ -34,6 +35,8 @@ if ($saveListPref=='list_defaultordering')
 	$app->enqueueMessage(JText::_('JGLOBAL_DEFAULT_LIST_FULLORDERING_SUCCESS'), 'message');
 	$app->redirect($returnSaveDefaultURL);
 }
+=======
+>>>>>>> joomla/staging
 
 if ($saveOrder)
 {

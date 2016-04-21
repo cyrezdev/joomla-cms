@@ -110,6 +110,10 @@ tinymce.addI18n('nl',{
 "Insert column after": "Kolom erna invoegen",
 "Insert column before": "Kolom ervoor invoegen",
 "Insert date\/time": "Datum\/tijd invoegen",
+<<<<<<< HEAD
+=======
+"Insert\/Edit code sample": "Invoegen\/bewerken codevoorbeeld",
+>>>>>>> joomla/staging
 "Insert\/edit image": "Invoegen\/bewerken afbeelding",
 "Insert\/edit link": "Invoegen\/bewerken link",
 "Insert\/edit video": "Invoegen\/bewerken video",
@@ -126,6 +130,10 @@ tinymce.addI18n('nl',{
 "Italic": "Schuin",
 "Justify": "Uitvullen",
 "Keywords": "Trefwoorden",
+<<<<<<< HEAD
+=======
+"Language": "Language",
+>>>>>>> joomla/staging
 "Left": "Links",
 "Left to right": "Links naar rechts",
 "Lower Alpha": "Alfa (klein)",
@@ -154,6 +162,10 @@ tinymce.addI18n('nl',{
 "Paste your embed code below:": "Plak de insluitcode hieronder:",
 "Poster": "Poster",
 "Pre": "Pre",
+<<<<<<< HEAD
+=======
+"Preformatted": "Voorgeformateerd",
+>>>>>>> joomla/staging
 "Prev": "Vorige",
 "Preview": "Voorbeeld",
 "Print": "Printen",

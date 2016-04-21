@@ -147,7 +147,11 @@ class ClassLoader
      * appending or prepending to the ones previously set for this namespace.
      *
      * @param string       $prefix  The prefix/namespace, with trailing '\\'
+<<<<<<< HEAD
      * @param array|string $paths   The PSR-0 base directories
+=======
+     * @param array|string $paths   The PSR-4 base directories
+>>>>>>> joomla/staging
      * @param bool         $prepend Whether to prepend the directories
      *
      * @throws \InvalidArgumentException

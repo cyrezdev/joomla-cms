@@ -56,6 +56,11 @@
 
     var inp = dialog.getElementsByTagName("input")[0], button;
     if (inp) {
+<<<<<<< HEAD
+=======
+      inp.focus();
+
+>>>>>>> joomla/staging
       if (options.value) {
         inp.value = options.value;
         if (options.selectValueOnOpen !== false) {
@@ -79,8 +84,11 @@
       });
 
       if (options.closeOnBlur !== false) CodeMirror.on(inp, "blur", close);
+<<<<<<< HEAD
 
       inp.focus();
+=======
+>>>>>>> joomla/staging
     } else if (button = dialog.getElementsByTagName("button")[0]) {
       CodeMirror.on(button, "click", function() {
         close();

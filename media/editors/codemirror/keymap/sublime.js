@@ -105,7 +105,11 @@
     cm.setSelections(extended);
   };
 
+<<<<<<< HEAD
   map["Shift-" + ctrl + "K"] = "deleteLine";
+=======
+  map["Shift-Ctrl-K"] = "deleteLine";
+>>>>>>> joomla/staging
 
   function insertLine(cm, above) {
     if (cm.isReadOnly()) return CodeMirror.Pass

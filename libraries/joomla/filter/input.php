@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\String\StringHelper;
+
 /**
  * JFilterInput is a class for filtering input from any data source
  *
@@ -103,7 +105,7 @@ class JFilterInput
 		'script',
 		'style',
 		'title',
-		'xml'
+		'xml',
 	);
 
 	/**
@@ -117,7 +119,7 @@ class JFilterInput
 		'background',
 		'codebase',
 		'dynsrc',
-		'lowsrc'
+		'lowsrc',
 	);
 
 	/**
@@ -203,9 +205,9 @@ class JFilterInput
 	 *
 	 * @param   mixed   $source  Input string/array-of-string to be 'cleaned'
 	 * @param   string  $type    The return type for the variable:
-	 *                           INT:       An integer,
-	 *                           UINT:      An unsigned integer,
-	 *                           FLOAT:     A floating point number,
+	 *                           INT:       An integer, or an array of integers,
+	 *                           UINT:      An unsigned integer, or an array of unsigned integers,
+	 *                           FLOAT:     A floating point number, or an array of floating point numbers,
 	 *                           BOOLEAN:   A boolean value,
 	 *                           WORD:      A string containing A-Z or underscores only (not case sensitive),
 	 *                           ALNUM:     A string containing A-Z or 0-9 only (not case sensitive),
@@ -214,7 +216,11 @@ class JFilterInput
 	 *                           STRING:    A fully decoded and sanitised string (default),
 	 *                           HTML:      A sanitised string,
 	 *                           ARRAY:     An array,
+<<<<<<< HEAD
 	 *                           PATH:      A sanitised file path,
+=======
+	 *                           PATH:      A sanitised file path, or an array of sanitised file paths,
+>>>>>>> joomla/staging
 	 *                           TRIM:      A string trimmed from normal, non-breaking and multibyte spaces
 	 *                           USERNAME:  Do not use (use an application specific filter),
 	 *                           RAW:       The raw string is returned with no filtering,
@@ -234,57 +240,218 @@ class JFilterInput
 			$source = $this->stripUSC($source);
 		}
 
+<<<<<<< HEAD
 		// Handle the type constraint
+=======
+		// Handle the type constraint cases
+>>>>>>> joomla/staging
 		switch (strtoupper($type))
 		{
 			case 'INT':
 			case 'INTEGER':
-				// Only use the first integer value
-				preg_match('/-?[0-9]+/', (string) $source, $matches);
-				$result = @ (int) $matches[0];
+				$pattern = '/[-+]?[0-9]+/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Itterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (int) $matches[0] : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? (int) $matches[0] : 0;
+				}
+
 				break;
 
 			case 'UINT':
-				// Only use the first integer value
-				preg_match('/-?[0-9]+/', (string) $source, $matches);
-				$result = @ abs((int) $matches[0]);
+				$pattern = '/[-+]?[0-9]+/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Itterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+				}
+
 				break;
 
 			case 'FLOAT':
 			case 'DOUBLE':
-				// Only use the first floating point value
-				preg_match('/-?[0-9]+(\.[0-9]+)?/', (string) $source, $matches);
-				$result = @ (float) $matches[0];
+				$pattern = '/[-+]?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Itterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (float) $matches[0] : 0;
+					}
+				}
+				else
+				{
+					preg_match($pattern, (string) $source, $matches);
+					$result = isset($matches[0]) ? (float) $matches[0] : 0;
+				}
+
 				break;
 
 			case 'BOOL':
 			case 'BOOLEAN':
-				$result = (bool) $source;
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (bool) $eachString;
+					}
+				}
+				else
+				{
+					$result = (bool) $source;
+				}
+
 				break;
 
 			case 'WORD':
-				$result = (string) preg_replace('/[^A-Z_]/i', '', $source);
+				$pattern = '/[^A-Z_]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
 				break;
 
 			case 'ALNUM':
-				$result = (string) preg_replace('/[^A-Z0-9]/i', '', $source);
+				$pattern = '/[^A-Z0-9]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
 				break;
 
 			case 'CMD':
-				$result = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $source);
-				$result = ltrim($result, '.');
+				$pattern = '/[^A-Z0-9_\.-]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$cleaned  = (string) preg_replace($pattern, '', $eachString);
+						$result[] = ltrim($cleaned, '.');
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+					$result = ltrim($result, '.');
+				}
+
 				break;
 
 			case 'BASE64':
-				$result = (string) preg_replace('/[^A-Z0-9\/+=]/i', '', $source);
+				$pattern = '/[^A-Z0-9\/+=]/i';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
 				break;
 
 			case 'STRING':
-				$result = (string) $this->_remove($this->_decode((string) $source));
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) $this->remove($this->decode((string) $eachString));
+					}
+				}
+				else
+				{
+					$result = (string) $this->remove($this->decode((string) $source));
+				}
+
 				break;
 
 			case 'HTML':
-				$result = (string) $this->_remove((string) $source);
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) $this->remove((string) $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) $this->remove((string) $source);
+				}
+
 				break;
 
 			case 'ARRAY':
@@ -293,8 +460,52 @@ class JFilterInput
 
 			case 'PATH':
 				$pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+<<<<<<< HEAD
 				preg_match($pattern, (string) $source, $matches);
 				$result = @ (string) $matches[0];
+=======
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Itterate through the array
+					foreach ($source as $eachString)
+					{
+						preg_match($pattern, (string) $eachString, $matches);
+						$result[] = isset($matches[0]) ? (string) $matches[0] : '';
+					}
+				}
+				else
+				{
+					preg_match($pattern, $source, $matches);
+					$result = isset($matches[0]) ? (string) $matches[0] : '';
+				}
+
+				break;
+
+			case 'TRIM':
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$cleaned  = (string) trim($eachString);
+						$cleaned  = StringHelper::trim($cleaned, chr(0xE3) . chr(0x80) . chr(0x80));
+						$result[] = StringHelper::trim($cleaned, chr(0xC2) . chr(0xA0));
+					}
+				}
+				else
+				{
+					$result = (string) trim($source);
+					$result = StringHelper::trim($result, chr(0xE3) . chr(0x80) . chr(0x80));
+					$result = StringHelper::trim($result, chr(0xC2) . chr(0xA0));
+				}
+
+>>>>>>> joomla/staging
 				break;
 
 			case 'TRIM':
@@ -304,7 +515,23 @@ class JFilterInput
 				break;
 
 			case 'USERNAME':
-				$result = (string) preg_replace('/[\x00-\x1F\x7F<>"\'%&]/', '', $source);
+				$pattern = '/[\x00-\x1F\x7F<>"\'%&]/';
+
+				if (is_array($source))
+				{
+					$result = array();
+
+					// Iterate through the array
+					foreach ($source as $eachString)
+					{
+						$result[] = (string) preg_replace($pattern, '', $eachString);
+					}
+				}
+				else
+				{
+					$result = (string) preg_replace($pattern, '', $source);
+				}
+
 				break;
 
 			case 'RAW':
@@ -336,7 +563,7 @@ class JFilterInput
 					}
 					else
 					{
-						// Not an array or string.. return the passed parameter
+						// Not an array or string... return the passed parameter
 						$result = $source;
 					}
 				}
@@ -344,6 +571,31 @@ class JFilterInput
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Function to punyencode utf8 mail when saving content
+	 *
+	 * @param   string  $text  The strings to encode
+	 *
+	 * @return  string  The punyencoded mail
+	 *
+	 * @since   3.5
+	 */
+	public function emailToPunycode($text)
+	{
+		$pattern = '/(("mailto:)+[\w\.\-\+]+\@[^"?]+\.+[^."?]+("|\?))/';
+
+		if (preg_match_all($pattern, $text, $matches))
+		{
+			foreach ($matches[0] as $match)
+			{
+				$match  = (string) str_replace(array('?', '"'), '', $match);
+				$text   = (string) str_replace($match, JStringPunycode::emailToPunycode($match), $text);
+			}
+		}
+
+		return $text;
 	}
 
 	/**
@@ -360,9 +612,286 @@ class JFilterInput
 		$attrSubSet[0] = strtolower($attrSubSet[0]);
 		$attrSubSet[1] = strtolower($attrSubSet[1]);
 
-		return (((strpos($attrSubSet[1], 'expression') !== false) && ($attrSubSet[0]) == 'style') || (strpos($attrSubSet[1], 'javascript:') !== false) ||
-			(strpos($attrSubSet[1], 'behaviour:') !== false) || (strpos($attrSubSet[1], 'vbscript:') !== false) ||
-			(strpos($attrSubSet[1], 'mocha:') !== false) || (strpos($attrSubSet[1], 'livescript:') !== false));
+		return (((strpos($attrSubSet[1], 'expression') !== false) && ($attrSubSet[0]) == 'style')
+			|| (strpos($attrSubSet[1], 'javascript:') !== false)
+			|| (strpos($attrSubSet[1], 'behaviour:') !== false)
+			|| (strpos($attrSubSet[1], 'vbscript:') !== false)
+			|| (strpos($attrSubSet[1], 'mocha:') !== false)
+			|| (strpos($attrSubSet[1], 'livescript:') !== false));
+	}
+
+	/**
+	 * Checks an uploaded for suspicious naming and potential PHP contents which could indicate a hacking attempt.
+	 *
+	 * The options you can define are:
+	 * null_byte                   Prevent files with a null byte in their name (buffer overflow attack)
+	 * forbidden_extensions        Do not allow these strings anywhere in the file's extension
+	 * php_tag_in_content          Do not allow <?php tag in content
+	 * shorttag_in_content         Do not allow short tag <? in content
+	 * shorttag_extensions         Which file extensions to scan for short tags in content
+	 * fobidden_ext_in_content     Do not allow forbidden_extensions anywhere in content
+	 * php_ext_content_extensions  Which file extensions to scan for .php in content
+	 *
+	 * This code is an adaptation and improvement of Admin Tools' UploadShield feature,
+	 * relicensed and contributed by its author.
+	 *
+	 * @param   array  $file     An uploaded file descriptor
+	 * @param   array  $options  The scanner options (see the code for details)
+	 *
+	 * @return  boolean  True of the file is safe
+	 *
+	 * @since   3.4
+	 */
+	public static function isSafeFile($file, $options = array())
+	{
+		$defaultOptions = array(
+			// Null byte in file name
+			'null_byte'                  => true,
+			// Forbidden string in extension (e.g. php matched .php, .xxx.php, .php.xxx and so on)
+			'forbidden_extensions'       => array(
+				'php', 'phps', 'php5', 'php3', 'php4', 'inc', 'pl', 'cgi', 'fcgi', 'java', 'jar', 'py'
+			),
+			// <?php tag in file contents
+			'php_tag_in_content'         => true,
+			// <? tag in file contents
+			'shorttag_in_content'        => true,
+			// Which file extensions to scan for short tags
+			'shorttag_extensions'        => array(
+				'inc', 'phps', 'class', 'php3', 'php4', 'php5', 'txt', 'dat', 'tpl', 'tmpl'
+			),
+			// Forbidden extensions anywhere in the content
+			'fobidden_ext_in_content'    => true,
+			// Which file extensions to scan for .php in the content
+			'php_ext_content_extensions' => array('zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'jpa'),
+		);
+
+		$options = array_merge($defaultOptions, $options);
+
+		// Make sure we can scan nested file descriptors
+		$descriptors = $file;
+
+		if (isset($file['name']) && isset($file['tmp_name']))
+		{
+			$descriptors = self::decodeFileData(
+				array(
+					$file['name'],
+					$file['type'],
+					$file['tmp_name'],
+					$file['error'],
+					$file['size']
+				)
+			);
+		}
+
+		// Handle non-nested descriptors (single files)
+		if (isset($descriptors['name']))
+		{
+			$descriptors = array($descriptors);
+		}
+
+		// Scan all descriptors detected
+		foreach ($descriptors as $fileDescriptor)
+		{
+			if (!isset($fileDescriptor['name']))
+			{
+				// This is a nested descriptor. We have to recurse.
+				if (!self::isSafeFile($fileDescriptor, $options))
+				{
+					return false;
+				}
+
+				continue;
+			}
+
+			$tempNames     = $fileDescriptor['tmp_name'];
+			$intendedNames = $fileDescriptor['name'];
+
+			if (!is_array($tempNames))
+			{
+				$tempNames = array($tempNames);
+			}
+
+			if (!is_array($intendedNames))
+			{
+				$intendedNames = array($intendedNames);
+			}
+
+			$len = count($tempNames);
+
+			for ($i = 0; $i < $len; $i++)
+			{
+				$tempName     = array_shift($tempNames);
+				$intendedName = array_shift($intendedNames);
+
+				// 1. Null byte check
+				if ($options['null_byte'])
+				{
+					if (strstr($intendedName, "\x00"))
+					{
+						return false;
+					}
+				}
+
+				// 2. PHP-in-extension check (.php, .php.xxx[.yyy[.zzz[...]]], .xxx[.yyy[.zzz[...]]].php)
+				if (!empty($options['forbidden_extensions']))
+				{
+					$explodedName = explode('.', $intendedName);
+					$explodedName =	array_reverse($explodedName);
+					array_pop($explodedName);
+					$explodedName = array_map('strtolower', $explodedName);
+
+					/*
+					 * DO NOT USE array_intersect HERE! array_intersect expects the two arrays to
+					 * be set, i.e. they should have unique values.
+					 */
+					foreach ($options['forbidden_extensions'] as $ext)
+					{
+						if (in_array($ext, $explodedName))
+						{
+							return false;
+						}
+					}
+				}
+
+				// 3. File contents scanner (PHP tag in file contents)
+				if ($options['php_tag_in_content'] || $options['shorttag_in_content']
+					|| ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions'])))
+				{
+					$fp = @fopen($tempName, 'r');
+
+					if ($fp !== false)
+					{
+						$data = '';
+
+						while (!feof($fp))
+						{
+							$data .= @fread($fp, 131072);
+
+							if ($options['php_tag_in_content'] && stristr($data, '<?php'))
+							{
+								return false;
+							}
+
+							if ($options['shorttag_in_content'])
+							{
+								$suspiciousExtensions = $options['shorttag_extensions'];
+
+								if (empty($suspiciousExtensions))
+								{
+									$suspiciousExtensions = array(
+										'inc', 'phps', 'class', 'php3', 'php4', 'txt', 'dat', 'tpl', 'tmpl'
+									);
+								}
+
+								/*
+								 * DO NOT USE array_intersect HERE! array_intersect expects the two arrays to
+								 * be set, i.e. they should have unique values.
+								 */
+								$collide = false;
+
+								foreach ($suspiciousExtensions as $ext)
+								{
+									if (in_array($ext, $explodedName))
+									{
+										$collide = true;
+
+										break;
+									}
+								}
+
+								if ($collide)
+								{
+									// These are suspicious text files which may have the short tag (<?) in them
+									if (strstr($data, '<?'))
+									{
+										return false;
+									}
+								}
+							}
+
+							if ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions']))
+							{
+								$suspiciousExtensions = $options['php_ext_content_extensions'];
+
+								if (empty($suspiciousExtensions))
+								{
+									$suspiciousExtensions = array(
+										'zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'jpa'
+									);
+								}
+
+								/*
+								 * DO NOT USE array_intersect HERE! array_intersect expects the two arrays to
+								 * be set, i.e. they should have unique values.
+								 */
+								$collide = false;
+
+								foreach ($suspiciousExtensions as $ext)
+								{
+									if (in_array($ext, $explodedName))
+									{
+										$collide = true;
+
+										break;
+									}
+								}
+
+								if ($collide)
+								{
+									/*
+									 * These are suspicious text files which may have an executable
+									 * file extension in them
+									 */
+									foreach ($options['forbidden_extensions'] as $ext)
+									{
+										if (strstr($data, '.' . $ext))
+										{
+											return false;
+										}
+									}
+								}
+							}
+
+							/*
+							 * This makes sure that we don't accidentally skip a <?php tag if it's across
+							 * a read boundary, even on multibyte strings
+							 */
+							$data = substr($data, -10);
+						}
+
+						fclose($fp);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to decode a file data array.
+	 *
+	 * @param   array  $data  The data array to decode.
+	 *
+	 * @return  array
+	 *
+	 * @since   3.4
+	 */
+	protected static function decodeFileData(array $data)
+	{
+		$result = array();
+
+		if (is_array($data[0]))
+		{
+			foreach ($data[0] as $k => $v)
+			{
+				$result[$k] = self::decodeFileData(array($data[0][$k], $data[1][$k], $data[2][$k], $data[3][$k], $data[4][$k]));
+			}
+
+			return $result;
+		}
+
+		return array('name' => $data[0], 'type' => $data[1], 'tmp_name' => $data[2], 'error' => $data[3], 'size' => $data[4]);
 	}
 
 	/**
@@ -653,6 +1182,7 @@ class JFilterInput
 	{
 		return $this->remove($source);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Internal method to iteratively remove all unwanted tags and attributes
@@ -666,13 +1196,27 @@ class JFilterInput
 	protected function remove($source)
 	{
 		$loopCounter = 0;
+=======
+>>>>>>> joomla/staging
 
+	/**
+	 * Internal method to iteratively remove all unwanted tags and attributes
+	 *
+	 * @param   string  $source  Input string to be 'cleaned'
+	 *
+	 * @return  string  'Cleaned' version of input parameter
+	 *
+	 * @since   3.5
+	 */
+	protected function remove($source)
+	{
 		// Iteration provides nested tag protection
-		while ($source != $this->_cleanTags($source))
+		do
 		{
+			$temp = $source;
 			$source = $this->_cleanTags($source);
-			$loopCounter++;
 		}
+		while ($temp != $source);
 
 		return $source;
 	}

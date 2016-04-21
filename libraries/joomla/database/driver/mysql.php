@@ -512,6 +512,7 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 	private function serverClaimsUtf8mb4Support()
 	{
 		$client_version = mysql_get_client_info();
+<<<<<<< HEAD
 
 		if (strpos($client_version, 'mysqlnd') !== false)
 		{
@@ -522,6 +523,26 @@ class JDatabaseDriverMysql extends JDatabaseDriverMysqli
 		else
 		{
 			return version_compare($client_version, '5.5.3', '>=');
+=======
+		$server_version = $this->getVersion();
+
+		if (version_compare($server_version, '5.5.3', '<'))
+		{
+			return false;
+		}
+		else
+		{
+			if (strpos($client_version, 'mysqlnd') !== false)
+			{
+				$client_version = preg_replace('/^\D+([\d.]+).*/', '$1', $client_version);
+
+				return version_compare($client_version, '5.0.9', '>=');
+			}
+			else
+			{
+				return version_compare($client_version, '5.5.3', '>=');
+			}
+>>>>>>> joomla/staging
 		}
 	}
 

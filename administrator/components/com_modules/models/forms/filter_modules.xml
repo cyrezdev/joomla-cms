@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+<<<<<<< HEAD
+=======
+	<fieldset addfieldpath="/administrator/components/com_modules/models/fields" />
+>>>>>>> joomla/staging
 
 	<field
 		name="client_id"
 		type="list"
 		label=""
+<<<<<<< HEAD
 		onchange="jQuery.fn.clearPositionType();this.form.submit();"
 	>
 		<option value="0">JSITE</option>
@@ -13,6 +18,14 @@
 
 	<fields name="filter" addfieldpath="/administrator/components/com_modules/models/fields">
 
+=======
+		onchange="jQuery('#filter_position, #filter_module, #filter_language').val('');this.form.submit();"
+		>
+		<option value="0">JSITE</option>
+		<option value="1">JADMINISTRATOR</option>
+	</field>
+	<fields name="filter">
+>>>>>>> joomla/staging
 		<field
 			name="search"
 			type="text"
@@ -20,6 +33,7 @@
 			description="COM_MODULES_MODULES_FILTER_SEARCH_DESC"
 			hint="JSEARCH_FILTER"
 		/>
+<<<<<<< HEAD
 
 		<field
 			name="state"
@@ -31,40 +45,70 @@
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
 
+=======
+		<field
+			name="state"
+			type="status"
+			label="JSTATUS"
+			filter="*,-2,0,1"
+			onchange="this.form.submit();"
+			>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
+>>>>>>> joomla/staging
 		<field
 			name="position"
 			type="modulesposition"
 			label="COM_MODULES_FIELD_POSITION_LABEL"
 			onchange="this.form.submit();"
+<<<<<<< HEAD
 		>
 			<option value="">COM_MODULES_OPTION_SELECT_POSITION</option>
 		</field>
 
+=======
+			>
+			<option value="">COM_MODULES_OPTION_SELECT_POSITION</option>
+		</field>
+>>>>>>> joomla/staging
 		<field
 			name="module"
 			type="ModulesModule"
 			label="COM_MODULES_OPTION_SELECT_MODULE"
 			onchange="this.form.submit();"
+<<<<<<< HEAD
 		>
 			<option value="">COM_MODULES_OPTION_SELECT_MODULE</option>
 		</field>
 
+=======
+			>
+			<option value="">COM_MODULES_OPTION_SELECT_MODULE</option>
+		</field>
+>>>>>>> joomla/staging
 		<field
 			name="access"
 			type="accesslevel"
 			label="JOPTION_FILTER_ACCESS"
 			description="JOPTION_FILTER_ACCESS_DESC"
 			onchange="this.form.submit();"
+<<<<<<< HEAD
 		>
 			<option value="">JOPTION_SELECT_ACCESS</option>
 		</field>
 
+=======
+			>
+			<option value="">JOPTION_SELECT_ACCESS</option>
+		</field>
+>>>>>>> joomla/staging
 		<field
 			name="language"
 			type="contentlanguage"
 			label="JOPTION_FILTER_LANGUAGE"
 			description="JOPTION_FILTER_LANGUAGE_DESC"
 			onchange="this.form.submit();"
+<<<<<<< HEAD
 		>
 			<option value="">JOPTION_SELECT_LANGUAGE</option>
 			<option value="*">JALL</option>
@@ -74,15 +118,31 @@
 
 	<fields name="list">
 
+=======
+			>
+			<option value="">JOPTION_SELECT_LANGUAGE</option>
+			<option value="*">JALL</option>
+		</field>
+	</fields>
+	<fields name="list">
+>>>>>>> joomla/staging
 		<field
 			name="fullordering"
 			type="list"
 			label="JGLOBAL_SORT_BY"
+<<<<<<< HEAD
 			statuses="*,0,1,-2"
 			description="JGLOBAL_SORT_BY"
 			onchange="this.form.submit();"
 			default="position ASC"
 		>
+=======
+			description="JGLOBAL_SORT_BY"
+			statuses="*,0,1,-2"
+			onchange="this.form.submit();"
+			default="position ASC"
+			>
+>>>>>>> joomla/staging
 			<option value="">JGLOBAL_SORT_BY</option>
 			<option value="ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
 			<option value="ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
@@ -103,6 +163,7 @@
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
+<<<<<<< HEAD
 
 		<field
 			name="limit"
@@ -116,4 +177,16 @@
 
 	</fields>
 
+=======
+		<field
+			name="limit"
+			type="limitbox"
+			label="COM_MODULES_LIST_LIMIT"
+			description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+>>>>>>> joomla/staging
 </form>
