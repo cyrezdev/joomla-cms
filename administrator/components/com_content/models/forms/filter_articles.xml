@@ -89,13 +89,19 @@
 			onchange="this.form.submit();"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/master
 			default=""
 =======
 			default="a.id DESC"
 >>>>>>> joomla/staging
+<<<<<<< HEAD
 =======
 			default="a.id DESC"
 >>>>>>> joomla/staging
+=======
+>>>>>>> origin/master
 			>
 			<option value="">JGLOBAL_SORT_BY</option>
 			<option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>

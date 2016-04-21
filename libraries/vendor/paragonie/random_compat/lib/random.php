@@ -11,6 +11,9 @@
 =======
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
+ * 
+ * @version 1.4.1
+ * @released 2016-03-18
  *
  * The MIT License (MIT)
  *
@@ -191,10 +194,10 @@ if (PHP_VERSION_ID < 70000) {
                     PATH_SEPARATOR,
                     strtolower($RandomCompat_basedir)
                 );
-                $RandomCompatUrandom = in_array(
-                    '/dev',
+                $RandomCompatUrandom = (array() !== array_intersect(
+                    array('/dev', '/dev/', '/dev/urandom'),
                     $RandomCompat_open_basedir
-                );
+                ));
                 $RandomCompat_open_basedir = null;
             }
 
@@ -216,7 +219,8 @@ if (PHP_VERSION_ID < 70000) {
             }
             // Unset variables after use
             $RandomCompat_basedir = null;
-            $RandomCompatUrandom = null;
+        } else {
+            $RandomCompatUrandom = false;
         }
 
         /**
@@ -228,6 +232,8 @@ if (PHP_VERSION_ID < 70000) {
             PHP_VERSION_ID >= 50307
             &&
             extension_loaded('mcrypt')
+            &&
+            (DIRECTORY_SEPARATOR !== '/' || $RandomCompatUrandom)
         ) {
             // Prevent this code from hanging indefinitely on non-Windows;
             // see https://bugs.php.net/bug.php?id=69833
@@ -239,6 +245,7 @@ if (PHP_VERSION_ID < 70000) {
                 require_once $RandomCompatDIR.'/random_bytes_mcrypt.php';
             }
         }
+        $RandomCompatUrandom = null;
 
         if (
             !function_exists('random_bytes')

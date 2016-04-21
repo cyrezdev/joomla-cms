@@ -44,28 +44,59 @@ class PlgSystemSef extends JPlugin
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$router = $app::getRouter();
 
 =======
 >>>>>>> joomla/staging
 		$uri     = JUri::getInstance();
 		$domain  = $this->params->get('domain');
+=======
+		$sefDomain = $this->params->get('domain', '');
+>>>>>>> origin/master
 
-		if ($domain === false || $domain === '')
+		// Don't add a canonical html tag if no alternative domain has added in SEF plugin domain field.
+		if (empty($sefDomain))
 		{
-			$domain = $uri->toString(array('scheme', 'host', 'port'));
+			return;
 		}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 		$link = $domain . JRoute::_('index.php?' . http_build_query($router->getVars()), false);
 =======
 		$link = $domain . JRoute::_('index.php?' . http_build_query($this->app->getRouter()->getVars()), false);
 >>>>>>> joomla/staging
-
-		if (rawurldecode($uri->toString()) !== $link)
+=======
+		// Check if a canonical html tag already exists (for instance, added by a component).
+		$canonical = '';
+		foreach ($doc->_links as $linkUrl => $link)
 		{
-			$doc->addHeadLink(htmlspecialchars($link), 'canonical');
+			if (isset($link['relation']) && $link['relation'] === 'canonical')
+			{
+				$canonical = $linkUrl;
+				break;
+			}
 		}
+>>>>>>> origin/master
+
+		// If a canonical html tag already exists get the canonical and change it to use the SEF plugin domain field.
+		if (!empty($canonical))
+		{
+			// Remove current canonical link.
+			unset($doc->_links[$canonical]);
+
+			// Set the current canonical link but use the SEF system plugin domain field.
+			$canonical = $sefDomain . JUri::getInstance($canonical)->toString(array('path', 'query', 'fragment'));
+		}
+		// If a canonical html doesn't exists already add a canonical html tag using the SEF plugin domain field.
+		else
+		{
+			$canonical = $sefDomain . JUri::getInstance()->toString(array('path', 'query', 'fragment'));
+		}
+
+		// Add the canonical link.
+		$doc->addHeadLink(htmlspecialchars($canonical), 'canonical');
 	}
 
 	/**
@@ -106,7 +137,7 @@ class PlgSystemSef extends JPlugin
 		{
 			if (strpos($buffer, $attribute) !== false)
 			{
-				$regex  = '#\s+' . $attribute . '"(?!/|' . $protocols . '|\#|\')([^"]+)"#m';
+				$regex  = '#\s+' . $attribute . '"(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
 				$buffer = preg_replace($regex, ' ' . $attribute . '"' . $base . '$1"', $buffer);
 				$this->checkBuffer($buffer);
 			}

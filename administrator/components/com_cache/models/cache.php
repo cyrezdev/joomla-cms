@@ -175,6 +175,7 @@ class CacheModelCache extends JModelList
 				if ($limit !== 0)
 				{
 					$start = (int) $this->getState('list.start', 0);
+
 					return array_slice($this->_data, $start, $limit);
 				}
 >>>>>>> joomla/staging

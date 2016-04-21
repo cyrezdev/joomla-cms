@@ -40,7 +40,11 @@ class JoomlaInstallerScript
 <<<<<<< HEAD
 =======
 		$this->convertTablesToUtf8mb4();
+<<<<<<< HEAD
 >>>>>>> joomla/staging
+=======
+		$this->cleanJoomlaCache();
+>>>>>>> origin/master
 
 		// VERY IMPORTANT! THIS METHOD SHOULD BE CALLED LAST, SINCE IT COULD
 		// LOGOUT ALL THE USERS
@@ -1579,7 +1583,6 @@ class JoomlaInstallerScript
 			'/libraries/vendor/symfony/yaml/Symfony/Component/Yaml',
 			'/libraries/vendor/symfony/yaml/Symfony/Component',
 			'/libraries/vendor/symfony/yaml/Symfony',
-			'/administrator/components/com_tags/helpers',
 			'/libraries/joomla/document/error',
 			'/libraries/joomla/document/image',
 			'/libraries/joomla/document/json',
@@ -1888,25 +1891,22 @@ class JoomlaInstallerScript
 			{
 				foreach ($queries2 as $query2)
 				{
-					if ($trimmedQuery = $this->trimQuery($query2))
+					// Downgrade the query if utf8mb4 isn't supported
+					if (!$utf8mb4Support)
 					{
-						// Downgrade the query if utf8mb4 isn't supported
-						if (!$utf8mb4Support)
-						{
-							$trimmedQuery = $this->convertUtf8mb4QueryToUtf8($trimmedQuery);
-						}
+						$query2 = $this->convertUtf8mb4QueryToUtf8($query2);
+					}
 
-						try
-						{
-							$db->setQuery($trimmedQuery)->execute();
-						}
-						catch (Exception $e)
-						{
-							$converted = 0;
+					try
+					{
+						$db->setQuery($query2)->execute();
+					}
+					catch (Exception $e)
+					{
+						$converted = 0;
 
-							// Still render the error message from the Exception object
-							JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-						}
+						// Still render the error message from the Exception object
+						JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 					}
 				}
 >>>>>>> joomla/staging
@@ -1917,6 +1917,13 @@ class JoomlaInstallerScript
 			echo JText::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()) . '<br />';
 
 			return false;
+		}
+
+		// Show if there was some error
+		if ($converted == 0)
+		{
+			// Show an error message telling to check database problems
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_DATABASE_ERROR_DATABASE_UPGRADE_FAILED'), 'error');
 		}
 
 		// Set flag in database if the update is done.
@@ -1989,6 +1996,8 @@ class JoomlaInstallerScript
 	 * @param   string  $query  The query to convert
 	 *
 	 * @return  string  The converted query
+	 *
+	 * @since   3.5
 	 */
 	private function convertUtf8mb4QueryToUtf8($query)
 	{
@@ -2006,33 +2015,16 @@ class JoomlaInstallerScript
 	}
 
 	/**
-	 * Trim comment and blank lines out of a query string
+	 * This method clean the Joomla Cache using the method `clean` from the com_cache model
 	 *
-	 * @param   string  $query  query string to be trimmed
+	 * @return  void
 	 *
-	 * @return  string  String with leading comment lines removed
-	 *
-	 * @since   3.5
+	 * @since   3.5.1
 	 */
-	private function trimQuery($query)
+	private function cleanJoomlaCache()
 	{
-		$query = trim($query);
-
-		while (substr($query, 0, 1) == '#' || substr($query, 0, 2) == '--' || substr($query, 0, 2) == '/*')
-		{
-			$endChars = (substr($query, 0, 1) == '#' || substr($query, 0, 2) == '--') ? "\n" : "*/";
-
-			if ($position = strpos($query, $endChars))
-			{
-				$query = trim(substr($query, $position + strlen($endChars)));
-			}
-			else
-			{
-				// If no newline, the rest of the file is a comment, so return an empty string.
-				return '';
-			}
-		}
-
-		return trim($query);
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_cache/models');
+		$model = JModelLegacy::getInstance('cache', 'CacheModel');
+		$model->clean();
 	}
 }

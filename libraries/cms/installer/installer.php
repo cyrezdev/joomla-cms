@@ -883,25 +883,22 @@ class JInstaller extends JAdapter
 		// Process each query in the $queries array (children of $tagName).
 		foreach ($queries as $query)
 		{
-			if ($trimmedQuery = $this->trimQuery($query->data()))
+			// If we don't have UTF-8 Multibyte support we'll have to convert queries to plain UTF-8
+			if ($doUtf8mb4ToUtf8)
 			{
-				// If we don't have UTF-8 Multibyte support we'll have to convert queries to plain UTF-8
-				if ($doUtf8mb4ToUtf8)
-				{
-					$trimmedQuery = $this->convertUtf8mb4QueryToUtf8($trimmedQuery);
-				}
-
-				$db->setQuery($trimmedQuery);
-
-				if (!$db->execute())
-				{
-					JLog::add(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), JLog::WARNING, 'jerror');
-
-					return false;
-				}
-
-				$update_count++;
+				$query = $this->convertUtf8mb4QueryToUtf8($query);
 			}
+
+			$db->setQuery($query);
+
+			if (!$db->execute())
+			{
+				JLog::add(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), JLog::WARNING, 'jerror');
+
+				return false;
+			}
+
+			$update_count++;
 		}
 
 		return $update_count;
@@ -990,8 +987,10 @@ class JInstaller extends JAdapter
 				// Process each query in the $queries array (split out of sql file).
 				foreach ($queries as $query)
 				{
-					if ($trimmedQuery = $this->trimQuery($query))
+					// If we don't have UTF-8 Multibyte support we'll have to convert queries to plain UTF-8
+					if ($doUtf8mb4ToUtf8)
 					{
+<<<<<<< HEAD
 <<<<<<< HEAD
 						/**
 						 * If we don't have UTF-8 Multibyte support we'll have to convert queries to plain UTF-8
@@ -1020,16 +1019,21 @@ class JInstaller extends JAdapter
 
 						$db->setQuery($trimmedQuery);
 >>>>>>> joomla/staging
-
-						if (!$db->execute())
-						{
-							JLog::add(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), JLog::WARNING, 'jerror');
-
-							return false;
-						}
-
-						$update_count++;
+=======
+						$query = $this->convertUtf8mb4QueryToUtf8($query);
 					}
+>>>>>>> origin/master
+
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						JLog::add(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), JLog::WARNING, 'jerror');
+
+						return false;
+					}
+
+					$update_count++;
 				}
 			}
 		}
@@ -1216,6 +1220,7 @@ class JInstaller extends JAdapter
 							foreach ($queries as $query)
 							{
 <<<<<<< HEAD
+<<<<<<< HEAD
 								$query = trim($query);
 
 								if ($query != '' && $query{0} != '#')
@@ -1256,7 +1261,30 @@ class JInstaller extends JAdapter
 									}
 
 									$update_count++;
+=======
+								// If we don't have UTF-8 Multibyte support we'll have to convert queries to plain UTF-8
+								if ($doUtf8mb4ToUtf8)
+								{
+									$query = $this->convertUtf8mb4QueryToUtf8($query);
+>>>>>>> origin/master
 								}
+
+								$db->setQuery($query);
+
+								if (!$db->execute())
+								{
+									JLog::add(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), JLog::WARNING, 'jerror');
+
+									return false;
+								}
+								else
+								{
+									$queryString = (string) $query;
+									$queryString = str_replace(array("\r", "\n"), array('', ' '), substr($queryString, 0, 80));
+									JLog::add(JText::sprintf('JLIB_INSTALLER_UPDATE_LOG_QUERY', $file, $queryString), JLog::INFO, 'Update');
+								}
+
+								$update_count++;
 							}
 						}
 					}
@@ -2544,6 +2572,7 @@ class JInstaller extends JAdapter
 		// Replace utf8mb4 with utf8
 		return str_replace('utf8mb4', 'utf8', $query);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Trim comment and blank lines out of a query string
@@ -2576,4 +2605,6 @@ class JInstaller extends JAdapter
 		return trim($query);
 	}
 >>>>>>> joomla/staging
+=======
+>>>>>>> origin/master
 }

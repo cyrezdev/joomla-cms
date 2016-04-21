@@ -39,10 +39,14 @@ final class JVersion
 	 * @since  3.5
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const DEV_LEVEL = '0-beta2';
 =======
 	const DEV_LEVEL = '0-rc';
 >>>>>>> joomla/staging
+=======
+	const DEV_LEVEL = '1';
+>>>>>>> origin/master
 
 	/**
 	 * Development status.
@@ -51,10 +55,14 @@ final class JVersion
 	 * @since  3.5
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const DEV_STATUS = 'Beta';
 =======
 	const DEV_STATUS = 'Release Candidate';
 >>>>>>> joomla/staging
+=======
+	const DEV_STATUS = 'Stable';
+>>>>>>> origin/master
 
 	/**
 	 * Build number.
@@ -70,7 +78,7 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
-	const CODENAME = 'Ember';
+	const CODENAME = 'Unicorn';
 
 	/**
 	 * Release date.
@@ -79,10 +87,14 @@ final class JVersion
 	 * @since  3.5
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const RELDATE = '27-January-2017';
 =======
 	const RELDATE = '10-March-2016';
 >>>>>>> joomla/staging
+=======
+	const RELDATE = '05-April-2016';
+>>>>>>> origin/master
 
 	/**
 	 * Release time.
@@ -91,10 +103,14 @@ final class JVersion
 	 * @since  3.5
 	 */
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const RELTIME = '23:00';
 =======
 	const RELTIME = '00:30';
 >>>>>>> joomla/staging
+=======
+	const RELTIME = '22:45';
+>>>>>>> origin/master
 
 	/**
 	 * Release timezone.
@@ -118,7 +134,7 @@ final class JVersion
 	 * @var    string
 	 * @since  3.5
 	 */
-	const URL = '<a href="http://www.joomla.org">Joomla!</a> is Free Software released under the GNU General Public License.';
+	const URL = '<a href="https://www.joomla.org">Joomla!</a> is Free Software released under the GNU General Public License.';
 
 	/**
 	 * Magic getter providing access to constants previously defined as class member vars.
